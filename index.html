@@ -6,7 +6,7 @@
     <title>Lake Erie Shadow Hunters - Father & Son Paranormal Team</title>
     <link rel="icon" href="https://raw.githubusercontent.com/Vexo1234/picassetsssss/main/channels4_profile_modified__1_683cdfdfd0d75_png.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-   <style>
+    <style>
         /* Loading Screen Styles */
         #loading-screen {
             position: fixed;
@@ -20,7 +20,7 @@
             align-items: center;
             flex-direction: column;
             z-index: 9999;
-            transition: opacity 1.5s ease; /* Longer fade */
+            transition: opacity 1.5s ease;
         }
 
         .loading-container {
@@ -72,7 +72,7 @@
             font-size: 1.5rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            transition: all 0.5s ease; /* Longer transition */
+            transition: all 0.5s ease;
         }
 
         /* Logo and text during loading */
@@ -86,11 +86,11 @@
             gap: 15px;
             z-index: 10000;
             opacity: 0;
-            transition: all 2s cubic-bezier(0.22, 1, 0.36, 1); /* Longer smoother transition */
+            transition: all 2s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .logo-loading {
-            height: 60px; /* Smaller initial size */
+            height: 60px;
             filter: drop-shadow(0 0 15px rgba(43, 124, 226, 0.7));
             transition: all 2s cubic-bezier(0.22, 1, 0.36, 1);
         }
@@ -111,6 +111,31 @@
         /* Hide all page content initially */
         body > *:not(#loading-screen):not(.logo-loading-container) {
             opacity: 0;
+        }
+
+        /* Rest of your CSS styles... */
+        :root {
+            --primary: #2b7ce2;
+            --secondary: #00ffff;
+            --dark: #0a0a0a;
+            --darker: #050505;
+            --light: #f0f0f0;
+            --glow: 0 0 10px rgba(43, 124, 226, 0.7), 0 0 20px rgba(0, 255, 255, 0.5);
+            --text-glow: 0 0 5px rgba(43, 124, 226, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+            position: relative;
         }
 
         /* Rest of your existing CSS... */
@@ -991,15 +1016,13 @@
         <div class="logo-text-loading">LAKE ERIE SHADOW HUNTERS</div>
     </div>
 
-    <!-- [All your existing HTML content remains unchanged below] -->
-    <!-- Background Elements -->
+    <!-- Your existing HTML content -->
     <div class="orb"></div>
     <div class="orb"></div>
     <div class="orb"></div>
     <div class="ghost"></div>
     <div class="ghost"></div>
 
-    <!-- Header -->
     <header>
         <div class="logo-container">
             <img src="https://raw.githubusercontent.com/Vexo1234/picassetsssss/main/channels4_profile_modified__1_683cdfdfd0d75_png.png" 
@@ -1217,6 +1240,9 @@
             
             const loadingInterval = setInterval(() => {
                 progress += increments;
+                progressBarFill.style.width = progress + '%';
+                progressCounter.textContent = Math.round(progress) + '%';
+                
                 if (progress >= targetProgress) {
                     progress = targetProgress;
                     clearInterval(loadingInterval);
@@ -1295,172 +1321,12 @@
                                         }
                                     }
                                     
-                                    // Trigger scroll animations
-                                    const sections = document.querySelectorAll('section');
-                                    const observerOptions = {
-                                        threshold: 0.1
-                                    };
-                                    
-                                    const observer = new IntersectionObserver((entries) => {
-                                        entries.forEach(entry => {
-                                            if (entry.isIntersecting) {
-                                                entry.target.classList.add('section-visible');
-                                            }
-                                        });
-                                    }, observerOptions);
-                                    
-                                    sections.forEach(section => {
-                                        observer.observe(section);
-                                    });
-                                    
                                 }, 1000); // Fade out duration
                             }, 2000); // Animation duration to header position
                         }, 1000); // Delay before moving to header
                     }, 2000); // "Finished" display duration
                 }
-                
-                // Update progress bar and counter
-                progressBarFill.style.width = progress + '%';
-                progressCounter.textContent = Math.round(progress) + '%';
-                
             }, intervalTime);
-            
-        // Loading Animation
-        document.addEventListener('DOMContentLoaded', function() {
-            const loadingScreen = document.getElementById('loading-screen');
-            const progressBar = document.querySelector('.progress-bar');
-            const progressCounter = document.querySelector('.progress-counter');
-            const loadingText = document.querySelector('.loading-text');
-            const logo = document.querySelector('.logo-img');
-            
-            // Clone logo for animation
-            const logoClone = logo.cloneNode(true);
-            logoClone.classList.add('logo-loading');
-            document.body.appendChild(logoClone);
-            logo.style.visibility = 'hidden'; // Hide original logo initially
-            
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += 1;
-                progressBar.style.width = progress + '%';
-                progressCounter.textContent = progress + '%';
-                
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    loadingText.textContent = 'Finished';
-                    
-                    // Animate logo
-                    setTimeout(() => {
-                        loadingScreen.style.opacity = '0';
-                        
-                        // Show logo animation
-                        logoClone.style.opacity = '1';
-                        logoClone.style.filter = 'drop-shadow(0 0 10px var(--primary))';
-                        
-                        // Move logo to final position
-                        const headerLogoPos = document.querySelector('.logo-container').getBoundingClientRect();
-                        setTimeout(() => {
-                            logoClone.style.top = headerLogoPos.top + 'px';
-                            logoClone.style.left = headerLogoPos.left + 'px';
-                            logoClone.style.width = headerLogoPos.width + 'px';
-                            logoClone.style.height = headerLogoPos.height + 'px';
-                            logoClone.style.transform = 'none';
-                            
-                            // Final transition
-                            setTimeout(() => {
-                                logo.style.visibility = 'visible';
-                                logoClone.remove();
-                                loadingScreen.remove();
-                                
-                                // Animate rest of page content
-                                document.querySelectorAll('section').forEach(section => {
-                                    section.style.opacity = '1';
-                                });
-                                
-                                // Trigger existing animations
-                                const title = document.getElementById('animated-title');
-                                const text = title.textContent;
-                                title.textContent = '';
-                                
-                                for (let i = 0; i < text.length; i++) {
-                                    setTimeout(() => {
-                                        const span = document.createElement('span');
-                                        span.textContent = text[i];
-                                        span.style.opacity = '0';
-                                        span.style.display = 'inline-block';
-                                        title.appendChild(span);
-                                        
-                                        setTimeout(() => {
-                                            span.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                                            span.style.opacity = '1';
-                                            span.style.transform = 'translateY(0)';
-                                        }, 50);
-                                    }, i * 100);
-                                }
-                                
-                                // Scroll animations
-                                const sections = document.querySelectorAll('section');
-                                const observerOptions = {
-                                    threshold: 0.1
-                                };
-                                
-                                const observer = new IntersectionObserver((entries) => {
-                                    entries.forEach(entry => {
-                                        if (entry.isIntersecting) {
-                                            entry.target.classList.add('section-visible');
-                                        }
-                                    });
-                                }, observerOptions);
-                                
-                                sections.forEach(section => {
-                                    observer.observe(section);
-                                });
-                            }, 1000);
-                        }, 500);
-                    }, 800);
-                }
-            }, 30);
-            
-            // Smooth scrolling for navigation
-            document.querySelectorAll('nav a').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    window.scrollTo({
-                        top: targetElement.offsetTop,
-                        behavior: 'smooth'
-                    });
-                });
-            });
-            
-            // Form validation
-            const form = document.querySelector('.contact-form');
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                let isValid = true;
-                const inputs = this.querySelectorAll('.form-control');
-                
-                inputs.forEach(input => {
-                    if (!input.value.trim()) {
-                        input.style.borderColor = 'red';
-                        isValid = false;
-                    } else {
-                        input.style.borderColor = 'rgba(43, 124, 226, 0.3)';
-                    }
-                });
-                
-                if (isValid) {
-                    this.submit();
-                    alert('Thank you for your report! We will investigate your sighting.');
-                    this.reset();
-                } else {
-                    alert('Please fill in all required fields.');
-                }
-            });
         });
     </script>
 </body>
