@@ -1220,114 +1220,136 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Loading elements
-            const loadingScreen = document.getElementById('loading-screen');
-            const progressBarFill = document.querySelector('.progress-bar-fill');
-            const progressCounter = document.querySelector('.progress-counter');
-            const loadingText = document.querySelector('.loading-text');
-            const logoLoadingContainer = document.querySelector('.logo-loading-container');
-            const headerLogoContainer = document.querySelector('.logo-container');
-            
-            // Hide original header initially
-            document.querySelector('header').style.opacity = '0';
+    // Loading elements
+    const loadingScreen = document.getElementById('loading-screen');
+    const progressBarFill = document.querySelector('.progress-bar-fill');
+    const progressCounter = document.querySelector('.progress-counter');
+    const loadingText = document.querySelector('.loading-text');
+    const logoLoadingContainer = document.querySelector('.logo-loading-container');
+    const headerLogoContainer = document.querySelector('.logo-container');
+    
+    // Hide original header initially
+    document.querySelector('header').style.opacity = '0';
 
-            // Accurate loading simulation
-            let progress = 0;
-            const targetProgress = 100;
-            const duration = 3500; // 3.5 seconds total
-            const intervalTime = 30; // Update every 30ms
-            const increments = (intervalTime / duration) * targetProgress;
+    // Accurate loading simulation
+    let progress = 0;
+    const targetProgress = 100;
+    const duration = 3500; // 3.5 seconds total
+    const intervalTime = 30; // Update every 30ms
+    const increments = (intervalTime / duration) * targetProgress;
+    
+    const loadingInterval = setInterval(() => {
+        progress += increments;
+        progressBarFill.style.width = progress + '%';
+        progressCounter.textContent = Math.round(progress) + '%';
+        
+        if (progress >= targetProgress) {
+            progress = targetProgress;
+            clearInterval(loadingInterval);
             
-            const loadingInterval = setInterval(() => {
-                progress += increments;
-                progressBarFill.style.width = progress + '%';
-                progressCounter.textContent = Math.round(progress) + '%';
+            // Change to "Finished"
+            loadingText.textContent = 'Finished';
+            
+            // Wait 2 seconds then fade out loading screen
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
                 
-                if (progress >= targetProgress) {
-                    progress = targetProgress;
-                    clearInterval(loadingInterval);
+                // Fade in logo and text container
+                logoLoadingContainer.style.opacity = '1';
+                
+                // After 1 second, animate to header position
+                setTimeout(() => {
+                    const finalPos = headerLogoContainer.getBoundingClientRect();
+                    const logoFinalHeight = 50; // Matches your header logo size
                     
-                    // Change to "Finished"
-                    loadingText.textContent = 'Finished';
+                    // Calculate final position (centered vertically in header)
+                    const finalTop = finalPos.top + (finalPos.height / 2) - (logoFinalHeight / 2);
+                    const finalLeft = finalPos.left;
                     
-                    // Wait 2 seconds then fade out loading screen
+                    // Animate logo and text to final position
+                    logoLoadingContainer.style.top = finalTop + 'px';
+                    logoLoadingContainer.style.left = finalLeft + 'px';
+                    logoLoadingContainer.style.transform = 'translate(0, 0)';
+                    logoLoadingContainer.style.gap = '10px'; // Smaller gap in header
+                    
+                    // Resize logo to final size
+                    document.querySelector('.logo-loading').style.height = logoFinalHeight + 'px';
+                    
+                    // Resize text to final size
+                    document.querySelector('.logo-text-loading').style.fontSize = '1.5rem';
+                    
+                    // After animation completes, fade in header and page
                     setTimeout(() => {
-                        loadingScreen.style.opacity = '0';
+                        // Show real header
+                        document.querySelector('header').style.opacity = '1';
                         
-                        // Fade in logo and text container
-                        logoLoadingContainer.style.opacity = '1';
+                        // Fade out loading elements
+                        logoLoadingContainer.style.opacity = '0';
                         
-                        // After 1 second, animate to header position
+                        // Remove loading screen completely
                         setTimeout(() => {
-                            const finalPos = headerLogoContainer.getBoundingClientRect();
-                            const logoFinalHeight = 50; // Matches your header logo size
+                            loadingScreen.remove();
+                            logoLoadingContainer.remove();
                             
-                            // Calculate final position (centered vertically in header)
-                            const finalTop = finalPos.top + (finalPos.height / 2) - (logoFinalHeight / 2);
-                            const finalLeft = finalPos.left;
+                            // Fade in all page content
+                            document.querySelectorAll('body > *:not(script):not(header)').forEach(el => {
+                                el.style.opacity = '1';
+                            });
                             
-                            // Animate logo and text to final position
-                            logoLoadingContainer.style.top = finalTop + 'px';
-                            logoLoadingContainer.style.left = finalLeft + 'px';
-                            logoLoadingContainer.style.transform = 'translate(0, 0)';
-                            logoLoadingContainer.style.gap = '10px'; // Smaller gap in header
+                            // Initialize Intersection Observer for section animations
+                            initIntersectionObserver();
                             
-                            // Resize logo to final size
-                            document.querySelector('.logo-loading').style.height = logoFinalHeight + 'px';
-                            
-                            // Resize text to final size
-                            document.querySelector('.logo-text-loading').style.fontSize = '1.5rem';
-                            
-                            // After animation completes, fade in header and page
-                            setTimeout(() => {
-                                // Show real header
-                                document.querySelector('header').style.opacity = '1';
+                            // Trigger title animation
+                            const title = document.getElementById('animated-title');
+                            if (title) {
+                                const text = title.textContent;
+                                title.textContent = '';
                                 
-                                // Fade out loading elements
-                                logoLoadingContainer.style.opacity = '0';
-                                
-                                // Remove loading screen completely
-                                setTimeout(() => {
-                                    loadingScreen.remove();
-                                    logoLoadingContainer.remove();
-                                    
-                                    // Fade in all page content
-                                    document.querySelectorAll('body > *:not(script)').forEach(el => {
-                                        if (el.id !== 'loading-screen' && !el.classList.contains('logo-loading-container')) {
-                                            el.style.opacity = '1';
-                                        }
-                                    });
-                                    
-                                    // Trigger existing animations
-                                    const title = document.getElementById('animated-title');
-                                    if (title) {
-                                        const text = title.textContent;
-                                        title.textContent = '';
+                                for (let i = 0; i < text.length; i++) {
+                                    setTimeout(() => {
+                                        const span = document.createElement('span');
+                                        span.textContent = text[i];
+                                        span.style.opacity = '0';
+                                        span.style.display = 'inline-block';
+                                        title.appendChild(span);
                                         
-                                        for (let i = 0; i < text.length; i++) {
-                                            setTimeout(() => {
-                                                const span = document.createElement('span');
-                                                span.textContent = text[i];
-                                                span.style.opacity = '0';
-                                                span.style.display = 'inline-block';
-                                                title.appendChild(span);
-                                                
-                                                setTimeout(() => {
-                                                    span.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                                                    span.style.opacity = '1';
-                                                    span.style.transform = 'translateY(0)';
-                                                }, 50);
-                                            }, i * 100);
-                                        }
-                                    }
-                                    
-                                }, 1000); // Fade out duration
-                            }, 2000); // Animation duration to header position
-                        }, 1000); // Delay before moving to header
-                    }, 2000); // "Finished" display duration
+                                        setTimeout(() => {
+                                            span.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                                            span.style.opacity = '1';
+                                            span.style.transform = 'translateY(0)';
+                                        }, 50);
+                                    }, i * 100);
+                                }
+                            }
+                            
+                        }, 1000); // Fade out duration
+                    }, 1000); // Animation duration to header position
+                }, 1000); // Delay before moving to header
+            }, 500); // "Finished" display duration (reduced from 2000 to 500)
+        }
+    }, intervalTime);
+
+    // Initialize Intersection Observer for section animations
+    function initIntersectionObserver() {
+        const sections = document.querySelectorAll('section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('section-visible');
                 }
-            }, intervalTime);
+            });
+        }, {
+            threshold: 0.1
         });
+        
+        sections.forEach(section => {
+            observer.observe(section);
+            // Make sure sections are visible after load
+            section.style.opacity = '1';
+        });
+    }
+});
     </script>
 </body>
 </html>
