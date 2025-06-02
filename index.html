@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lake Erie Shadow Hunters - Father & Son Paranormal Team</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #2b7ce2;
+            --secondary: #00ffff;
+            --dark: #0a0a0a;
+            --darker: #050505;
+            --light: #f0f0f0;
+            --glow: 0 0 10px rgba(43, 124, 226, 0.7), 0 0 20px rgba(0, 255, 255, 0.5);
+            --text-glow: 0 0 5px rgba(43, 124, 226, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M20,20 Q30,10 40,20 T60,20 T80,20" stroke="rgba(43,124,226,0.1)" fill="none" stroke-width="0.5"/></svg>');
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background-color: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(43, 124, 226, 0.2);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-img {
+            height: 50px;
+            filter: drop-shadow(0 0 5px var(--primary));
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: var(--text-glow);
+            letter-spacing: 2px;
+        }
+
+        .logo-subtext {
+            font-size: 0.8rem;
+            color: var(--secondary);
+            display: block;
+            letter-spacing: 4px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 1.1rem;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--secondary);
+            text-shadow: var(--text-glow);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, var(--darker) 70%);
+            z-index: -1;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: var(--text-glow);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s forwards 0.5s;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--secondary);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s forwards 1s;
+        }
+
+        .hero-btn {
+            padding: 0.8rem 2rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: var(--light);
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--glow);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s forwards 1.5s;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .hero-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .hero-btn:hover::before {
+            left: 100%;
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        /* Background Elements */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(10px);
+            opacity: 0.3;
+            z-index: -1;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        .orb:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            background: var(--primary);
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .orb:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            background: var(--secondary);
+            top: 60%;
+            left: 70%;
+            animation-delay: 2s;
+        }
+
+        .orb:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            background: var(--primary);
+            top: 80%;
+            left: 30%;
+            animation-delay: 4s;
+        }
+
+        .ghost {
+            position: absolute;
+            width: 80px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50% 50% 0 0;
+            z-index: -1;
+            filter: blur(2px);
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .ghost::before {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            top: 20px;
+            left: 20px;
+            box-shadow: 30px 0 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .ghost::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 30px;
+            border-radius: 0 0 30px 30px;
+            background: rgba(255, 255, 255, 0.2);
+            bottom: 0;
+            left: 10px;
+        }
+
+        .ghost:nth-child(4) {
+            top: 30%;
+            left: 80%;
+            animation-delay: 1s;
+        }
+
+        .ghost:nth-child(5) {
+            top: 50%;
+            left: 20%;
+            animation-delay: 3s;
+        }
+
+        /* Content Sections */
+        section {
+            padding: 6rem 10%;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--primary);
+            text-shadow: var(--text-glow);
+            position: relative;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s ease;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+
+        .section-content {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease 0.3s;
+        }
+
+        .section-visible .section-title,
+        .section-visible .section-content {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* About Section */
+        .about-content {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-image {
+            flex: 1;
+            position: relative;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: var(--glow);
+            transition: transform 0.5s ease;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.03);
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        /* Team Section */
+        .team-container {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .team-member {
+            background: rgba(20, 20, 20, 0.7);
+            border-radius: 10px;
+            padding: 2rem;
+            width: 300px;
+            text-align: center;
+            box-shadow: var(--glow);
+            transition: transform 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .section-visible .team-member {
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        .team-member:nth-child(1) { animation-delay: 0.2s; }
+        .team-member:nth-child(2) { animation-delay: 0.4s; }
+
+        .team-member:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), var(--glow);
+        }
+
+        .member-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            margin: 0 auto 1.5rem;
+            box-shadow: var(--glow);
+        }
+
+        .member-name {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .member-role {
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .member-bio {
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .member-fact {
+            font-style: italic;
+            color: var(--secondary);
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Equipment Section */
+        .equipment-section {
+            background: rgba(15, 15, 15, 0.7);
+            padding: 4rem 10%;
+            border-top: 1px solid rgba(43, 124, 226, 0.2);
+            border-bottom: 1px solid rgba(43, 124, 226, 0.2);
+        }
+
+        .equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .equipment-item {
+            background: rgba(30, 30, 30, 0.7);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(43, 124, 226, 0.3);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .section-visible .equipment-item {
+            animation: fadeInUp 0.5s forwards;
+        }
+
+        .equipment-item:nth-child(1) { animation-delay: 0.1s; }
+        .equipment-item:nth-child(2) { animation-delay: 0.2s; }
+        .equipment-item:nth-child(3) { animation-delay: 0.3s; }
+        .equipment-item:nth-child(4) { animation-delay: 0.4s; }
+        .equipment-item:nth-child(5) { animation-delay: 0.5s; }
+        .equipment-item:nth-child(6) { animation-delay: 0.6s; }
+        .equipment-item:nth-child(7) { animation-delay: 0.7s; }
+        .equipment-item:nth-child(8) { animation-delay: 0.8s; }
+
+        .equipment-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: var(--glow);
+        }
+
+        .equipment-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .equipment-name {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Evidence Section */
+        .evidence-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .evidence-item {
+            background: rgba(20, 20, 20, 0.7);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .section-visible .evidence-item {
+            animation: fadeInUp 0.5s forwards;
+        }
+
+        .evidence-item:nth-child(1) { animation-delay: 0.2s; }
+        .evidence-item:nth-child(2) { animation-delay: 0.4s; }
+        .evidence-item:nth-child(3) { animation-delay: 0.6s; }
+        .evidence-item:nth-child(4) { animation-delay: 0.8s; }
+
+        .evidence-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), var(--glow);
+        }
+
+        .evidence-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            filter: grayscale(30%) contrast(1.1);
+            transition: filter 0.3s ease;
+        }
+
+        .evidence-item:hover .evidence-img {
+            filter: grayscale(0%) contrast(1.2);
+        }
+
+        .evidence-info {
+            padding: 1.5rem;
+        }
+
+        .evidence-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .evidence-date {
+            color: var(--primary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* Contact Section */
+        .contact-container {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-info h3 {
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .contact-details {
+            margin-bottom: 2rem;
+        }
+
+        .contact-details p {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contact-details i {
+            color: var(--primary);
+            width: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(43, 124, 226, 0.2);
+            color: var(--light);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: var(--glow);
+        }
+
+        .contact-form {
+            flex: 1;
+            background: rgba(20, 20, 20, 0.7);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--glow);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(43, 124, 226, 0.3);
+            border-radius: 5px;
+            color: var(--light);
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(43, 124, 226, 0.5);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: var(--light);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--glow);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--darker);
+            padding: 2rem 5%;
+            text-align: center;
+            border-top: 1px solid rgba(43, 124, 226, 0.2);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo img {
+            height: 40px;
+            filter: drop-shadow(0 0 5px var(--primary));
+        }
+
+        .footer-logo-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: var(--text-glow);
+            letter-spacing: 2px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+            text-shadow: var(--text-glow);
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+            }
+            50% {
+                transform: translateY(-20px) translateX(10px);
+            }
+        }
+
+        @keyframes letterHop {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .about-content,
+            .contact-container {
+                flex-direction: column;
+            }
+
+            .about-image {
+                margin-top: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 5%;
+            }
+
+            .logo-text {
+                font-size: 1.2rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            section {
+                padding: 4rem 5%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .logo-img {
+                height: 40px;
+            }
+
+            .logo-text {
+                font-size: 1rem;
+            }
+
+            .logo-subtext {
+                font-size: 0.6rem;
+                letter-spacing: 2px;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .evidence-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="ghost"></div>
+    <div class="ghost"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <img src= alt="Lake Erie Shadow Hunters" class="logo-img">
+            <div>
+                <span class="logo-text">LAKE ERIE SHADOW HUNTERS</span>
+                <span class="logo-subtext">FATHER & SON PARANORMAL TEAM</span>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#team">Our Team</a></li>
+                <li><a href="#equipment">Equipment</a></li>
+                <li><a href="#evidence">Evidence</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <h1 class="hero-title" id="animated-title">Lake Erie Shadow Hunters</h1>
+        <p class="hero-subtitle">Father & Son paranormal investigators exploring Lake Erie's mysteries</p>
+        <button class="hero-btn">Welcome</button>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2 class="section-title">OUR STORY</h2>
+        <div class="section-content about-content">
+            <div class="about-text">
+                <p>Founded in late 2024, Lake Erie Shadow Hunters is a unique father-and-son paranormal investigation team based in Ashtabula, Ohio. Christian and his 13-year-old son Caden (who many say is the youngest investigator they know) explore haunted locations throughout Ohio with a special focus on Lake Erie's mysterious shores.</p>
+                <p>What began as a shared interest in the paranormal has grown into a special bonding experience that strengthens our relationship while documenting supernatural phenomena. We're passionate about sharing our experiences with the world.</p>
+                <p>Our approach combines traditional paranormal research methods with the fresh perspective of a new generation, creating a unique dynamic that helps us connect with both spirits and our growing audience.</p>
+            </div>
+            <div class="about-image">
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team">
+        <h2 class="section-title">MEET THE TEAM</h2>
+        <div class="section-content">
+            <div class="team-container">
+                <div class="team-member">
+                    <h3 class="member-name">CHRISTIAN</h3>
+                    <span class="member-role">Father</span>
+                    <p class="member-bio">Starting in late 2024 my dad and me have been obsessed with the paranormal, he's always had a his own personal experiences and loves being able to support me and do investigations with me.</p>
+                    <p class="member-fact">"I love getting to spend time with my son and explore another side of life that many people are scared to dive into."</p>
+                </div>
+                <div class="team-member">
+                    <h3 class="member-name">CADEN</h3>
+                    <span class="member-role">Son</span>
+                    <p class="member-bio">At just 13 years old, Caden is already making waves in the paranormal community as one of the youngest serious investigators. His fresh perspective and natural sensitivity to spiritual energy make him an invaluable team member.</p>
+                    <p class="member-fact">"I love investigating with my dad - it's a special connection not many people have"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Equipment Section -->
+    <section id="equipment" class="equipment-section">
+        <h2 class="section-title">OUR GEAR</h2>
+        <div class="section-content">
+            <div class="equipment-grid">
+                <div class="equipment-item">
+                    <div class="equipment-icon"><i class="fas fa-broadcast-tower"></i></div>
+                    <h3 class="equipment-name">SB7 Spirit Box</h3>
+                    <p>Radio sweep device for real-time communication</p>
+                </div>
+                <div class="equipment-item">
+                    <div class="equipment-icon"><i class="fas fa-ghost"></i></div>
+                    <h3 class="equipment-name">REM Pod</h3>
+                    <p>Electromagnetic field disturbance detector</p>
+                </div>
+                <div class="equipment-item">
+                    <div class="equipment-icon"><i class="fas fa-lightbulb"></i></div>
+                    <h3 class="equipment-name">Catballs</h3>
+                    <p>Motion-activated light devices</p>
+                </div>
+                <div class="equipment-item">
+                    <div class="equipment-icon"><i class="fas fa-wave-square"></i></div>
+                    <h3 class="equipment-name">EMF Detector</h3>
+                    <p>Measures electromagnetic fluctuations</p>
+                </div>
+                <div class="equipment-item">
+                    <div class="equipment-icon"><i class="fas fa-microphone"></i></div>
+                    <h3 class="equipment-name">EVP Recorder</h3>
+                    <p>Captures electronic voice phenomena</p>
+                </div>
+                <div class="equipment-item">
+                    <div class="equipment-icon"><i class="fas fa-bell"></i></div>
+                    <h3 class="equipment-name">Dead Bell</h3>
+                    <p>Traditional device for spirit communication</p>
+                </div>
+                <div class="equipment-item">
+                    <div class="equipment-icon"><i class="fas fa-project-diagram"></i></div>
+                    <h3 class="equipment-name">DOTS Projector</h3>
+                    <p>Laser grid for detecting movement</p>
+                </div>
+                <div class="equipment-item">
+                    <div class="equipment-icon"><i class="fas fa-video"></i></div>
+                    <h3 class="equipment-name">Night Vision Cameras</h3>
+                    <p>Full-spectrum video documentation</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Evidence Section -->
+    <section id="evidence">
+        <h2 class="section-title">OUR FINDINGS</h2>
+        <div class="section-content evidence-grid">
+            <div class="evidence-item">
+                <img src="https://ewscripps.brightspotcdn.com/dims4/default/276469f/2147483647/strip/true/crop/1786x1005+0+65/resize/1280x720!/quality/90/?url=http%3A%2F%2Fewscripps-brightspot.s3.amazonaws.com%2F9a%2Fdd%2Fdb3223e046e2ba8bc1d8a113258b%2Fscreen-shot-2019-03-05-at-8.07.33%20PM.png" alt="Madison State Seminary" class="evidence-img">
+                <div class="evidence-info">
+                    <h3 class="evidence-title">Madison State Seminary</h3>
+                    <span class="evidence-date">Madison, Ohio</span>
+                    <p>Our investigation of this historic location captured several intelligent responses through our spirit box and multiple EMF spikes, heard a little girl voice, my father felt a hand on his back, and had insane activity with the rem-pod.</p>
+                </div>
+            </div>
+            <div class="evidence-item">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Fairfield_County_Infirmary.jpg" alt="Fairfield Infirmary" class="evidence-img">
+                <div class="evidence-info">
+                    <h3 class="evidence-title">Fairfield Infirmary</h3>
+                    <span class="evidence-date">Fairfield, Ohio</span>
+                    <p>During our overnight investigation, we did not get much activity but getting to be there and soak in it's rich history was awesome.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title">CONTACT US</h2>
+        <div class="section-content contact-container">
+            <div class="contact-info">
+                <h3>REPORT A SIGHTING</h3>
+                <div class="contact-details">
+                    <p><i class="fas fa-envelope"></i> lakeeriesoulseekers@gmail.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Ashtabula, Ohio</p>
+                </div>
+                <h3>FOLLOW OUR INVESTIGATIONS</h3>
+                <div class="social-links">
+                    <a href="https://www.tiktok.com/@lake.erie.shadow.hunters" target="_blank" class="social-link"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.youtube.com/channel/UC-UIQJkH3wS0OibYvaEI44g" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.instagram.com/lake_erie_shadow_hunters/" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <form class="contact-form" action="mailto:lakeeriesoulseekers@gmail.com" method="post" enctype="text/plain">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location of Sighting</label>
+                    <input type="text" id="location" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Details of Your Experience</label>
+                    <textarea id="message" class="form-control" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">SEND REPORT</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="channels4_profile_modified__1_683cdfdfd0d75_png.png" alt="Lake Erie Shadow Hunters Logo">
+                <span class="footer-logo-text">LAKE ERIE SHADOW HUNTERS</span>
+            </div>
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#team">Our Team</a>
+                <a href="#equipment">Equipment</a>
+                <a href="#evidence">Evidence</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <p class="copyright">© 2025 Lake Erie Shadow Hunters. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Animated title letter-by-letter
+        document.addEventListener('DOMContentLoaded', function() {
+            const title = document.getElementById('animated-title');
+            const text = title.textContent;
+            title.textContent = '';
+            
+            for (let i = 0; i < text.length; i++) {
+                setTimeout(() => {
+                    const span = document.createElement('span');
+                    span.textContent = text[i];
+                    span.style.opacity = '0';
+                    span.style.display = 'inline-block';
+                    title.appendChild(span);
+                    
+                    setTimeout(() => {
+                        span.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                        span.style.opacity = '1';
+                        span.style.transform = 'translateY(0)';
+                    }, 50);
+                }, i * 100);
+            }
+            
+            // Scroll animations
+            const sections = document.querySelectorAll('section');
+            
+            const observerOptions = {
+                threshold: 0.1
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('section-visible');
+                    }
+                });
+            }, observerOptions);
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Smooth scrolling for navigation
+            document.querySelectorAll('nav a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    window.scrollTo({
+                        top: targetElement.offsetTop,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // Form validation
+            const form = document.querySelector('.contact-form');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                let isValid = true;
+                const inputs = this.querySelectorAll('.form-control');
+                
+                inputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        input.style.borderColor = 'red';
+                        isValid = false;
+                    } else {
+                        input.style.borderColor = 'rgba(43, 124, 226, 0.3)';
+                    }
+                });
+                
+                if (isValid) {
+                    this.submit();
+                    alert('Thank you for your report! We will investigate your sighting.');
+                    this.reset();
+                } else {
+                    alert('Please fill in all required fields.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
