@@ -6,7 +6,7 @@
     <title>Lake Erie Shadow Hunters - Father & Son Paranormal Team</title>
     <link rel="icon" href="https://raw.githubusercontent.com/Vexo1234/picassetsssss/main/channels4_profile_modified__1_683cdfdfd0d75_png.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
+   <style>
         /* Loading Screen Styles */
         #loading-screen {
             position: fixed;
@@ -14,27 +14,29 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--darker);
+            background-color: #000;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             z-index: 9999;
-            transition: opacity 0.5s ease;
+            transition: opacity 1.5s ease; /* Longer fade */
         }
 
         .loading-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 30px;
+            width: 100%;
         }
 
         .progress-bar-container {
             display: flex;
             align-items: center;
             gap: 15px;
-            width: 300px;
+            width: 80%;
+            max-width: 400px;
         }
 
         .progress-bar {
@@ -46,40 +48,94 @@
             position: relative;
         }
 
-        .progress-bar::after {
-            content: '';
+        .progress-bar-fill {
             position: absolute;
             top: 0;
             left: 0;
             height: 100%;
-            width: 0;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            background: linear-gradient(90deg, #2b7ce2, #00ffff);
             border-radius: 10px;
-            transition: width 0.1s linear;
+            transition: width 0.05s linear;
         }
 
         .progress-counter {
-            color: var(--light);
+            color: #f0f0f0;
             font-size: 1.2rem;
             min-width: 40px;
             text-align: right;
+            font-family: 'Courier New', monospace;
         }
 
         .loading-text {
-            color: var(--secondary);
+            color: #00ffff;
             font-size: 1.5rem;
             text-transform: uppercase;
             letter-spacing: 2px;
+            transition: all 0.5s ease; /* Longer transition */
         }
 
-        .logo-loading {
+        /* Logo and text during loading */
+        .logo-loading-container {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 10000;
             opacity: 0;
-            transition: all 1s ease;
-            filter: drop-shadow(0 0 5px var(--primary));
+            transition: all 2s cubic-bezier(0.22, 1, 0.36, 1); /* Longer smoother transition */
+        }
+
+        .logo-loading {
+            height: 60px; /* Smaller initial size */
+            filter: drop-shadow(0 0 15px rgba(43, 124, 226, 0.7));
+            transition: all 2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .logo-text-loading {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #2b7ce2, #00ffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 5px rgba(43, 124, 226, 0.8);
+            letter-spacing: 2px;
+            white-space: nowrap;
+            transition: all 2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Hide all page content initially */
+        body > *:not(#loading-screen):not(.logo-loading-container) {
+            opacity: 0;
+        }
+
+        /* Rest of your existing CSS... */
+        :root {
+            --primary: #2b7ce2;
+            --secondary: #00ffff;
+            --dark: #0a0a0a;
+            --darker: #050505;
+            --light: #f0f0f0;
+            --glow: 0 0 10px rgba(43, 124, 226, 0.7), 0 0 20px rgba(0, 255, 255, 0.5);
+            --text-glow: 0 0 5px rgba(43, 124, 226, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+            position: relative;
         }
 
         /* Base Styles */
@@ -911,20 +967,31 @@
                 grid-template-columns: 1fr;
             }
         }
-    </style>
+     </style>
 </head>
 <body>
     <!-- Loading Screen -->
     <div id="loading-screen">
         <div class="loading-container">
             <div class="progress-bar-container">
-                <div class="progress-bar"></div>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill"></div>
+                </div>
                 <span class="progress-counter">0%</span>
             </div>
             <div class="loading-text">Loading</div>
         </div>
     </div>
 
+    <!-- Logo and Text Loading Animation Container -->
+    <div class="logo-loading-container">
+        <img src="https://raw.githubusercontent.com/Vexo1234/picassetsssss/main/channels4_profile_modified__1_683cdfdfd0d75_png.png" 
+             alt="Loading Logo" 
+             class="logo-loading">
+        <div class="logo-text-loading">LAKE ERIE SHADOW HUNTERS</div>
+    </div>
+
+    <!-- [All your existing HTML content remains unchanged below] -->
     <!-- Background Elements -->
     <div class="orb"></div>
     <div class="orb"></div>
@@ -935,7 +1002,9 @@
     <!-- Header -->
     <header>
         <div class="logo-container">
-            <img src="https://raw.githubusercontent.com/Vexo1234/picassetsssss/main/channels4_profile_modified__1_683cdfdfd0d75_png.png" alt="Lake Erie Shadow Hunters" class="logo-img">
+            <img src="https://raw.githubusercontent.com/Vexo1234/picassetsssss/main/channels4_profile_modified__1_683cdfdfd0d75_png.png" 
+                 alt="Lake Erie Shadow Hunters" 
+                 class="logo-img">
             <div>
                 <span class="logo-text">LAKE ERIE SHADOW HUNTERS</span>
                 <span class="logo-subtext">FATHER & SON PARANORMAL TEAM</span>
@@ -1127,6 +1196,135 @@
     </footer>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Loading elements
+            const loadingScreen = document.getElementById('loading-screen');
+            const progressBarFill = document.querySelector('.progress-bar-fill');
+            const progressCounter = document.querySelector('.progress-counter');
+            const loadingText = document.querySelector('.loading-text');
+            const logoLoadingContainer = document.querySelector('.logo-loading-container');
+            const headerLogoContainer = document.querySelector('.logo-container');
+            
+            // Hide original header initially
+            document.querySelector('header').style.opacity = '0';
+
+            // Accurate loading simulation
+            let progress = 0;
+            const targetProgress = 100;
+            const duration = 3500; // 3.5 seconds total
+            const intervalTime = 30; // Update every 30ms
+            const increments = (intervalTime / duration) * targetProgress;
+            
+            const loadingInterval = setInterval(() => {
+                progress += increments;
+                if (progress >= targetProgress) {
+                    progress = targetProgress;
+                    clearInterval(loadingInterval);
+                    
+                    // Change to "Finished"
+                    loadingText.textContent = 'Finished';
+                    
+                    // Wait 2 seconds then fade out loading screen
+                    setTimeout(() => {
+                        loadingScreen.style.opacity = '0';
+                        
+                        // Fade in logo and text container
+                        logoLoadingContainer.style.opacity = '1';
+                        
+                        // After 1 second, animate to header position
+                        setTimeout(() => {
+                            const finalPos = headerLogoContainer.getBoundingClientRect();
+                            const logoFinalHeight = 50; // Matches your header logo size
+                            
+                            // Calculate final position (centered vertically in header)
+                            const finalTop = finalPos.top + (finalPos.height / 2) - (logoFinalHeight / 2);
+                            const finalLeft = finalPos.left;
+                            
+                            // Animate logo and text to final position
+                            logoLoadingContainer.style.top = finalTop + 'px';
+                            logoLoadingContainer.style.left = finalLeft + 'px';
+                            logoLoadingContainer.style.transform = 'translate(0, 0)';
+                            logoLoadingContainer.style.gap = '10px'; // Smaller gap in header
+                            
+                            // Resize logo to final size
+                            document.querySelector('.logo-loading').style.height = logoFinalHeight + 'px';
+                            
+                            // Resize text to final size
+                            document.querySelector('.logo-text-loading').style.fontSize = '1.5rem';
+                            
+                            // After animation completes, fade in header and page
+                            setTimeout(() => {
+                                // Show real header
+                                document.querySelector('header').style.opacity = '1';
+                                
+                                // Fade out loading elements
+                                logoLoadingContainer.style.opacity = '0';
+                                
+                                // Remove loading screen completely
+                                setTimeout(() => {
+                                    loadingScreen.remove();
+                                    logoLoadingContainer.remove();
+                                    
+                                    // Fade in all page content
+                                    document.querySelectorAll('body > *:not(script)').forEach(el => {
+                                        if (el.id !== 'loading-screen' && !el.classList.contains('logo-loading-container')) {
+                                            el.style.opacity = '1';
+                                        }
+                                    });
+                                    
+                                    // Trigger existing animations
+                                    const title = document.getElementById('animated-title');
+                                    if (title) {
+                                        const text = title.textContent;
+                                        title.textContent = '';
+                                        
+                                        for (let i = 0; i < text.length; i++) {
+                                            setTimeout(() => {
+                                                const span = document.createElement('span');
+                                                span.textContent = text[i];
+                                                span.style.opacity = '0';
+                                                span.style.display = 'inline-block';
+                                                title.appendChild(span);
+                                                
+                                                setTimeout(() => {
+                                                    span.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                                                    span.style.opacity = '1';
+                                                    span.style.transform = 'translateY(0)';
+                                                }, 50);
+                                            }, i * 100);
+                                        }
+                                    }
+                                    
+                                    // Trigger scroll animations
+                                    const sections = document.querySelectorAll('section');
+                                    const observerOptions = {
+                                        threshold: 0.1
+                                    };
+                                    
+                                    const observer = new IntersectionObserver((entries) => {
+                                        entries.forEach(entry => {
+                                            if (entry.isIntersecting) {
+                                                entry.target.classList.add('section-visible');
+                                            }
+                                        });
+                                    }, observerOptions);
+                                    
+                                    sections.forEach(section => {
+                                        observer.observe(section);
+                                    });
+                                    
+                                }, 1000); // Fade out duration
+                            }, 2000); // Animation duration to header position
+                        }, 1000); // Delay before moving to header
+                    }, 2000); // "Finished" display duration
+                }
+                
+                // Update progress bar and counter
+                progressBarFill.style.width = progress + '%';
+                progressCounter.textContent = Math.round(progress) + '%';
+                
+            }, intervalTime);
+            
         // Loading Animation
         document.addEventListener('DOMContentLoaded', function() {
             const loadingScreen = document.getElementById('loading-screen');
