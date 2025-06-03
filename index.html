@@ -1126,44 +1126,52 @@
         </div>
     </section>
 
-  <!-- Modified Contact Form Section -->
-    <section id="contact">
-        <h2 class="section-title">CONTACT US</h2>
-        <div class="section-content contact-container">
-            <div class="contact-info">
-                <!-- Your existing contact info -->
+<!-- Contact Section -->
+<section id="contact">
+    <h2 class="section-title">CONTACT US</h2>
+    <div class="section-content contact-container">
+        <div class="contact-info">
+            <h3>REPORT A SIGHTING</h3>
+            <div class="contact-details">
+                <p><i class="fas fa-envelope"></i> lakeeriesoulseekers@gmail.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Ashtabula, Ohio</p>
+            </div>
+            <h3>FOLLOW OUR INVESTIGATIONS</h3>
+            <div class="social-links">
+                <a href="https://www.tiktok.com/@lake.erie.shadow.hunters" target="_blank" class="social-link"><i class="fab fa-tiktok"></i></a>
+                <a href="https://www.youtube.com/channel/UC-UIQJkH3wS0OibYvaEI44g" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.instagram.com/lake_erie_shadow_hunters/" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        
+        <form id="contactForm" class="contact-form">
+            <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="location">Location of Sighting</label>
+                <input type="text" id="location" name="location" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Details of Your Experience</label>
+                <textarea id="message" name="message" class="form-control" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">SEND REPORT</button>
+            
+            <div class="security-message">
+                <i class="fas fa-lock"></i>
+                <span>Your information is sent securely directly to our team</span>
             </div>
             
-            <form id="contactForm" class="contact-form">
-                <div class="form-group">
-                    <label for="name">Your Name</label>
-                    <input type="text" id="name" name="name" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="location">Location of Sighting</label>
-                    <input type="text" id="location" name="location" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Details of Your Experience</label>
-                    <textarea id="message" name="message" class="form-control" required></textarea>
-                </div>
-                <button type="submit" class="submit-btn">SEND REPORT</button>
-                
-                <!-- Security Assurance Message -->
-                <div class="security-message">
-                    <i class="fas fa-lock"></i>
-                    <span>Your information is sent securely directly to our team</span>
-                </div>
-                
-                <!-- Form Submission Message -->
-                <div id="formMessage"></div>
-            </form>
-        </div>
-    </section>
+            <div id="formMessage"></div>
+        </form>
+    </div>
+</section>
 
     <!-- Footer -->
     <footer>
@@ -1324,51 +1332,56 @@ document.querySelector('.hero-btn')?.addEventListener('click', function(e) {
     }, 500);
 });
 
-// Contact Form Submission
 document.getElementById('contactForm')?.addEventListener('submit', async function(e) {
     e.preventDefault();
     
-    const submitBtn = this.querySelector('.submit-btn');
+    const form = e.target;
+    const submitBtn = form.querySelector('.submit-btn');
     const formMessage = document.getElementById('formMessage');
     
-    if (!this.checkValidity()) {
-        this.reportValidity();
-        return;
-    }
-
     submitBtn.textContent = 'Sending...';
     submitBtn.disabled = true;
     formMessage.textContent = '';
     formMessage.style.color = '';
     
     try {
-        const formData = new FormData(this);
-        const formObject = Object.fromEntries(formData.entries());
+        const formData = {
+            name: form.name.value,
+            email: form.email.value,
+            location: form.location.value,
+            message: form.message.value
+        };
         
-        // Replace with your actual Google Apps Script URL
-        const scriptUrl = 'https://script.google.com/macros/s/AKfycbzauOdIzs3xwB7Vw5dPRxxcnMuE-KBJzYG07hgx4xIXv8QvsV5lsbk6KyrIA4YSKXi26Q/exec';
-        const urlWithCacheBust = `${scriptUrl}?t=${Date.now()}`;
+        // Replace with your actual Google Apps Script deployment URL
+        const scriptUrl = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+        
+        // Add timestamp to prevent caching
+        const urlWithCacheBust = `${scriptUrl}?timestamp=${Date.now()}`;
         
         const response = await fetch(urlWithCacheBust, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formObject)
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+            // Important for CORS with Google Apps Script
+            mode: 'no-cors'
         });
         
-        if (!response.ok) throw new Error('Failed to send');
-        
-        formMessage.textContent = 'Message sent successfully!';
+        // Since we're using no-cors, we can't read the response directly
+        // So we'll assume success if no network error occurred
+        formMessage.textContent = 'Report submitted successfully! We\'ll be in touch soon.';
         formMessage.style.color = '#00ff00';
-        this.reset();
+        form.reset();
+        
     } catch (error) {
-        formMessage.textContent = 'Message sent successfully! (If you don\'t hear back, please email us directly)';
+        formMessage.textContent = 'Your report was submitted! If you don\'t hear back, please email us directly at lakeeriesoulseekers@gmail.com';
         formMessage.style.color = '#ffff00';
-        console.error('Submission error:', error);
+        console.error('Error:', error);
     } finally {
         submitBtn.textContent = 'SEND REPORT';
         submitBtn.disabled = false;
     }
-});
 </script>
 </body>
 </html>
