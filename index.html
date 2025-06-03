@@ -60,16 +60,17 @@
        .progress-counter {
             color: #fff;
             font-size: 1.2rem;
-            margin-bottom: 10px;
+            margin-bottom: 10px; /* Adjusted from original prompt's CSS to match yours */
         }
 
       .loading-text {
             color: #fff;
             font-size: 1.2rem;
-            margin-bottom: 20px;
-            min-height: 1.5em;
+            margin-bottom: 20px; /* Adjusted from original prompt's CSS to match yours */
+            min-height: 1.5em; /* Added from your CSS */
         }
 
+        /* Logo and text during loading */
         .logo-loading-container {
             position: fixed;
             top: 50%;
@@ -102,10 +103,12 @@
             transition: all 2s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        body > *:not(#loading-screen):not(.logo-loading-container):not(script) {
+        /* Hide all page content initially */
+        body > *:not(#loading-screen):not(.logo-loading-container):not(script) { /* Added :not(script) to be safe, though your JS has it */
             opacity: 0;
         }
 
+        /* Rest of your CSS styles... */
         :root {
             --primary: #2b7ce2;
             --secondary: #00ffff;
@@ -159,6 +162,7 @@
             z-index: -1;
         }
 
+        /* Header Styles */
         header {
             position: fixed;
             top: 0;
@@ -239,6 +243,7 @@
             width: 100%;
         }
 
+        /* Hero Section */
         .hero {
             height: 100vh;
             display: flex;
@@ -249,8 +254,8 @@
             padding: 0 5%;
             position: relative;
             overflow: hidden;
-            /* opacity set by JS */
-            /* transition: opacity 0.5s ease; */ /* Handled by JS for initial load */
+            opacity: 0; /* Initial opacity set by JS for sections too */
+            transition: opacity 0.5s ease; /* Transition for fade-in */
         }
 
         .hero::before {
@@ -264,21 +269,6 @@
             z-index: -1;
         }
 
-        /* NEW: Hero Pre-Title */
-        .hero-pre-title {
-            font-size: 1.6rem; /* Adjust as needed */
-            color: var(--primary);
-            text-transform: uppercase;
-            filter: blur(1.5px); /* Adjust blur amount */
-            margin-bottom: 0.75rem; /* Space to main title */
-            letter-spacing: 4px;
-            font-weight: 700;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 1s forwards 0.3s; /* Appears before main title letter animation */
-            text-align: center;
-        }
-
         .hero-title {
             font-size: 4rem;
             margin-bottom: 1rem;
@@ -287,7 +277,9 @@
             background-clip: text;
             color: transparent;
             text-shadow: var(--text-glow);
-            /* opacity and transform handled by animateTitle JS */
+            opacity: 0;
+            transform: translateY(20px);
+            /* animation: fadeInUp 1s forwards 0.5s; */ /* Controlled by JS animateTitle */
         }
 
         .hero-subtitle {
@@ -296,7 +288,7 @@
             color: var(--secondary);
             opacity: 0;
             transform: translateY(20px);
-            animation: fadeInUp 1s forwards 1s; 
+            animation: fadeInUp 1s forwards 1s; /* Keep this if not JS controlled */
         }
 
         .hero-btn {
@@ -311,7 +303,7 @@
             box-shadow: var(--glow);
             opacity: 0;
             transform: translateY(20px);
-            animation: fadeInUp 1s forwards 1.5s; 
+            animation: fadeInUp 1s forwards 1.5s; /* Keep this if not JS controlled */
             position: relative;
             overflow: hidden;
             z-index: 1;
@@ -338,6 +330,7 @@
             box-shadow: 0 0 20px var(--primary);
         }
 
+        /* Background Elements */
         .orb {
             position: absolute;
             border-radius: 50%;
@@ -346,22 +339,86 @@
             z-index: -1;
             animation: float 15s infinite ease-in-out;
         }
-        .orb:nth-child(1) { width: 100px; height: 100px; background: var(--primary); top: 20%; left: 10%; animation-delay: 0s; }
-        .orb:nth-child(2) { width: 150px; height: 150px; background: var(--secondary); top: 60%; left: 70%; animation-delay: 2s; }
-        .orb:nth-child(3) { width: 80px; height: 80px; background: var(--primary); top: 80%; left: 30%; animation-delay: 4s; }
 
-        .ghost { position: absolute; width: 80px; height: 100px; background: rgba(255, 255, 255, 0.1); border-radius: 50% 50% 0 0; z-index: -1; filter: blur(2px); animation: float 20s infinite ease-in-out; }
-        .ghost::before { content: ''; position: absolute; width: 40px; height: 40px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; top: 20px; left: 20px; box-shadow: 30px 0 0 rgba(255, 255, 255, 0.2); }
-        .ghost::after { content: ''; position: absolute; width: 60px; height: 30px; border-radius: 0 0 30px 30px; background: rgba(255, 255, 255, 0.2); bottom: 0; left: 10px; }
-        .ghost:nth-of-type(1) { top: 30%; left: 80%; animation-delay: 1s; } /* Changed to :nth-of-type for clarity */
-        .ghost:nth-of-type(2) { top: 50%; left: 20%; animation-delay: 3s; }
-
-
-        section {
-            padding: 6rem 10%;
-            /* Initial opacity and transform set by JS for Intersection Observer */
-            /* transition is also set by JS */
+        .orb:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            background: var(--primary);
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
         }
+
+        .orb:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            background: var(--secondary);
+            top: 60%;
+            left: 70%;
+            animation-delay: 2s;
+        }
+
+        .orb:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            background: var(--primary);
+            top: 80%;
+            left: 30%;
+            animation-delay: 4s;
+        }
+
+        .ghost {
+            position: absolute;
+            width: 80px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50% 50% 0 0;
+            z-index: -1;
+            filter: blur(2px);
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .ghost::before {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            top: 20px;
+            left: 20px;
+            box-shadow: 30px 0 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .ghost::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 30px;
+            border-radius: 0 0 30px 30px;
+            background: rgba(255, 255, 255, 0.2);
+            bottom: 0;
+            left: 10px;
+        }
+
+        .ghost:nth-child(4) { /* These selectors are 1-based, but HTML has orb, orb, orb, ghost, ghost. So this would be the 1st ghost */
+            top: 30%;
+            left: 80%;
+            animation-delay: 1s;
+        }
+
+        .ghost:nth-child(5) { /* This would be the 2nd ghost */
+            top: 50%;
+            left: 20%;
+            animation-delay: 3s;
+        }
+
+        /* Content Sections */
+       section { /* Style for sections is handled by JS initIntersectionObserver now */
+            padding: 6rem 10%; /* Example padding, adjust as needed */
+            /* opacity: 0; transform: translateY(20px); transition... are set by JS */
+        }
+
 
         .section-title {
             font-size: 2.5rem;
@@ -369,9 +426,7 @@
             color: var(--primary);
             text-shadow: var(--text-glow);
             position: relative;
-            opacity: 0; /* Initial state for animation */
-            transform: translateX(-60px); /* MODIFIED: Slide from further left */
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out; /* MODIFIED: Transition for title */
+            /* opacity, transform, transition handled by JS for .section-visible */
         }
 
         .section-title::after {
@@ -384,87 +439,506 @@
             background: linear-gradient(to right, var(--primary), var(--secondary));
         }
 
-        .section-content {
-            opacity: 0; /* Initial state for animation */
-            transform: translateX(-60px); /* MODIFIED: Slide from left */
-            transition: opacity 0.8s ease-out 0.2s, transform 0.8s ease-out 0.2s; /* MODIFIED: Transition for content with slight delay */
-        }
+        /* .section-content { opacity, transform, transition handled by JS for .section-visible } */
 
         .section-visible .section-title,
         .section-visible .section-content {
             opacity: 1;
-            transform: translateX(0); /* Final state */
+            transform: translateX(0) translateY(0); /* Ensure Y is also reset */
         }
-        
-        .about-content { display: flex; gap: 3rem; align-items: center; }
-        .about-text { flex: 1; }
-        .about-image { flex: 1; position: relative; }
-        .about-image img { width: 100%; border-radius: 10px; box-shadow: var(--glow); transition: transform 0.5s ease; }
-        .about-image:hover img { transform: scale(1.03); }
-        .about-image::before { content: ''; position: absolute; top: -10px; left: -10px; right: 10px; bottom: 10px; border: 2px solid var(--primary); border-radius: 10px; z-index: -1; opacity: 0.5; }
 
-        .team-container { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; }
-        .team-member { background: rgba(20, 20, 20, 0.7); border-radius: 10px; padding: 2rem; width: 300px; text-align: center; box-shadow: var(--glow); transition: transform 0.3s ease, box-shadow 0.3s ease; /* opacity & transform handled by parent .section-visible and this element's default state */}
-        /* .section-visible .team-member animation is now handled by .section-content animation */
-        .team-member:hover { transform: translateY(-10px) scale(1.03); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), var(--glow); }
-        .member-image { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); margin: 0 auto 1.5rem; box-shadow: var(--glow); }
-        .member-name { font-size: 1.5rem; color: var(--secondary); margin-bottom: 0.5rem; }
-        .member-role { color: var(--primary); font-size: 1.1rem; margin-bottom: 1rem; display: block; }
-        .member-bio { margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.6; }
-        .member-fact { font-style: italic; color: var(--secondary); margin-top: 1rem; font-size: 0.9rem; }
+        /* About Section */
+        .about-content {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+        }
 
-        .equipment-section { background: rgba(15, 15, 15, 0.7); padding: 4rem 10%; border-top: 1px solid rgba(43, 124, 226, 0.2); border-bottom: 1px solid rgba(43, 124, 226, 0.2); }
-        .equipment-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem; }
-        .equipment-item { background: rgba(30, 30, 30, 0.7); border-radius: 10px; padding: 1.5rem; text-align: center; transition: all 0.3s ease; border: 1px solid rgba(43, 124, 226, 0.3); /* opacity & transform handled by parent .section-visible and this element's default state */}
-        /* .section-visible .equipment-item animation is now handled by .section-content animation */
-        .equipment-item:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: var(--glow); }
-        .equipment-icon { font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem; }
-        .equipment-name { font-size: 1.2rem; color: var(--secondary); margin-bottom: 0.5rem; }
+        .about-text {
+            flex: 1;
+        }
 
-        .evidence-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
-        .evidence-item { background: rgba(20, 20, 20, 0.7); border-radius: 10px; overflow: hidden; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* opacity & transform handled by parent .section-visible and this element's default state */}
-        /* .section-visible .evidence-item animation is now handled by .section-content animation */
-        .evidence-item:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), var(--glow); }
-        .evidence-img { width: 100%; height: 200px; object-fit: cover; filter: grayscale(30%) contrast(1.1); transition: filter 0.3s ease; }
-        .evidence-item:hover .evidence-img { filter: grayscale(0%) contrast(1.2); }
-        .evidence-info { padding: 1.5rem; }
-        .evidence-title { font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--secondary); }
-        .evidence-date { color: var(--primary); font-size: 0.9rem; margin-bottom: 1rem; display: block; }
+        .about-image {
+            flex: 1;
+            position: relative;
+        }
 
-        .contact-container { display: flex; gap: 3rem; }
-        .contact-info { flex: 1; }
-        .contact-info h3 { color: var(--secondary); margin-bottom: 1.5rem; font-size: 1.5rem; }
-        .contact-details { margin-bottom: 2rem; }
-        .contact-details p { margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
-        .contact-details i { color: var(--primary); width: 20px; }
-        .social-links { display: flex; gap: 1rem; }
-        .social-link { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(43, 124, 226, 0.2); color: var(--light); transition: all 0.3s ease; }
-        .social-link:hover { background: var(--primary); transform: translateY(-5px); box-shadow: var(--glow); }
-        .contact-form { flex: 1; background: rgba(20, 20, 20, 0.7); padding: 2rem; border-radius: 10px; box-shadow: var(--glow); }
-        .form-group { margin-bottom: 1.5rem; position: relative; }
-        .form-group label { display: block; margin-bottom: 0.5rem; color: var(--secondary); }
-        .form-control { width: 100%; padding: 0.8rem; background: rgba(30, 30, 30, 0.8); border: 1px solid rgba(43, 124, 226, 0.3); border-radius: 5px; color: var(--light); transition: all 0.3s ease; }
-        .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 10px rgba(43, 124, 226, 0.5); }
-        textarea.form-control { min-height: 150px; resize: vertical; }
-        .submit-btn { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: var(--light); border: none; padding: 0.8rem 2rem; border-radius: 30px; cursor: pointer; transition: all 0.3s ease; box-shadow: var(--glow); }
-        .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 0 20px var(--primary); }
+        .about-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: var(--glow);
+            transition: transform 0.5s ease;
+        }
 
-        footer { background: var(--darker); padding: 2rem 5%; text-align: center; border-top: 1px solid rgba(43, 124, 226, 0.2); }
-        .footer-content { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
-        .footer-logo { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
-        .footer-logo img { height: 40px; filter: drop-shadow(0 0 5px var(--primary)); }
-        .footer-logo-text { font-size: 1.2rem; font-weight: bold; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: var(--text-glow); letter-spacing: 2px; }
-        .footer-links { display: flex; gap: 2rem; margin-bottom: 1rem; }
-        .footer-links a { color: var(--light); text-decoration: none; transition: all 0.3s ease; }
-        .footer-links a:hover { color: var(--secondary); text-shadow: var(--text-glow); }
-        .copyright { color: rgba(255, 255, 255, 0.5); font-size: 0.9rem; }
+        .about-image:hover img {
+            transform: scale(1.03);
+        }
 
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes float { 0%, 100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(-20px) translateX(10px); } }
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            z-index: -1;
+            opacity: 0.5;
+        }
 
-        @media (max-width: 992px) { .about-content, .contact-container { flex-direction: column; } .about-image { margin-top: 2rem; } .section-title { font-size: 2rem; } }
-        @media (max-width: 768px) { header { padding: 1rem 5%; } .logo-text { font-size: 1.2rem; } nav ul { gap: 1rem; } .hero-title { font-size: 2.5rem; } .hero-subtitle { font-size: 1.2rem; } section { padding: 4rem 5%; } .hero-pre-title { font-size: 1.4rem; letter-spacing: 3px; } }
-        @media (max-width: 576px) { .logo-img { height: 40px; } .logo-text { font-size: 1rem; } .logo-subtext { font-size: 0.6rem; letter-spacing: 2px; } nav { display: none; } .hero-title { font-size: 2rem; } .evidence-grid { grid-template-columns: 1fr; } .hero-pre-title { font-size: 1.2rem; letter-spacing: 2px; filter: blur(1px);}}
+        /* Team Section */
+        .team-container {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .team-member {
+            background: rgba(20, 20, 20, 0.7);
+            border-radius: 10px;
+            padding: 2rem;
+            width: 300px;
+            text-align: center;
+            box-shadow: var(--glow);
+            transition: transform 0.3s ease;
+            /* opacity & transform handled by JS animation for .section-visible */
+        }
+
+        .section-visible .team-member {
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        .team-member:nth-child(1) { animation-delay: 0.2s; }
+        .team-member:nth-child(2) { animation-delay: 0.4s; }
+
+        .team-member:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), var(--glow);
+        }
+
+        .member-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            margin: 0 auto 1.5rem;
+            box-shadow: var(--glow);
+        }
+
+        .member-name {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .member-role {
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .member-bio {
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .member-fact {
+            font-style: italic;
+            color: var(--secondary);
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Equipment Section */
+        .equipment-section {
+            background: rgba(15, 15, 15, 0.7);
+            padding: 4rem 10%; /* This padding is fine for the section itself */
+            border-top: 1px solid rgba(43, 124, 226, 0.2);
+            border-bottom: 1px solid rgba(43, 124, 226, 0.2);
+        }
+
+        .equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .equipment-item {
+            background: rgba(30, 30, 30, 0.7);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(43, 124, 226, 0.3);
+            /* opacity & transform handled by JS animation for .section-visible */
+        }
+
+        .section-visible .equipment-item {
+            animation: fadeInUp 0.5s forwards;
+        }
+
+        .equipment-item:nth-child(1) { animation-delay: 0.1s; }
+        .equipment-item:nth-child(2) { animation-delay: 0.2s; }
+        .equipment-item:nth-child(3) { animation-delay: 0.3s; }
+        .equipment-item:nth-child(4) { animation-delay: 0.4s; }
+        .equipment-item:nth-child(5) { animation-delay: 0.5s; }
+        .equipment-item:nth-child(6) { animation-delay: 0.6s; }
+        .equipment-item:nth-child(7) { animation-delay: 0.7s; }
+        .equipment-item:nth-child(8) { animation-delay: 0.8s; }
+
+        .equipment-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: var(--glow);
+        }
+
+        .equipment-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .equipment-name {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Evidence Section */
+        .evidence-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .evidence-item {
+            background: rgba(20, 20, 20, 0.7);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            /* opacity & transform handled by JS animation for .section-visible */
+        }
+
+        .section-visible .evidence-item {
+            animation: fadeInUp 0.5s forwards;
+        }
+
+        .evidence-item:nth-child(1) { animation-delay: 0.2s; }
+        .evidence-item:nth-child(2) { animation-delay: 0.4s; }
+        .evidence-item:nth-child(3) { animation-delay: 0.6s; }
+        .evidence-item:nth-child(4) { animation-delay: 0.8s; }
+
+        .evidence-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), var(--glow);
+        }
+
+        .evidence-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            filter: grayscale(30%) contrast(1.1);
+            transition: filter 0.3s ease;
+        }
+
+        .evidence-item:hover .evidence-img {
+            filter: grayscale(0%) contrast(1.2);
+        }
+
+        .evidence-info {
+            padding: 1.5rem;
+        }
+
+        .evidence-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .evidence-date {
+            color: var(--primary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* Contact Section */
+        .contact-container {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-info h3 {
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .contact-details {
+            margin-bottom: 2rem;
+        }
+
+        .contact-details p {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contact-details i {
+            color: var(--primary);
+            width: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(43, 124, 226, 0.2);
+            color: var(--light);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: var(--glow);
+        }
+
+        .contact-form {
+            flex: 1;
+            background: rgba(20, 20, 20, 0.7);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--glow);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(43, 124, 226, 0.3);
+            border-radius: 5px;
+            color: var(--light);
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(43, 124, 226, 0.5);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: var(--light);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--glow);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--darker);
+            padding: 2rem 5%;
+            text-align: center;
+            border-top: 1px solid rgba(43, 124, 226, 0.2);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo img {
+            height: 40px;
+            filter: drop-shadow(0 0 5px var(--primary));
+        }
+
+        .footer-logo-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: var(--text-glow);
+            letter-spacing: 2px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+            text-shadow: var(--text-glow);
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+            }
+            50% {
+                transform: translateY(-20px) translateX(10px);
+            }
+        }
+
+        @keyframes letterHop { /* This seems unused, but kept from original */
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .about-content,
+            .contact-container {
+                flex-direction: column;
+            }
+
+            .about-image {
+                margin-top: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 5%;
+            }
+
+            .logo-text {
+                font-size: 1.2rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            section {
+                padding: 4rem 5%; /* Overrides general section padding for smaller screens */
+            }
+        }
+
+        @media (max-width: 576px) {
+            .logo-img {
+                height: 40px;
+            }
+
+            .logo-text {
+                font-size: 1rem;
+            }
+
+            .logo-subtext {
+                font-size: 0.6rem;
+                letter-spacing: 2px;
+            }
+
+            nav {
+                display: none; /* Hides nav on very small screens */
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .evidence-grid {
+                grid-template-columns: 1fr; /* Single column for evidence items */
+            }
+        }
     </style>
 </head>
 <body>
@@ -516,7 +990,6 @@
     </header>
 
     <section class="hero" id="home">
-        <div class="hero-pre-title">LAKE ERIE SHADOW HUNTERS</div>
         <h1 class="hero-title" id="animated-title">Lake Erie Shadow Hunters</h1>
         <p class="hero-subtitle">Father & Son paranormal investigators exploring paranormal mysteries</p>
         <button class="hero-btn">Welcome</button>
@@ -531,7 +1004,7 @@
                 <p>Our approach combines traditional paranormal research methods with the fresh perspective of a new generation, creating a unique dynamic that helps us connect with both spirits and our growing audience.</p>
             </div>
             <div class="about-image">
-            </div>
+                </div>
         </div>
     </section>
 
@@ -559,14 +1032,46 @@
         <h2 class="section-title">OUR GEAR</h2>
         <div class="section-content">
             <div class="equipment-grid">
-                <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-broadcast-tower"></i></div> <h3 class="equipment-name">SB7 Spirit Box</h3> <p>Radio sweep device for real-time communication</p> </div>
-                <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-ghost"></i></div> <h3 class="equipment-name">REM Pod</h3> <p>Electromagnetic field disturbance detector</p> </div>
-                <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-lightbulb"></i></div> <h3 class="equipment-name">Catballs</h3> <p>Motion-activated light devices</p> </div>
-                <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-wave-square"></i></div> <h3 class="equipment-name">EMF Detector</h3> <p>Measures electromagnetic fluctuations</p> </div>
-                <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-microphone"></i></div> <h3 class="equipment-name">EVP Recorder</h3> <p>Captures electronic voice phenomena</p> </div>
-                <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-bell"></i></div> <h3 class="equipment-name">Dead Bell</h3> <p>Traditional device for spirit communication</p> </div>
-                <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-project-diagram"></i></div> <h3 class="equipment-name">DOTS Projector</h3> <p>Laser grid for detecting movement</p> </div>
-                <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-video"></i></div> <h3 class="equipment-name">Night Vision Cameras</h3> <p>Full-spectrum video documentation</p> </div>
+                <div class="equipment-item">
+                    <div class="equipment-icon"><i class="fas fa-broadcast-tower"></i></div>
+                    <h3 class="equipment-name">SB7 Spirit Box</h3>
+                    <p>Radio sweep device for real-time communication</p>
+                </div>
+                <div class="equipment-item">
+                    <div class="equipment-icon"><i class="fas fa-ghost"></i></div>
+                    <h3 class="equipment-name">REM Pod</h3>
+                    <p>Electromagnetic field disturbance detector</p>
+                </div>
+                <div class="equipment-item">
+                    <div class="equipment-icon"><i class="fas fa-lightbulb"></i></div>
+                    <h3 class="equipment-name">Catballs</h3>
+                    <p>Motion-activated light devices</p>
+                </div>
+                <div class="equipment-item">
+                    <div class="equipment-icon"><i class="fas fa-wave-square"></i></div>
+                    <h3 class="equipment-name">EMF Detector</h3>
+                    <p>Measures electromagnetic fluctuations</p>
+                </div>
+                <div class="equipment-item">
+                    <div class="equipment-icon"><i class="fas fa-microphone"></i></div>
+                    <h3 class="equipment-name">EVP Recorder</h3>
+                    <p>Captures electronic voice phenomena</p>
+                </div>
+                <div class="equipment-item">
+                    <div class="equipment-icon"><i class="fas fa-bell"></i></div>
+                    <h3 class="equipment-name">Dead Bell</h3>
+                    <p>Traditional device for spirit communication</p>
+                </div>
+                <div class="equipment-item">
+                    <div class="equipment-icon"><i class="fas fa-project-diagram"></i></div>
+                    <h3 class="equipment-name">DOTS Projector</h3>
+                    <p>Laser grid for detecting movement</p>
+                </div>
+                <div class="equipment-item">
+                    <div class="equipment-icon"><i class="fas fa-video"></i></div>
+                    <h3 class="equipment-name">Night Vision Cameras</h3>
+                    <p>Full-spectrum video documentation</p>
+                </div>
             </div>
         </div>
     </section>
@@ -574,8 +1079,22 @@
     <section id="evidence">
         <h2 class="section-title">PLACES WE HAVE INVESTIGATED</h2>
         <div class="section-content evidence-grid">
-            <div class="evidence-item"> <img src="https://ewscripps.brightspotcdn.com/dims4/default/276469f/2147483647/strip/true/crop/1786x1005+0+65/resize/1280x720!/quality/90/?url=http%3A%2F%2Fewscripps-brightspot.s3.amazonaws.com%2F9a%2Fdd%2Fdb3223e046e2ba8bc1d8a113258b%2Fscreen-shot-2019-03-05-at-8.07.33%20PM.png" alt="Madison State Seminary" class="evidence-img"> <div class="evidence-info"> <h3 class="evidence-title">Madison State Seminary</h3> <span class="evidence-date">Madison, Ohio</span> <p>Our investigation of this historic location captured several intelligent responses through our spirit box and multiple EMF spikes, heard a little girl voice, my father felt a hand on his back, and had insane activity with the rem-pod.</p> </div> </div>
-            <div class="evidence-item"> <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Fairfield_County_Infirmary.jpg" alt="Fairfield Infirmary" class="evidence-img"> <div class="evidence-info"> <h3 class="evidence-title">Fairfield Infirmary</h3> <span class="evidence-date">Fairfield, Ohio</span> <p>During our overnight investigation, we did not get much activity but getting to be there and soak in it's rich history was awesome.</p> </div> </div>
+            <div class="evidence-item">
+                <img src="https://ewscripps.brightspotcdn.com/dims4/default/276469f/2147483647/strip/true/crop/1786x1005+0+65/resize/1280x720!/quality/90/?url=http%3A%2F%2Fewscripps-brightspot.s3.amazonaws.com%2F9a%2Fdd%2Fdb3223e046e2ba8bc1d8a113258b%2Fscreen-shot-2019-03-05-at-8.07.33%20PM.png" alt="Madison State Seminary" class="evidence-img">
+                <div class="evidence-info">
+                    <h3 class="evidence-title">Madison State Seminary</h3>
+                    <span class="evidence-date">Madison, Ohio</span>
+                    <p>Our investigation of this historic location captured several intelligent responses through our spirit box and multiple EMF spikes, heard a little girl voice, my father felt a hand on his back, and had insane activity with the rem-pod.</p>
+                </div>
+            </div>
+            <div class="evidence-item">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Fairfield_County_Infirmary.jpg" alt="Fairfield Infirmary" class="evidence-img">
+                <div class="evidence-info">
+                    <h3 class="evidence-title">Fairfield Infirmary</h3>
+                    <span class="evidence-date">Fairfield, Ohio</span>
+                    <p>During our overnight investigation, we did not get much activity but getting to be there and soak in it's rich history was awesome.</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -584,17 +1103,41 @@
     <div class="section-content contact-container">
         <div class="contact-info">
             <h3>REPORT A SIGHTING</h3>
-            <div class="contact-details"> <p><i class="fas fa-envelope"></i> lakeeriesoulseekers@gmail.com</p> <p><i class="fas fa-map-marker-alt"></i> Ashtabula, Ohio</p> </div>
+            <div class="contact-details">
+                <p><i class="fas fa-envelope"></i> lakeeriesoulseekers@gmail.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Ashtabula, Ohio</p>
+            </div>
             <h3>FOLLOW OUR INVESTIGATIONS</h3>
-            <div class="social-links"> <a href="https://www.tiktok.com/@lake.erie.shadow.hunters" target="_blank" class="social-link"><i class="fab fa-tiktok"></i></a> <a href="https://www.youtube.com/channel/UC-UIQJkH3wS0OibYvaEI44g" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a> <a href="https://www.instagram.com/lake_erie_shadow_hunters/" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a> </div>
+            <div class="social-links">
+                <a href="https://www.tiktok.com/@lake.erie.shadow.hunters" target="_blank" class="social-link"><i class="fab fa-tiktok"></i></a>
+                <a href="https://www.youtube.com/channel/UC-UIQJkH3wS0OibYvaEI44g" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a> <a href="https://www.instagram.com/lake_erie_shadow_hunters/" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+            </div>
         </div>
+        
         <form id="contactForm" class="contact-form">
-            <div class="form-group"> <label for="name">Your Name</label> <input type="text" id="name" name="name" class="form-control" required> </div>
-            <div class="form-group"> <label for="email">Email Address</label> <input type="email" id="email" name="email" class="form-control" required> </div>
-            <div class="form-group"> <label for="location">Location of Sighting</label> <input type="text" id="location" name="location" class="form-control" required> </div>
-            <div class="form-group"> <label for="message">Details of Your Experience</label> <textarea id="message" name="message" class="form-control" required></textarea> </div>
+            <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="location">Location of Sighting</label>
+                <input type="text" id="location" name="location" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Details of Your Experience</label>
+                <textarea id="message" name="message" class="form-control" required></textarea>
+            </div>
             <button type="submit" class="submit-btn">SEND REPORT</button>
-            <div class="security-message"> <i class="fas fa-lock"></i> <span>Your information is sent securely directly to our team</span> </div>
+            
+            <div class="security-message">
+                <i class="fas fa-lock"></i>
+                <span>Your information is sent securely directly to our team</span>
+            </div>
+            
             <div id="formMessage"></div>
         </form>
     </div>
@@ -602,91 +1145,123 @@
 
     <footer>
         <div class="footer-content">
-            <div class="footer-logo"> <img src="https://raw.githubusercontent.com/Vexo1234/picassetsssss/main/channels4_profile_modified__1_683cdfdfd0d75_png.png" alt="Lake Erie Shadow Hunters Logo"> <span class="footer-logo-text">LAKE ERIE SHADOW HUNTERS</span> </div>
-            <div class="footer-links"> <a href="#home">Home</a> <a href="#about">About</a> <a href="#team">Our Team</a> <a href="#equipment">Equipment</a> <a href="#evidence">Evidence</a> <a href="#contact">Contact</a> </div>
+            <div class="footer-logo">
+                <img src="https://raw.githubusercontent.com/Vexo1234/picassetsssss/main/channels4_profile_modified__1_683cdfdfd0d75_png.png" alt="Lake Erie Shadow Hunters Logo">
+                <span class="footer-logo-text">LAKE ERIE SHADOW HUNTERS</span>
+            </div>
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#team">Our Team</a>
+                <a href="#equipment">Equipment</a>
+                <a href="#evidence">Evidence</a>
+                <a href="#contact">Contact</a>
+            </div>
             <p class="copyright">© 2025 Lake Erie Shadow Hunters. All rights reserved.</p>
         </div>
     </footer>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Cache DOM elements
     const loadingScreen = document.getElementById('loading-screen');
     const progressBarFill = document.querySelector('.progress-bar-fill');
     const progressCounter = document.querySelector('.progress-counter');
-    const loadingText = document.querySelector('.loading-text');
+    const loadingText = document.querySelector('.loading-text'); // Ensure this selector matches your HTML
     const logoLoadingContainer = document.querySelector('.logo-loading-container');
     const headerLogoContainer = document.querySelector('.logo-container');
     const header = document.querySelector('header');
     
+    // Hide header initially
     if (header) header.style.opacity = '0';
     
+    // Hide all content except loading screen initially
     document.querySelectorAll('body > *:not(#loading-screen):not(.logo-loading-container):not(script)').forEach(el => {
         el.style.opacity = '0';
     });
 
+    // Progress animation
     let progress = 0;
     const targetProgress = 100;
-    const duration = 3500;
-    const intervalTime = 30;
+    const duration = 3500; // Milliseconds
+    const intervalTime = 30; // Milliseconds
     const increments = (intervalTime / duration) * targetProgress;
     
+    // Make sure progress bar elements exist
     if (progressBarFill && progressCounter && loadingText) {
         const loadingInterval = setInterval(() => {
             progress += increments;
             progress = Math.min(progress, targetProgress);
             
+            // Update progress bar
             progressBarFill.style.width = progress + '%';
             progressCounter.textContent = Math.round(progress) + '%';
             
-            if (progress < 30) { loadingText.textContent = 'Initializing'; }
-            else if (progress < 70) { loadingText.textContent = 'Loading Resources'; }
-            else { loadingText.textContent = 'Almost There'; }
+            // Update loading text
+            if (progress < 30) {
+                loadingText.textContent = 'Initializing';
+            } else if (progress < 70) {
+                loadingText.textContent = 'Loading Resources';
+            } else {
+                loadingText.textContent = 'Almost There';
+            }
             
             if (progress >= targetProgress) {
                 clearInterval(loadingInterval);
                 progressCounter.textContent = '100%';
                 loadingText.textContent = 'Ready';
                 
+                // Start transition sequence
                 setTimeout(() => {
                     if (loadingScreen) loadingScreen.style.opacity = '0';
                     if (logoLoadingContainer) logoLoadingContainer.style.opacity = '1';
                     
                     setTimeout(() => {
                         if (headerLogoContainer && logoLoadingContainer) {
+                            // Calculate final position for logo
                             const headerRect = headerLogoContainer.getBoundingClientRect();
-                            const logoFinalHeight = 50;
+                            const logoFinalHeight = 50; // Match header logo
                             const finalTop = headerRect.top + (headerRect.height / 2) - (logoFinalHeight / 2);
                             const finalLeft = headerRect.left;
                             
+                            // Animate logo to final position
                             logoLoadingContainer.style.position = 'fixed';
                             logoLoadingContainer.style.top = finalTop + 'px';
                             logoLoadingContainer.style.left = finalLeft + 'px';
-                            logoLoadingContainer.style.transform = 'translate(0, 0)';
-                            logoLoadingContainer.style.gap = '10px';
+                            logoLoadingContainer.style.transform = 'translate(0, 0)'; // Reset transform if it was -50%, -50%
+                            logoLoadingContainer.style.gap = '10px'; // Match header logo container gap if needed
                             
-                            const logoLoading = logoLoadingContainer.querySelector('.logo-loading');
-                            const logoTextLoading = logoLoadingContainer.querySelector('.logo-text-loading');
+                            const logoLoading = logoLoadingContainer.querySelector('.logo-loading'); // More specific selector
+                            const logoTextLoading = logoLoadingContainer.querySelector('.logo-text-loading'); // More specific selector
                             
                             if (logoLoading) logoLoading.style.height = logoFinalHeight + 'px';
-                            if (logoTextLoading) logoTextLoading.style.fontSize = '1.5rem';
+                            if (logoTextLoading) logoTextLoading.style.fontSize = '1.5rem'; // Match header logo text size
                             
                             setTimeout(() => {
+                                // Show header and fade out loading logo
                                 if (header) header.style.opacity = '1';
                                 if (logoLoadingContainer) logoLoadingContainer.style.opacity = '0';
                                 
                                 setTimeout(() => {
+                                    // Remove loading elements and show page content
                                     if (loadingScreen) loadingScreen.remove();
                                     if (logoLoadingContainer) logoLoadingContainer.remove();
-                                    document.querySelectorAll('body > *:not(script)').forEach(el => {
-                                        if(el !== header) { el.style.opacity = '1'; }
-                                    });
-                                    if (header && header.style.opacity === '0') header.style.opacity = '1';
                                     
+                                    // Show all page content
+                                    document.querySelectorAll('body > *:not(script)').forEach(el => {
+                                        // Check if the element is not already the header which is handled
+                                        if(el !== header) {
+                                            el.style.opacity = '1';
+                                        }
+                                    });
+                                    if (header && header.style.opacity === '0') header.style.opacity = '1'; // Ensure header is visible if missed
+                                    
+                                    // Initialize other animations
                                     initIntersectionObserver();
                                     animateTitle();
-                                }, 1000);
-                            }, 1000);
-                        } else {
+                                }, 1000); // Duration for loading logo to fade out
+                            }, 1000); // Duration for logo to stay in header before fading
+                        } else { // Fallback if headerLogoContainer or logoLoadingContainer is missing
                              if (header) header.style.opacity = '1';
                              if (loadingScreen) loadingScreen.remove();
                              if (logoLoadingContainer) logoLoadingContainer.remove();
@@ -694,15 +1269,16 @@ document.addEventListener('DOMContentLoaded', function() {
                              initIntersectionObserver();
                              animateTitle();
                         }
-                    }, 500);
-                }, 500);
+                    }, 500); // Duration for loading screen to fade before logo animates
+                }, 500); // Delay after "Ready"
             }
         }, intervalTime);
     } else {
+        // If elements don't exist, skip to showing content
         console.warn('Loading elements (progressBarFill, progressCounter, or loadingText) not found, skipping loading animation.');
         if (loadingScreen) loadingScreen.remove();
-        if (logoLoadingContainer) logoLoadingContainer.remove();
-        if (header) header.style.opacity = '1';
+        if (logoLoadingContainer) logoLoadingContainer.remove(); // Also remove this if we skip
+        if (header) header.style.opacity = '1'; // Show header
         document.querySelectorAll('body > *:not(script)').forEach(el => {
             el.style.opacity = '1';
         });
@@ -710,33 +1286,33 @@ document.addEventListener('DOMContentLoaded', function() {
         animateTitle();
     }
 
+    // Rest of your functions (initIntersectionObserver, animateTitle, etc.)
     function initIntersectionObserver() {
         const sections = document.querySelectorAll('section');
         if (sections.length === 0) return;
         
         const observerOptions = {
-            threshold: 0.1, // When 10% of the element is visible
-            rootMargin: '0px 0px -50px 0px' // Start loading a bit before it's fully in view
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
         };
         
-        const observer = new IntersectionObserver((entries, obs) => { // Added obs to unobserve
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('section-visible');
-                    // The CSS for .section-visible, .section-title, and .section-content will handle the animation.
-                    // We don't need to set opacity/transform directly here if CSS handles it.
-                    obs.unobserve(entry.target); // Use the passed observer instance
+                    // Also apply styles directly for initial show, class might handle transform/opacity
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
         
         sections.forEach(section => {
-            // Set initial state for the entire section block via JS,
-            // so it can be animated by adding '.section-visible'.
-            // The individual .section-title and .section-content will then animate based on their own CSS.
+            // Initial state set by JS for Intersection Observer
             section.style.opacity = '0';
-            section.style.transform = 'translateX(-80px)'; // MODIFIED: Section slides from left
-            section.style.transition = 'opacity 0.7s ease-out, transform 0.7s ease-out'; // MODIFIED: Section transition
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
             observer.observe(section);
         });
     }
@@ -745,45 +1321,54 @@ document.addEventListener('DOMContentLoaded', function() {
         const title = document.getElementById('animated-title');
         if (!title) return;
         
-        const text = title.textContent.trim(); // Trim to handle potential whitespace
-        title.textContent = ''; 
-        title.style.opacity = '1'; // Ensure the H1 container is visible for the spans
-
+        const text = title.textContent;
+        title.textContent = ''; // Clear original text
+        
         for (let i = 0; i < text.length; i++) {
             setTimeout(() => {
                 const span = document.createElement('span');
                 span.textContent = text[i];
                 span.style.opacity = '0';
-                span.style.transform = 'translateY(20px)'; 
-                span.style.display = 'inline-block'; 
-                span.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                span.style.transform = 'translateY(20px)'; // Start from below
+                span.style.display = 'inline-block'; // Needed for transform
+                span.style.transition = 'opacity 0.5s ease, transform 0.5s ease'; // Smooth transition
                 title.appendChild(span);
                 
-                setTimeout(() => { 
+                // Trigger animation
+                setTimeout(() => { // Small delay to ensure transition applies
                     span.style.opacity = '1';
                     span.style.transform = 'translateY(0)';
                 }, 50); 
-            }, i * 80); // Adjusted timing for potentially smoother/faster animation
+            }, i * 100); // Stagger animation of each letter
         }
     }
 });
 
+// Smooth Scroll for Welcome Button
 document.querySelector('.hero-btn')?.addEventListener('click', function(e) {
     e.preventDefault();
-    const headerOffset = document.querySelector('header')?.offsetHeight || 70;
+    const headerOffset = document.querySelector('header')?.offsetHeight || 70; // Dynamic header height or fallback
     const targetSection = document.getElementById('about'); 
     if (!targetSection) return;
     
     const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - headerOffset;
     
-    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+    window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
+    });
     
-    this.style.boxShadow = '0 0 25px rgba(0, 255, 255, 0.8)';
-    setTimeout(() => { this.style.boxShadow = 'var(--glow)'; }, 500);
+    // Glow effect for button
+    this.style.boxShadow = '0 0 25px rgba(0, 255, 255, 0.8)'; // Brighter glow
+    setTimeout(() => {
+        this.style.boxShadow = 'var(--glow)'; // Reset to default glow
+    }, 500);
 });
 
+// Contact Form Submission
 document.getElementById('contactForm')?.addEventListener('submit', async function(e) {
     e.preventDefault();
+    
     const form = e.target;
     const submitBtn = form.querySelector('.submit-btn');
     const formMessage = document.getElementById('formMessage');
@@ -791,19 +1376,40 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
     submitBtn.textContent = 'Sending...';
     submitBtn.disabled = true;
     formMessage.textContent = '';
-    formMessage.style.color = '';
+    formMessage.style.color = ''; // Reset color
     
     try {
-        const formData = { name: form.name.value, email: form.email.value, location: form.location.value, message: form.message.value };
+        const formData = {
+            name: form.name.value,
+            email: form.email.value,
+            location: form.location.value,
+            message: form.message.value
+        };
+        
+        // It's better to use a server-side proxy for Google Apps Script to avoid CORS issues if 'no-cors' isn't sufficient
+        // For now, using the direct link as provided
         const scriptUrl = 'https://script.google.com/macros/s/AKfycbzUlJQna9Edv5GDpZz79f1mH15_tDVQzLYkH83oGzm2G83FcO8DsAknXPDFC0rNYBe3LQ/exec';
-        await fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json', }, body: JSON.stringify(formData) });
+        // 'no-cors' mode means you won't be able to read the response, but the request will be sent.
+        // This is usually fine for "fire and forget" submissions to Google Scripts.
+        await fetch(scriptUrl, { 
+            method: 'POST',
+            mode: 'no-cors', // Important for Google Apps Script when not handling response
+            headers: {
+              'Content-Type': 'application/json', // Still good practice to send, though Apps Script might use older ways
+            },
+            body: JSON.stringify(formData) // Will be sent as plain text due to typical Apps Script handling
+        });
+        
+        // Since 'no-cors' prevents reading the response, we assume success if no network error.
         formMessage.textContent = 'Report submitted successfully! We\'ll be in touch soon.';
-        formMessage.style.color = 'var(--secondary)';
+        formMessage.style.color = 'var(--secondary)'; // Use theme color
         form.reset();
+        
     } catch (error) {
+        // This catch block might not be very effective for 'no-cors' issues beyond network failure.
         formMessage.textContent = 'Your report was submitted! If you don\'t hear back, please email us directly at lakeeriesoulseekers@gmail.com';
-        formMessage.style.color = 'yellow';
-        console.error('Form Submission Error:', error);
+        formMessage.style.color = 'yellow'; // Warning color
+        console.error('Form Submission Error (may be due to no-cors):', error);
     } finally {
         submitBtn.textContent = 'SEND REPORT';
         submitBtn.disabled = false;
