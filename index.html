@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -15,7 +15,7 @@
           width: 100%;
           height: 100%;
           background: #000;
-          z-index: 9999;
+          z-index: 99999; /* Ensure it's on top of everything */
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -78,7 +78,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            z-index: 10000;
+            z-index: 100000; /* Above loading screen content, below loading screen itself if it fades */
             opacity: 0;
             transition: all 2s cubic-bezier(0.22, 1, 0.36, 1);
         }
@@ -102,7 +102,7 @@
             transition: all 2s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        body > *:not(#loading-screen):not(.logo-loading-container):not(script):not(#photoLightbox) { /* Exclude lightbox from initial hide */
+        body > *:not(#loading-screen):not(.logo-loading-container):not(script):not(#photoLightbox):not(#animatingImageClone) {
             opacity: 0;
         }
 
@@ -192,32 +192,33 @@
         .evidence-item {
             background: rgba(20, 20, 20, 0.7);
             border-radius: 10px;
-            overflow: visible; /* Allow stack images to peek out */
+            overflow: visible; /* Allow stack images to peek out if they use negative margins or absolute positioning relative to wrapper */
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative; /* For z-indexing if needed, though wrapper should handle it */
         }
         .evidence-item:hover {
-            transform: translateY(-10px); /* Keep existing hover for the whole card */
+            transform: translateY(-10px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), var(--glow);
         }
         .evidence-image-wrapper {
             position: relative;
             cursor: pointer;
             display: block;
-            border-radius: 10px 10px 0 0; /* Match top corners of evidence-item if info is below */
-            overflow: hidden; /* Clip main image if it's larger */
-            height: 200px; /* Fixed height for consistency */
+            border-radius: 10px 10px 0 0;
+            height: 200px;
+            /* overflow: hidden; /* IMPORTANT: Keep this hidden to clip the main image, stack images are positioned absolutely */
         }
-        .evidence-img, .evidence-img-main, .evidence-img-stack { /* Common properties */
+        .evidence-img, .evidence-img-main, .evidence-img-stack {
             display: block;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 8px; /* Slightly rounded corners for images */
+            border-radius: 8px;
         }
         .evidence-img-main {
-            position: relative;
-            z-index: 10;
+            position: relative; /* Changed to relative to be a stacking context for overlay */
+            z-index: 3; /* Above stack images but below overlay */
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .evidence-img-stack {
@@ -225,25 +226,26 @@
             top: 0;
             left: 0;
             opacity: 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-            /* JS will set display: block and src if photo exists */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease-in-out;
+            /* Will be shown by JS if image src is set */
         }
-        .evidence-img-stack-1 { z-index: 9; transform: rotate(0deg) scale(0.95) translateX(0); }
-        .evidence-img-stack-2 { z-index: 8; transform: rotate(0deg) scale(0.90) translateX(0); }
+        .evidence-img-stack-1 { z-index: 2; transform: rotate(0deg) scale(1) translateX(0) translateY(0); }
+        .evidence-img-stack-2 { z-index: 1; transform: rotate(0deg) scale(1) translateX(0) translateY(0); }
 
         /* Desktop hover effect for stack */
         .evidence-image-wrapper.stack-hover-effect .evidence-img-main {
-            transform: translateX(-5px) translateY(-5px) rotate(-3deg) scale(0.92);
+            transform: translateX(-8px) translateY(-4px) rotate(-4deg) scale(0.95);
         }
-        .evidence-image-wrapper.stack-hover-effect .evidence-img-stack-1.has-image { /* Only animate if image exists */
-            opacity: 0.85;
-            transform: translateX(10px) translateY(0px) rotate(4deg) scale(0.93);
+        .evidence-image-wrapper.stack-hover-effect .evidence-img-stack-1.has-image {
+            opacity: 0.9;
+            transform: translateX(0px) translateY(0px) rotate(2deg) scale(0.96);
         }
         .evidence-image-wrapper.stack-hover-effect .evidence-img-stack-2.has-image {
-            opacity: 0.7;
-            transform: translateX(25px) translateY(5px) rotate(9deg) scale(0.94);
+            opacity: 0.8;
+            transform: translateX(8px) translateY(4px) rotate(6deg) scale(0.97);
         }
+
         .evidence-overlay {
             position: absolute;
             top: 0;
@@ -257,7 +259,7 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
-            border-radius: inherit;
+            border-radius: inherit; /* Should inherit from .evidence-image-wrapper */
             z-index: 11; /* Above all images in the stack */
         }
         .evidence-overlay.active { opacity: 1; visibility: visible; }
@@ -265,19 +267,93 @@
         .evidence-info { padding: 1.5rem; }
         .evidence-title { font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--secondary); }
         .evidence-date { color: var(--primary); font-size: 0.9rem; margin-bottom: 1rem; display: block; }
-        .evidence-item p { color: var(--light); } /* For description text in evidence-info */
+        .evidence-item p { color: var(--light); }
 
 
         /* --- Lightbox Modal Styles --- */
         body.lightbox-open { overflow: hidden; }
-        .lightbox-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; display: none; justify-content: center; align-items: center; padding: 15px; }
+        .lightbox-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 20000; /* Very high z-index */
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
         .lightbox-modal.show { display: flex; }
-        .lightbox-backdrop { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.88); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); cursor: pointer; }
-        .lightbox-content { position: relative; background-color: transparent; /* Content itself doesn't need a bg if image is large */ padding: 0; /* Let image define size mostly */ border-radius: 8px; max-width: 90vw; max-height: 90vh; display: flex; justify-content: center; align-items: center; z-index: 1; }
-        #lightboxImage { max-width: 100%; max-height: 100%; /* Takes full space of lightbox-content */ object-fit: contain; border-radius: 6px; border: 2px solid var(--secondary); box-shadow: 0 0 30px rgba(0, 255, 255, 0.3); }
+        .lightbox-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            cursor: pointer;
+        }
+        .lightbox-content {
+            position: relative;
+            background-color: transparent;
+            padding: 0;
+            border-radius: 8px;
+            max-width: 90vw;
+            max-height: 90vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 20001; /* Above backdrop */
+            /* Controls are positioned relative to this or viewport */
+        }
+        #lightboxImage { /* This is the main image displayed IN the lightbox */
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 6px;
+            border: 2px solid var(--secondary);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+            opacity: 0; /* Initially hidden for animation */
+            transform: scale(0.7); /* Initially smaller for animation */
+            transition: opacity 0.3s ease 0.3s, transform 0.3s ease 0.3s; /* Delay to sync with clone animation */
+        }
+        .lightbox-modal.show #lightboxImage.loaded { /* Added .loaded class */
+            opacity: 1;
+            transform: scale(1);
+        }
+
+
+        /* Animated Image Clone for transition */
+        #animatingImageClone {
+            position: fixed; /* Use fixed to position relative to viewport */
+            object-fit: cover;
+            border-radius: 8px; /* Match source image */
+            z-index: 20005; /* Highest during animation */
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        width 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        top 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        left 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.3s ease 0.3s; /* Fade out after animation */
+            pointer-events: none; /* Don't interfere with clicks */
+        }
+
+
+        .lightbox-controls { /* Wrapper for buttons */
+            opacity: 0;
+            filter: blur(5px);
+            transition: opacity 0.4s ease 0.5s, filter 0.4s ease 0.5s; /* Delay after image animation */
+        }
+        .lightbox-modal.show .lightbox-controls.visible {
+            opacity: 1;
+            filter: blur(0px);
+        }
 
         .lightbox-close, .lightbox-prev, .lightbox-next {
-            position: absolute;
+            position: absolute; /* Positioned relative to viewport or a fixed container */
             background-color: rgba(30, 30, 30, 0.6);
             color: var(--secondary);
             border: 1px solid var(--secondary);
@@ -285,7 +361,7 @@
             cursor: pointer;
             font-size: 1.5rem;
             transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
-            z-index: 10002; /* Above content */
+            z-index: 20002; /* Above lightbox content image */
             width: 44px;
             height: 44px;
             display: flex;
@@ -295,7 +371,7 @@
         }
         .lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover { background-color: var(--primary); color: var(--light); border-color: var(--light); transform: scale(1.1); }
 
-        .lightbox-close { top: 20px; right: 20px; font-size: 1.8rem; } /* Adjusted to be clearly on screen */
+        .lightbox-close { top: 20px; right: 20px; font-size: 1.8rem; }
         .lightbox-prev { top: 50%; left: 20px; transform: translateY(-50%); }
         .lightbox-next { top: 50%; right: 20px; transform: translateY(-50%); }
 
@@ -362,11 +438,16 @@
     <section id="evidence">
         <h2 class="section-title">PLACES WE HAVE INVESTIGATED</h2>
         <div class="section-content evidence-grid">
-            <div class="evidence-item" data-photos='["https://ewscripps.brightspotcdn.com/dims4/default/276469f/2147483647/strip/true/crop/1786x1005+0+65/resize/1280x720!/quality/90/?url=http%3A%2F%2Fewscripps-brightspot.s3.amazonaws.com%2F9a%2Fdd%2Fdb3223e046e2ba8bc1d8a113258b%2Fscreen-shot-2019-03-05-at-8.07.33%20PM.png", "https://www.onlyinyourstate.com/wp-content/uploads/2016/01/5-Madison-Seminary-2-700x466.jpg", "https://media-cdn.tripadvisor.com/media/photo-s/1c/09/aa/9c/madison-seminary.jpg"]'>
+            <div class="evidence-item" data-photos='[
+                "https://ewscripps.brightspotcdn.com/dims4/default/276469f/2147483647/strip/true/crop/1786x1005+0+65/resize/1280x720!/quality/90/?url=http%3A%2F%2Fewscripps-brightspot.s3.amazonaws.com%2F9a%2Fdd%2Fdb3223e046e2ba8bc1d8a113258b%2Fscreen-shot-2019-03-05-at-8.07.33%20PM.png",
+                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/madison/madison-2.jpg",
+                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/madison/madison-3.jpg",
+                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/madison/madison-4.jpg"
+            ]'>
                 <div class="evidence-image-wrapper">
-                    <img class="evidence-img evidence-img-main" src="" alt="Madison State Seminary"> {/* Src set by JS */}
-                    <img class="evidence-img-stack evidence-img-stack-1" src="" alt="" style="display: none;">
-                    <img class="evidence-img-stack evidence-img-stack-2" src="" alt="" style="display: none;">
+                    <img class="evidence-img evidence-img-main" src="" alt="Madison State Seminary">
+                    <img class="evidence-img-stack evidence-img-stack-1" src="" alt="Madison stack image 1" style="display: none;">
+                    <img class="evidence-img-stack evidence-img-stack-2" src="" alt="Madison stack image 2" style="display: none;">
                     <div class="evidence-overlay">
                         <span class="overlay-text"><strong><u>Click to view photos</u></strong></span>
                     </div>
@@ -377,11 +458,17 @@
                     <p>Our investigation of this historic location captured several intelligent responses through our spirit box and multiple EMF spikes, heard a little girl voice, my father felt a hand on his back, and had insane activity with the rem-pod.</p>
                 </div>
             </div>
-            <div class="evidence-item" data-photos='["https://upload.wikimedia.org/wikipedia/commons/9/99/Fairfield_County_Infirmary.jpg", "https://live.staticflickr.com/4167/33650989824_0af9d08af1_b.jpg", "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/3f/a6/66/photo0jpg.jpg?w=1200&h=-1&s=1"]'>
+            <div class="evidence-item" data-photos='[
+                "https://upload.wikimedia.org/wikipedia/commons/9/99/Fairfield_County_Infirmary.jpg",
+                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/fairfield-2.jpg",
+                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/fairfield-3.jpg",
+                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/fairfield-4.jpg",
+                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/fairfield-5.jpg"
+            ]'>
                 <div class="evidence-image-wrapper">
-                    <img class="evidence-img evidence-img-main" src="" alt="Fairfield Infirmary"> {/* Src set by JS */}
-                    <img class="evidence-img-stack evidence-img-stack-1" src="" alt="" style="display: none;">
-                    <img class="evidence-img-stack evidence-img-stack-2" src="" alt="" style="display: none;">
+                    <img class="evidence-img evidence-img-main" src="" alt="Fairfield Infirmary">
+                    <img class="evidence-img-stack evidence-img-stack-1" src="" alt="Fairfield stack image 1" style="display: none;">
+                    <img class="evidence-img-stack evidence-img-stack-2" src="" alt="Fairfield stack image 2" style="display: none;">
                     <div class="evidence-overlay">
                          <span class="overlay-text"><strong><u>Click to view photos</u></strong></span>
                     </div>
@@ -392,7 +479,6 @@
                     <p>During our overnight investigation, we did not get much activity but getting to be there and soak in it's rich history was awesome.</p>
                 </div>
             </div>
-            {/* Ensure any other .evidence-item divs also have the new wrapper and stack image structure, and the data-photos attribute */}
         </div>
     </section>
 
@@ -403,11 +489,16 @@
         <div class="lightbox-backdrop"></div>
         <div class="lightbox-content">
             <img id="lightboxImage" src="" alt="Evidence Photo">
-            <button class="lightbox-close" aria-label="Close gallery">×</button>
-            <button class="lightbox-prev" aria-label="Previous photo">❮</button>
-            <button class="lightbox-next" aria-label="Next photo">❯</button>
+            <div class="lightbox-controls"> {/* Wrapper for controls */}
+                <button class="lightbox-close" aria-label="Close gallery">×</button>
+                <button class="lightbox-prev" aria-label="Previous photo">❮</button>
+                <button class="lightbox-next" aria-label="Next photo">❯</button>
+            </div>
         </div>
     </div>
+    <!-- Temporary image clone for animation -->
+    <img id="animatingImageClone" src="" alt="" style="display: none;">
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -421,7 +512,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (header) header.style.opacity = '0';
 
-    document.querySelectorAll('body > *:not(#loading-screen):not(.logo-loading-container):not(script):not(#photoLightbox)').forEach(el => {
+    document.querySelectorAll('body > *:not(#loading-screen):not(.logo-loading-container):not(script):not(#photoLightbox):not(#animatingImageClone)').forEach(el => {
         el.style.opacity = '0';
     });
 
@@ -469,7 +560,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 setTimeout(() => {
                                     if (loadingScreen) loadingScreen.remove();
                                     if (logoLoadingContainer) logoLoadingContainer.remove();
-                                    document.querySelectorAll('body > *:not(script):not(#photoLightbox)').forEach(el => {
+                                    document.querySelectorAll('body > *:not(script):not(#photoLightbox):not(#animatingImageClone)').forEach(el => {
                                         if(el !== header && (!el.classList || (!el.classList.contains('orb') && !el.classList.contains('ghost')))) {
                                             el.style.opacity = '1';
                                         }
@@ -484,7 +575,7 @@ document.addEventListener('DOMContentLoaded', function() {
                              if (header) header.style.opacity = '1';
                              if (loadingScreen) loadingScreen.remove();
                              if (logoLoadingContainer) logoLoadingContainer.remove();
-                             document.querySelectorAll('body > *:not(script):not(#photoLightbox)').forEach(el => {
+                             document.querySelectorAll('body > *:not(script):not(#photoLightbox):not(#animatingImageClone)').forEach(el => {
                                 if (!el.classList || (!el.classList.contains('orb') && !el.classList.contains('ghost'))) {
                                    el.style.opacity = '1';
                                 }
@@ -502,7 +593,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (loadingScreen) loadingScreen.remove();
         if (logoLoadingContainer) logoLoadingContainer.remove();
         if (header) header.style.opacity = '1';
-        document.querySelectorAll('body > *:not(script):not(#photoLightbox)').forEach(el => {
+        document.querySelectorAll('body > *:not(script):not(#photoLightbox):not(#animatingImageClone)').forEach(el => {
             if (!el.classList || (!el.classList.contains('orb') && !el.classList.contains('ghost'))) {
                 el.style.opacity = '1';
             }
@@ -552,18 +643,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // --- PHOTO GALLERY/LIGHTBOX SCRIPT ---
     function initializePhotoGallery() {
         const evidenceItems = document.querySelectorAll('.evidence-item');
         const lightbox = document.getElementById('photoLightbox');
-        const lightboxImage = document.getElementById('lightboxImage');
+        const lightboxImageEl = document.getElementById('lightboxImage');
         const lightboxBackdrop = lightbox.querySelector('.lightbox-backdrop');
+        const lightboxControls = lightbox.querySelector('.lightbox-controls'); // Get controls wrapper
         const lightboxCloseBtn = lightbox.querySelector('.lightbox-close');
         const lightboxPrevBtn = lightbox.querySelector('.lightbox-prev');
         const lightboxNextBtn = lightbox.querySelector('.lightbox-next');
+        const animatingImageClone = document.getElementById('animatingImageClone');
 
-        if (!lightbox || !lightboxImage || !lightboxCloseBtn || !lightboxPrevBtn || !lightboxNextBtn || !lightboxBackdrop) {
-            console.warn('Lightbox elements not found. Gallery will not function.');
+        if (!lightbox || !lightboxImageEl || !lightboxCloseBtn || !lightboxPrevBtn || !lightboxNextBtn || !lightboxBackdrop || !animatingImageClone || !lightboxControls) {
+            console.warn('One or more lightbox elements not found. Gallery will not function fully.');
             return;
         }
 
@@ -580,7 +672,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const stackImage1El = imageWrapper.querySelector('.evidence-img-stack-1');
             const stackImage2El = imageWrapper.querySelector('.evidence-img-stack-2');
 
-
             if (imageWrapper && photoData && mainImageEl && stackImage1El && stackImage2El) {
                 let photos;
                 try {
@@ -591,7 +682,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     photos = [];
                 }
 
-                // Populate images for stack effect
                 if (photos.length > 0) {
                     mainImageEl.src = photos[0];
                     mainImageEl.alt = item.querySelector('.evidence-title')?.textContent || 'Evidence Photo';
@@ -599,7 +689,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (photos.length > 1) {
                         stackImage1El.src = photos[1];
                         stackImage1El.style.display = 'block';
-                        stackImage1El.classList.add('has-image'); // Add class if image exists
+                        stackImage1El.classList.add('has-image');
                     } else {
                         stackImage1El.style.display = 'none';
                         stackImage1El.classList.remove('has-image');
@@ -612,17 +702,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         stackImage2El.style.display = 'none';
                         stackImage2El.classList.remove('has-image');
                     }
-                } else { // No photos, hide stack elements and main image placeholder
-                    mainImageEl.src = ''; // Or a placeholder image
+                } else {
+                    mainImageEl.src = 'https://placehold.co/600x400/0a0a0a/333333?text=No+Image'; // Placeholder
                     mainImageEl.alt = 'No photos available';
-                    stackImage1El.style.display = 'none';
-                    stackImage1El.classList.remove('has-image');
-                    stackImage2El.style.display = 'none';
-                    stackImage2El.classList.remove('has-image');
+                    stackImage1El.style.display = 'none'; stackImage1El.classList.remove('has-image');
+                    stackImage2El.style.display = 'none'; stackImage2El.classList.remove('has-image');
                 }
 
-
-                if (!isMobile) { // Desktop: Hover and Click
+                if (!isMobile) {
                     imageWrapper.addEventListener('mouseenter', () => {
                         if (photos.length > 0 && overlay) overlay.classList.add('active');
                         if (photos.length > 1) imageWrapper.classList.add('stack-hover-effect');
@@ -631,43 +718,90 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (overlay) overlay.classList.remove('active');
                         imageWrapper.classList.remove('stack-hover-effect');
                     });
-                    imageWrapper.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        if (photos.length > 0) {
-                            openLightbox(photos, 0);
-                        }
-                    });
-                } else { // Mobile: Single Tap
-                    imageWrapper.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        if (photos.length > 0) {
-                            openLightbox(photos, 0);
-                        }
-                    });
                 }
+                // Click listener for both mobile and desktop
+                imageWrapper.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (photos.length > 0) {
+                        openLightboxWithAnimation(photos, 0, mainImageEl);
+                    }
+                });
             }
         });
 
-        function openLightbox(photos, index) {
+        function openLightboxWithAnimation(photos, index, clickedImageElement) {
             currentPhotos = photos;
             currentIndex = index;
-            updateLightboxImage();
-            lightbox.classList.add('show');
+
+            const rect = clickedImageElement.getBoundingClientRect();
+            animatingImageClone.src = clickedImageElement.src;
+            animatingImageClone.style.display = 'block';
+            animatingImageClone.style.top = `${rect.top}px`;
+            animatingImageClone.style.left = `${rect.left}px`;
+            animatingImageClone.style.width = `${rect.width}px`;
+            animatingImageClone.style.height = `${rect.height}px`;
+            animatingImageClone.style.transform = 'scale(1) rotate(0deg)';
+            animatingImageClone.style.opacity = '1';
+
+
+            lightbox.classList.add('show'); // Show backdrop and prepare lightbox structure
             document.body.classList.add('lightbox-open');
+            lightboxImageEl.classList.remove('loaded'); // Prepare for fade-in
+            lightboxControls.classList.remove('visible'); // Hide controls initially
+
+
+            // Calculate target size and position (center of viewport)
+            const targetWidth = Math.min(window.innerWidth * 0.9, lightboxImageEl.parentElement.offsetWidth); // 90vw or container width
+            const naturalAspectRatio = clickedImageElement.naturalWidth / clickedImageElement.naturalHeight;
+            let finalWidth = targetWidth;
+            let finalHeight = targetWidth / naturalAspectRatio;
+
+            const maxHeight = window.innerHeight * 0.9;
+            if (finalHeight > maxHeight) {
+                finalHeight = maxHeight;
+                finalWidth = finalHeight * naturalAspectRatio;
+            }
+            
+            const targetTop = (window.innerHeight - finalHeight) / 2;
+            const targetLeft = (window.innerWidth - finalWidth) / 2;
+
+            // Force reflow
+            void animatingImageClone.offsetWidth;
+
+            // Start animation
+            animatingImageClone.style.transform = 'scale(1) rotate(0deg)'; // Ensure it's reset if needed
+            animatingImageClone.style.top = `${targetTop}px`;
+            animatingImageClone.style.left = `${targetLeft}px`;
+            animatingImageClone.style.width = `${finalWidth}px`;
+            animatingImageClone.style.height = `${finalHeight}px`;
+
+
+            // After animation, show actual lightbox image and controls
+            animatingImageClone.ontransitionend = () => {
+                animatingImageClone.style.display = 'none'; // Hide clone
+                animatingImageClone.ontransitionend = null; // Remove listener
+                updateLightboxImage(); // Set src for actual lightbox image
+                lightboxImageEl.classList.add('loaded'); // Fade in actual image
+                lightboxControls.classList.add('visible'); // Fade in controls
+            };
         }
 
+
         function closeLightbox() {
+            // For simplicity, just hide directly. Reverse animation can be added later.
             lightbox.classList.remove('show');
             document.body.classList.remove('lightbox-open');
+            lightboxImageEl.classList.remove('loaded');
+            lightboxControls.classList.remove('visible');
         }
 
         function updateLightboxImage() {
             if (currentPhotos.length > 0 && currentIndex >= 0 && currentIndex < currentPhotos.length) {
-                lightboxImage.src = currentPhotos[currentIndex];
-                lightboxImage.alt = `Evidence Photo ${currentIndex + 1} of ${currentPhotos.length}`;
+                lightboxImageEl.src = currentPhotos[currentIndex];
+                lightboxImageEl.alt = `Evidence Photo ${currentIndex + 1} of ${currentPhotos.length}`;
             } else {
-                lightboxImage.src = ''; // Clear if no image
-                lightboxImage.alt = 'No photo to display';
+                lightboxImageEl.src = '';
+                lightboxImageEl.alt = 'No photo to display';
             }
             lightboxPrevBtn.style.display = currentPhotos.length > 1 ? 'flex' : 'none';
             lightboxNextBtn.style.display = currentPhotos.length > 1 ? 'flex' : 'none';
@@ -676,13 +810,21 @@ document.addEventListener('DOMContentLoaded', function() {
         function showNextImage() {
             if (currentPhotos.length === 0) return;
             currentIndex = (currentIndex + 1) % currentPhotos.length;
-            updateLightboxImage();
+            lightboxImageEl.classList.remove('loaded'); // Prepare for fade in
+            setTimeout(() => { // Allow opacity to reset before changing src and fading in
+                updateLightboxImage();
+                lightboxImageEl.classList.add('loaded');
+            }, 50);
         }
 
         function showPrevImage() {
             if (currentPhotos.length === 0) return;
             currentIndex = (currentIndex - 1 + currentPhotos.length) % currentPhotos.length;
-            updateLightboxImage();
+            lightboxImageEl.classList.remove('loaded');
+            setTimeout(() => {
+                updateLightboxImage();
+                lightboxImageEl.classList.add('loaded');
+            }, 50);
         }
 
         lightboxCloseBtn.addEventListener('click', closeLightbox);
