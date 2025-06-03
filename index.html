@@ -1235,213 +1235,170 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-    // Loading elements
-    const loadingScreen = document.getElementById('loading-screen');
-    const progressBarFill = document.querySelector('.progress-bar-fill');
-    const progressCounter = document.querySelector('.progress-counter');
-    const loadingText = document.querySelector('.loading-text');
-    const logoLoadingContainer = document.querySelector('.logo-loading-container');
-    const headerLogoContainer = document.querySelector('.logo-container');
-    
-    // Hide original header initially
-    document.querySelector('header').style.opacity = '0';
-
-    // Accurate loading simulation
-    let progress = 0;
-    const targetProgress = 100;
-    const duration = 3500; // 3.5 seconds total
-    const intervalTime = 30; // Update every 30ms
-    const increments = (intervalTime / duration) * targetProgress;
-    
-    const loadingInterval = setInterval(() => {
-        progress += increments;
-        progressBarFill.style.width = progress + '%';
-        progressCounter.textContent = Math.round(progress) + '%';
+    // Loading Animation Code
+    document.addEventListener('DOMContentLoaded', function() {
+        const loadingScreen = document.getElementById('loading-screen');
+        const progressBarFill = document.querySelector('.progress-bar-fill');
+        const progressCounter = document.querySelector('.progress-counter');
+        const loadingText = document.querySelector('.loading-text');
+        const logoLoadingContainer = document.querySelector('.logo-loading-container');
+        const headerLogoContainer = document.querySelector('.logo-container');
         
-        if (progress >= targetProgress) {
-            progress = targetProgress;
-            clearInterval(loadingInterval);
+        document.querySelector('header').style.opacity = '0';
+
+        let progress = 0;
+        const targetProgress = 100;
+        const duration = 3500;
+        const intervalTime = 30;
+        const increments = (intervalTime / duration) * targetProgress;
+        
+        const loadingInterval = setInterval(() => {
+            progress += increments;
+            progressBarFill.style.width = progress + '%';
+            progressCounter.textContent = Math.round(progress) + '%';
             
-            // Change to "Finished"
-            loadingText.textContent = 'Finished';
-            
-            // Wait 2 seconds then fade out loading screen
-            setTimeout(() => {
-                loadingScreen.style.opacity = '0';
+            if (progress >= targetProgress) {
+                clearInterval(loadingInterval);
+                loadingText.textContent = 'Finished';
                 
-                // Fade in logo and text container
-                logoLoadingContainer.style.opacity = '1';
-                
-                // After 1 second, animate to header position
                 setTimeout(() => {
-                    const finalPos = headerLogoContainer.getBoundingClientRect();
-                    const logoFinalHeight = 50; // Matches your header logo size
+                    loadingScreen.style.opacity = '0';
+                    logoLoadingContainer.style.opacity = '1';
                     
-                    // Calculate final position (centered vertically in header)
-                    const finalTop = finalPos.top + (finalPos.height / 2) - (logoFinalHeight / 2);
-                    const finalLeft = finalPos.left;
-                    
-                    // Animate logo and text to final position
-                    logoLoadingContainer.style.top = finalTop + 'px';
-                    logoLoadingContainer.style.left = finalLeft + 'px';
-                    logoLoadingContainer.style.transform = 'translate(0, 0)';
-                    logoLoadingContainer.style.gap = '10px'; // Smaller gap in header
-                    
-                    // Resize logo to final size
-                    document.querySelector('.logo-loading').style.height = logoFinalHeight + 'px';
-                    
-                    // Resize text to final size
-                    document.querySelector('.logo-text-loading').style.fontSize = '1.5rem';
-                    
-                    // After animation completes, fade in header and page
                     setTimeout(() => {
-                        // Show real header
-                        document.querySelector('header').style.opacity = '1';
+                        const finalPos = headerLogoContainer.getBoundingClientRect();
+                        const logoFinalHeight = 50;
+                        const finalTop = finalPos.top + (finalPos.height / 2) - (logoFinalHeight / 2);
+                        const finalLeft = finalPos.left;
                         
-                        // Fade out loading elements
-                        logoLoadingContainer.style.opacity = '0';
+                        logoLoadingContainer.style.top = finalTop + 'px';
+                        logoLoadingContainer.style.left = finalLeft + 'px';
+                        logoLoadingContainer.style.transform = 'translate(0, 0)';
+                        logoLoadingContainer.style.gap = '10px';
+                        document.querySelector('.logo-loading').style.height = logoFinalHeight + 'px';
+                        document.querySelector('.logo-text-loading').style.fontSize = '1.5rem';
                         
-                        // Remove loading screen completely
                         setTimeout(() => {
-                            loadingScreen.remove();
-                            logoLoadingContainer.remove();
+                            document.querySelector('header').style.opacity = '1';
+                            logoLoadingContainer.style.opacity = '0';
                             
-                            // Fade in all page content
-                            document.querySelectorAll('body > *:not(script):not(header)').forEach(el => {
-                                el.style.opacity = '1';
-                            });
-                            
-                            // Initialize Intersection Observer for section animations
-                            initIntersectionObserver();
-                            
-                            // Trigger title animation
-                            const title = document.getElementById('animated-title');
-                            if (title) {
-                                const text = title.textContent;
-                                title.textContent = '';
-                                
-                                for (let i = 0; i < text.length; i++) {
-                                    setTimeout(() => {
-                                        const span = document.createElement('span');
-                                        span.textContent = text[i];
-                                        span.style.opacity = '0';
-                                        span.style.display = 'inline-block';
-                                        title.appendChild(span);
-                                        
-                                        setTimeout(() => {
-                                            span.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                                            span.style.opacity = '1';
-                                            span.style.transform = 'translateY(0)';
-                                        }, 50);
-                                    }, i * 100);
-                                }
-                            }
-                            
-                        }, 1000); // Fade out duration
-                    }, 1000); // Animation duration to header position
-                }, 1000); // Delay before moving to header
-            }, 500); // "Finished" display duration (reduced from 2000 to 500)
-        }
-    }, intervalTime);
-
-    // Initialize Intersection Observer for section animations
-    function initIntersectionObserver() {
-        const sections = document.querySelectorAll('section');
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('section-visible');
-                }
-            });
-        }, {
-            threshold: 0.1
-        });
-        
-        sections.forEach(section => {
-            observer.observe(section);
-            // Make sure sections are visible after load
-            section.style.opacity = '1';
-        });
-    }
-});
-        // Simple smooth scroll alternative
-        document.querySelector('.hero-btn').addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetSection = document.getElementById('about');
-            const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - 70;
-            
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-            });
-            
-            // Optional: Add a slight glow effect when clicked
-            this.style.boxShadow = '0 0 25px rgba(0, 255, 255, 0.8)';
-            setTimeout(() => {
-                this.style.boxShadow = 'var(--glow)';
-            }, 500);
-        });
-        
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const submitBtn = document.querySelector('.submit-btn');
-    const formMessage = document.getElementById('formMessage');
-    
-        // Your existing loading animation code remains the same
-
-        // Add this secure form handler
-        document.getElementById('contactForm')?.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitBtn = this.querySelector('.submit-btn');
-            const formMessage = document.getElementById('formMessage');
-            
-            // Validate form
-            if (!this.checkValidity()) {
-                this.reportValidity();
-                return;
+                            setTimeout(() => {
+                                loadingScreen.remove();
+                                logoLoadingContainer.remove();
+                                document.querySelectorAll('body > *:not(script):not(header)').forEach(el => {
+                                    el.style.opacity = '1';
+                                });
+                                initIntersectionObserver();
+                                animateTitle();
+                            }, 1000);
+                        }, 1000);
+                    }, 1000);
+                }, 500);
             }
+        }, intervalTime);
 
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-            formMessage.textContent = '';
-            formMessage.style.color = '';
-            
-            try {
-                const formData = new FormData(this);
-                const formObject = Object.fromEntries(formData.entries());
-                
-                // Replace with your actual Google Apps Script URL
-                const scriptUrl = 'https://script.google.com/macros/s/AKfycbwNIAZE59tX_nX85ijVJUtYchqoCrJKot_OKcBHakfkSRfn2LkBgPBayPi-c6xOCKF9iQ/exec';
-                
-                // Add cache busting parameter
-                const urlWithCacheBust = `${scriptUrl}?t=${Date.now()}`;
-                
-                const response = await fetch(urlWithCacheBust, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formObject)
+        function initIntersectionObserver() {
+            const sections = document.querySelectorAll('section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('section-visible');
+                    }
                 });
+            }, { threshold: 0.1 });
+            
+            sections.forEach(section => {
+                observer.observe(section);
+                section.style.opacity = '1';
+            });
+        }
+
+        function animateTitle() {
+            const title = document.getElementById('animated-title');
+            if (title) {
+                const text = title.textContent;
+                title.textContent = '';
                 
-                if (!response.ok) throw new Error('Failed to send');
-                
-                formMessage.textContent = 'Message sent successfully!';
-                formMessage.style.color = '#00ff00';
-                this.reset();
-            } catch (error) {
-                formMessage.textContent = 'Message sent successfully! (If you don\'t hear back, please email us directly)';
-                formMessage.style.color = '#ffff00'; // Yellow for warning
-                console.error('Submission error:', error);
-            } finally {
-                submitBtn.textContent = 'SEND REPORT';
-                submitBtn.disabled = false;
+                for (let i = 0; i < text.length; i++) {
+                    setTimeout(() => {
+                        const span = document.createElement('span');
+                        span.textContent = text[i];
+                        span.style.opacity = '0';
+                        span.style.display = 'inline-block';
+                        title.appendChild(span);
+                        
+                        setTimeout(() => {
+                            span.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                            span.style.opacity = '1';
+                            span.style.transform = 'translateY(0)';
+                        }, 50);
+                    }, i * 100);
+                }
             }
+        }
+    });
+
+    // Smooth Scroll for Welcome Button
+    document.querySelector('.hero-btn')?.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetSection = document.getElementById('about');
+        const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - 70;
+        
+        window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
         });
+        
+        this.style.boxShadow = '0 0 25px rgba(0, 255, 255, 0.8)';
+        setTimeout(() => {
+            this.style.boxShadow = 'var(--glow)';
+        }, 500);
+    });
+    
+    // Form Submission Handler (Fixed Version)
+    document.getElementById('contactForm')?.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitBtn = this.querySelector('.submit-btn');
+        const formMessage = document.getElementById('formMessage');
+        
+        if (!this.checkValidity()) {
+            this.reportValidity();
+            return;
+        }
+
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
+        formMessage.textContent = '';
+        formMessage.style.color = '';
+        
+        try {
+            const formData = new FormData(this);
+            const formObject = Object.fromEntries(formData.entries());
+            
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbyAIKevF-p3bFIpCpyJ2rFJP5LGiKFK8pgPjd2bPyX2yQG1QWnThySJ90uuELSb7lqW1g/exec';
+            const urlWithCacheBust = `${scriptUrl}?t=${Date.now()}`;
+            
+            const response = await fetch(urlWithCacheBust, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formObject)
+            });
+            
+            if (!response.ok) throw new Error('Failed to send');
+            
+            formMessage.textContent = 'Message sent successfully!';
+            formMessage.style.color = '#00ff00';
+            this.reset();
+        } catch (error) {
+            formMessage.textContent = 'Message sent successfully! (If you don\'t hear back, please email us directly)';
+            formMessage.style.color = '#ffff00';
+            console.error('Submission error:', error);
+        } finally {
+            submitBtn.textContent = 'SEND REPORT';
+            submitBtn.disabled = false;
+        }
+    });
     </script>
 </body>
 </html>
