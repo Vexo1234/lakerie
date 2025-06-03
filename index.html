@@ -102,7 +102,7 @@
             transition: all 2s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        body > *:not(#loading-screen):not(.logo-loading-container):not(script) {
+        body > *:not(#loading-screen):not(.logo-loading-container):not(script):not(#photoLightbox) { /* Exclude lightbox from initial hide */
             opacity: 0;
         }
 
@@ -187,23 +187,62 @@
         .equipment-icon { font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem; }
         .equipment-name { font-size: 1.2rem; color: var(--secondary); margin-bottom: 0.5rem; }
 
-        /* --- Evidence Item Overlay (NEW/MODIFIED CSS) --- */
+        /* --- Evidence Item & Photo Stack Styles --- */
+        .evidence-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
+        .evidence-item {
+            background: rgba(20, 20, 20, 0.7);
+            border-radius: 10px;
+            overflow: visible; /* Allow stack images to peek out */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .evidence-item:hover {
+            transform: translateY(-10px); /* Keep existing hover for the whole card */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), var(--glow);
+        }
         .evidence-image-wrapper {
             position: relative;
-            overflow: hidden;
             cursor: pointer;
-            display: block; /* Ensure it behaves like a block for image child */
-            border-radius: inherit; /* Inherit from .evidence-item if it has one */
+            display: block;
+            border-radius: 10px 10px 0 0; /* Match top corners of evidence-item if info is below */
+            overflow: hidden; /* Clip main image if it's larger */
+            height: 200px; /* Fixed height for consistency */
         }
-        .evidence-image-wrapper .evidence-img { /* Ensure image within wrapper is block and full width */
+        .evidence-img, .evidence-img-main, .evidence-img-stack { /* Common properties */
             display: block;
             width: 100%;
-            height: auto; /* Maintain aspect ratio, or set fixed height if needed */
-            transition: transform 0.3s ease; /* Optional: slight zoom on hover */
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px; /* Slightly rounded corners for images */
         }
-        .evidence-item:hover .evidence-image-wrapper .evidence-img {
-             /* filter: grayscale(0%) contrast(1.2) brightness(0.8); /* Dim image slightly on hover */
-             /* transform: scale(1.05); /* Optional zoom effect */
+        .evidence-img-main {
+            position: relative;
+            z-index: 10;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .evidence-img-stack {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            /* JS will set display: block and src if photo exists */
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease-in-out;
+        }
+        .evidence-img-stack-1 { z-index: 9; transform: rotate(0deg) scale(0.95) translateX(0); }
+        .evidence-img-stack-2 { z-index: 8; transform: rotate(0deg) scale(0.90) translateX(0); }
+
+        /* Desktop hover effect for stack */
+        .evidence-image-wrapper.stack-hover-effect .evidence-img-main {
+            transform: translateX(-5px) translateY(-5px) rotate(-3deg) scale(0.92);
+        }
+        .evidence-image-wrapper.stack-hover-effect .evidence-img-stack-1.has-image { /* Only animate if image exists */
+            opacity: 0.85;
+            transform: translateX(10px) translateY(0px) rotate(4deg) scale(0.93);
+        }
+        .evidence-image-wrapper.stack-hover-effect .evidence-img-stack-2.has-image {
+            opacity: 0.7;
+            transform: translateX(25px) translateY(5px) rotate(9deg) scale(0.94);
         }
         .evidence-overlay {
             position: absolute;
@@ -211,7 +250,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(10, 10, 20, 0.7); /* Slightly bluish dark overlay */
+            background-color: rgba(10, 10, 20, 0.6);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -219,137 +258,46 @@
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
             border-radius: inherit;
-            z-index: 1;
+            z-index: 11; /* Above all images in the stack */
         }
-        .evidence-overlay.active { /* Class to show overlay via JS for desktop hover */
-            opacity: 1;
-            visibility: visible;
-        }
-        .overlay-text {
-            color: var(--secondary); /* Cyan text */
-            font-size: 1.2rem; /* Increased size a bit */
-            text-align: center;
-            padding: 15px;
-            text-shadow: 0 0 8px rgba(0, 255, 255, 0.7); /* Add glow to text */
-        }
-        .overlay-text strong u {
-            /* Default browser styling for bold and underline is usually sufficient */
-            /* You can add more specific styling here if needed */
-        }
-
-        /* --- Original Evidence Item styles --- */
-        .evidence-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
-        .evidence-item { background: rgba(20, 20, 20, 0.7); border-radius: 10px; overflow: hidden; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); }
-        .evidence-item p { color: var(--light); }
-        .evidence-item:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), var(--glow); }
-        /* .evidence-img is now inside .evidence-image-wrapper */
-        .evidence-item:hover .evidence-image-wrapper .evidence-img {
-             filter: grayscale(0%) contrast(1.1) brightness(0.7); /* Keep this for dimming effect */
-        }
+        .evidence-overlay.active { opacity: 1; visibility: visible; }
+        .overlay-text { color: var(--secondary); font-size: 1.2rem; text-align: center; padding: 15px; text-shadow: 0 0 8px rgba(0, 255, 255, 0.7); }
         .evidence-info { padding: 1.5rem; }
         .evidence-title { font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--secondary); }
         .evidence-date { color: var(--primary); font-size: 0.9rem; margin-bottom: 1rem; display: block; }
+        .evidence-item p { color: var(--light); } /* For description text in evidence-info */
 
 
-        /* --- Lightbox Modal (NEW CSS) --- */
-        body.lightbox-open {
-            overflow: hidden;
-        }
-        .lightbox-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10000;
-            display: none; /* Flex will be added by JS */
-            justify-content: center;
-            align-items: center;
-            padding: 20px; /* Padding for smaller screens */
-        }
-        .lightbox-modal.show {
-            display: flex;
-        }
-        .lightbox-backdrop {
+        /* --- Lightbox Modal Styles --- */
+        body.lightbox-open { overflow: hidden; }
+        .lightbox-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; display: none; justify-content: center; align-items: center; padding: 15px; }
+        .lightbox-modal.show { display: flex; }
+        .lightbox-backdrop { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.88); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); cursor: pointer; }
+        .lightbox-content { position: relative; background-color: transparent; /* Content itself doesn't need a bg if image is large */ padding: 0; /* Let image define size mostly */ border-radius: 8px; max-width: 90vw; max-height: 90vh; display: flex; justify-content: center; align-items: center; z-index: 1; }
+        #lightboxImage { max-width: 100%; max-height: 100%; /* Takes full space of lightbox-content */ object-fit: contain; border-radius: 6px; border: 2px solid var(--secondary); box-shadow: 0 0 30px rgba(0, 255, 255, 0.3); }
+
+        .lightbox-close, .lightbox-prev, .lightbox-next {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.85); /* Darker backdrop */
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            cursor: pointer; /* Indicate backdrop can be clicked to close */
-        }
-        .lightbox-content {
-            position: relative;
-            background-color: var(--darker);
-            padding: 15px;
-            border-radius: 8px;
-            max-width: 90vw;
-            max-height: 90vh;
-            display: flex; /* For centering the image if it's smaller */
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.7);
-            z-index: 1; /* Above backdrop */
-        }
-        #lightboxImage {
-            max-width: 100%;
-            max-height: calc(90vh - 60px); /* Account for padding and some button room */
-            object-fit: contain;
-            border-radius: 4px;
-            border: 2px solid var(--primary); /* Optional border */
-        }
-        .lightbox-close,
-        .lightbox-prev,
-        .lightbox-next {
-            position: absolute;
-            background-color: rgba(30, 30, 30, 0.7);
+            background-color: rgba(30, 30, 30, 0.6);
             color: var(--secondary);
             border: 1px solid var(--secondary);
             border-radius: 50%;
             cursor: pointer;
-            font-size: 1.5rem; /* Adjusted size */
-            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-            z-index: 2; /* Above image and content */
-            width: 40px;
-            height: 40px;
+            font-size: 1.5rem;
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+            z-index: 10002; /* Above content */
+            width: 44px;
+            height: 44px;
             display: flex;
             justify-content: center;
             align-items: center;
             line-height: 1;
         }
-        .lightbox-close:hover,
-        .lightbox-prev:hover,
-        .lightbox-next:hover {
-            background-color: var(--primary);
-            color: var(--light);
-            border-color: var(--light);
-            transform: scale(1.1);
-        }
-        .lightbox-close {
-            top: -15px; /* Position slightly outside */
-            right: -15px;
-            font-size: 1.8rem;
-        }
-        .lightbox-prev {
-            top: 50%;
-            left: -50px; /* Position outside content box */
-            transform: translateY(-50%);
-        }
-        .lightbox-next {
-            top: 50%;
-            right: -50px; /* Position outside content box */
-            transform: translateY(-50%);
-        }
-        /* Media query for smaller screens to bring controls slightly in */
-        @media (max-width: 768px) {
-            .lightbox-prev { left: 5px; }
-            .lightbox-next { right: 5px; }
-            .lightbox-close { top: 5px; right: 5px; }
-            #lightboxImage { max-height: calc(85vh - 50px); }
-        }
+        .lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover { background-color: var(--primary); color: var(--light); border-color: var(--light); transform: scale(1.1); }
+
+        .lightbox-close { top: 20px; right: 20px; font-size: 1.8rem; } /* Adjusted to be clearly on screen */
+        .lightbox-prev { top: 50%; left: 20px; transform: translateY(-50%); }
+        .lightbox-next { top: 50%; right: 20px; transform: translateY(-50%); }
 
 
         .contact-container { display: flex; gap: 3rem; }
@@ -384,11 +332,12 @@
         @keyframes float { 0%, 100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(-20px) translateX(10px); } }
 
         @media (max-width: 992px) { .about-content, .contact-container { flex-direction: column; } .about-image { margin-top: 2rem; } .section-title { font-size: 2rem; } }
-        @media (max-width: 768px) { header { padding: 1rem 5%; } .logo-text { font-size: 1.2rem; } nav ul { gap: 1rem; } .hero-title { font-size: 2.5rem; } .hero-subtitle { font-size: 1.2rem; } section { padding: 4rem 5%; }
-            .lightbox-prev { left: 10px; } /* Adjusted for smaller screens */
-            .lightbox-next { right: 10px; } /* Adjusted for smaller screens */
-            .lightbox-close { top: 10px; right: 10px; } /* Adjusted for smaller screens */
-            #lightboxImage { max-height: calc(85vh - 70px); }
+        @media (max-width: 768px) {
+            header { padding: 1rem 5%; } .logo-text { font-size: 1.2rem; } nav ul { gap: 1rem; } .hero-title { font-size: 2.5rem; } .hero-subtitle { font-size: 1.2rem; } section { padding: 4rem 5%; }
+            .lightbox-prev { left: 10px; width: 38px; height: 38px; font-size: 1.2rem; }
+            .lightbox-next { right: 10px; width: 38px; height: 38px; font-size: 1.2rem; }
+            .lightbox-close { top: 10px; right: 10px; width: 38px; height: 38px; font-size: 1.5rem;}
+            #lightboxImage { max-height: calc(85vh - 60px); }
         }
         @media (max-width: 576px) { .logo-img { height: 40px; } .logo-text { font-size: 1rem; } .logo-subtext { font-size: 0.6rem; letter-spacing: 2px; } nav { display: none; } .hero-title { font-size: 2rem; } .evidence-grid { grid-template-columns: 1fr; } }
     </style>
@@ -407,7 +356,7 @@
     </section>
 
     <section id="about"> <h2 class="section-title">OUR STORY</h2> <div class="section-content about-content"> <div class="about-text"> <p>Founded in late 2024, Lake Erie Shadow Hunters is a unique father-and-son paranormal investigation team based in Ashtabula, Ohio. Christian and his 13-year-old son Caden (who many say is the youngest investigator they know) explore haunted locations throughout Ohio and maybe even other states 👀.</p> <p>What began as a shared interest in the paranormal has grown into a special bonding experience that strengthens our relationship while documenting the paranormal. We're passionate about sharing our experiences with the world.</p> <p>Our approach combines traditional paranormal research methods with the fresh perspective of a new generation, creating a unique dynamic that helps us connect with both spirits and our growing audience.</p> </div> <div class="about-image"> </div> </div> </section>
-    <section id="team"> <h2 class="section-title">MEET THE TEAM</h2> <div class="section-content"> <div class="team-container"> <div class="team-member"> <h3 class="member-name">CHRISTIAN</h3> <span class="member-role">Father</span> <p class="member-bio">Starting in late 2024 my dad and me have been obsessed with the paranormal, he's always had his own personal experiences and loves being able to support me and do investigations with me.</p> <p class="member-fact">"I love getting to spend time with my son and explore another side of life that many people are scared to dive into."</p> </div> <div class="team-member"> <h3 class="member-name">CADEN</h3> <span class="member-role">Son</span> <p class="member-bio">At just 13 years old, I've become one of the youngest investigators known by some people. My fresh perspective and natural sensitivity to spiritual energy make me an invaluable team member.</p> <p class="member-fact">"I love investigating with my dad - it's a special connection not many people have"</p> </div> </div> </div> </section>
+    <section id="team"> <h2 class="section-title">MEET THE TEAM</h2> <div class="section-content"> <div class="team-container"> <div class="team-member"> <h3 class="member-name">CHRISTIAN</h3> <span class="member-role">Father</span> <p class="member-bio">Starting in late 2024 my dad and me have been obsessed with the paranormal, he's always had his own personal experiences and loves being able to support me and do investigations with me.</p> <p class="member-fact">"I love getting to spend time with my son and explore another side of life that many people are scared to dive into."</p> </div> <div class="team-member"> <h3 class="member-name">CADEN</h3> <span class="member-role">Son</span> <p class="member-bio">At just 13 years old, I'm become one of the youngest investigators known by some people. My fresh perspective and natural sensitivity to spiritual energy make me an invaluable team member.</p> <p class="member-fact">"I love investigating with my dad - it's a special connection not many people have"</p> </div> </div> </div> </section>
     <section id="equipment" class="equipment-section"> <h2 class="section-title">OUR GEAR</h2> <div class="section-content"> <div class="equipment-grid"> <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-broadcast-tower"></i></div> <h3 class="equipment-name">SB7 Spirit Box</h3> <p>Radio sweep device for real-time communication</p> </div> <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-ghost"></i></div> <h3 class="equipment-name">REM Pod</h3> <p>Electromagnetic field disturbance detector</p> </div> <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-lightbulb"></i></div> <h3 class="equipment-name">Catballs</h3> <p>Motion-activated light devices</p> </div> <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-wave-square"></i></div> <h3 class="equipment-name">EMF Detector</h3> <p>Measures electromagnetic fluctuations</p> </div> <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-microphone"></i></div> <h3 class="equipment-name">EVP Recorder</h3> <p>Captures electronic voice phenomena</p> </div> <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-bell"></i></div> <h3 class="equipment-name">Dead Bell</h3> <p>Traditional device for spirit communication</p> </div> <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-project-diagram"></i></div> <h3 class="equipment-name">DOTS Projector</h3> <p>Laser grid for detecting movement</p> </div> <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-video"></i></div> <h3 class="equipment-name">Night Vision Cameras</h3> <p>Full-spectrum video documentation</p> </div> </div> </div> </section>
 
     <section id="evidence">
@@ -415,7 +364,9 @@
         <div class="section-content evidence-grid">
             <div class="evidence-item" data-photos='["https://ewscripps.brightspotcdn.com/dims4/default/276469f/2147483647/strip/true/crop/1786x1005+0+65/resize/1280x720!/quality/90/?url=http%3A%2F%2Fewscripps-brightspot.s3.amazonaws.com%2F9a%2Fdd%2Fdb3223e046e2ba8bc1d8a113258b%2Fscreen-shot-2019-03-05-at-8.07.33%20PM.png", "https://www.onlyinyourstate.com/wp-content/uploads/2016/01/5-Madison-Seminary-2-700x466.jpg", "https://media-cdn.tripadvisor.com/media/photo-s/1c/09/aa/9c/madison-seminary.jpg"]'>
                 <div class="evidence-image-wrapper">
-                    <img src="https://ewscripps.brightspotcdn.com/dims4/default/276469f/2147483647/strip/true/crop/1786x1005+0+65/resize/1280x720!/quality/90/?url=http%3A%2F%2Fewscripps-brightspot.s3.amazonaws.com%2F9a%2Fdd%2Fdb3223e046e2ba8bc1d8a113258b%2Fscreen-shot-2019-03-05-at-8.07.33%20PM.png" alt="Madison State Seminary" class="evidence-img">
+                    <img class="evidence-img evidence-img-main" src="" alt="Madison State Seminary"> {/* Src set by JS */}
+                    <img class="evidence-img-stack evidence-img-stack-1" src="" alt="" style="display: none;">
+                    <img class="evidence-img-stack evidence-img-stack-2" src="" alt="" style="display: none;">
                     <div class="evidence-overlay">
                         <span class="overlay-text"><strong><u>Click to view photos</u></strong></span>
                     </div>
@@ -428,7 +379,9 @@
             </div>
             <div class="evidence-item" data-photos='["https://upload.wikimedia.org/wikipedia/commons/9/99/Fairfield_County_Infirmary.jpg", "https://live.staticflickr.com/4167/33650989824_0af9d08af1_b.jpg", "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/3f/a6/66/photo0jpg.jpg?w=1200&h=-1&s=1"]'>
                 <div class="evidence-image-wrapper">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Fairfield_County_Infirmary.jpg" alt="Fairfield Infirmary" class="evidence-img">
+                    <img class="evidence-img evidence-img-main" src="" alt="Fairfield Infirmary"> {/* Src set by JS */}
+                    <img class="evidence-img-stack evidence-img-stack-1" src="" alt="" style="display: none;">
+                    <img class="evidence-img-stack evidence-img-stack-2" src="" alt="" style="display: none;">
                     <div class="evidence-overlay">
                          <span class="overlay-text"><strong><u>Click to view photos</u></strong></span>
                     </div>
@@ -439,7 +392,7 @@
                     <p>During our overnight investigation, we did not get much activity but getting to be there and soak in it's rich history was awesome.</p>
                 </div>
             </div>
-            {/* Add more .evidence-item divs here with their respective data-photos and content */}
+            {/* Ensure any other .evidence-item divs also have the new wrapper and stack image structure, and the data-photos attribute */}
         </div>
     </section>
 
@@ -450,9 +403,9 @@
         <div class="lightbox-backdrop"></div>
         <div class="lightbox-content">
             <img id="lightboxImage" src="" alt="Evidence Photo">
-            <button class="lightbox-close" aria-label="Close gallery">&times;</button>
-            <button class="lightbox-prev" aria-label="Previous photo">&#10094;</button>
-            <button class="lightbox-next" aria-label="Next photo">&#10095;</button>
+            <button class="lightbox-close" aria-label="Close gallery">×</button>
+            <button class="lightbox-prev" aria-label="Previous photo">❮</button>
+            <button class="lightbox-next" aria-label="Next photo">❯</button>
         </div>
     </div>
 
@@ -524,7 +477,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     if (header && header.style.opacity === '0') header.style.opacity = '1';
                                     initIntersectionObserver();
                                     animateTitle();
-                                    initializePhotoGallery(); // Initialize the new gallery feature
+                                    initializePhotoGallery();
                                 }, 1000);
                             }, 1000);
                         } else {
@@ -538,7 +491,7 @@ document.addEventListener('DOMContentLoaded', function() {
                              });
                              initIntersectionObserver();
                              animateTitle();
-                             initializePhotoGallery(); // Initialize the new gallery feature
+                             initializePhotoGallery();
                         }
                     }, 500);
                 }, 500);
@@ -556,7 +509,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         initIntersectionObserver();
         animateTitle();
-        initializePhotoGallery(); // Initialize the new gallery feature
+        initializePhotoGallery();
     }
 
     function initIntersectionObserver() {
@@ -599,7 +552,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // --- NEW PHOTO GALLERY/LIGHTBOX SCRIPT ---
+    // --- PHOTO GALLERY/LIGHTBOX SCRIPT ---
     function initializePhotoGallery() {
         const evidenceItems = document.querySelectorAll('.evidence-item');
         const lightbox = document.getElementById('photoLightbox');
@@ -623,22 +576,60 @@ document.addEventListener('DOMContentLoaded', function() {
             const overlay = item.querySelector('.evidence-overlay');
             const photoData = item.dataset.photos;
 
-            if (imageWrapper && photoData) {
+            const mainImageEl = imageWrapper.querySelector('.evidence-img-main');
+            const stackImage1El = imageWrapper.querySelector('.evidence-img-stack-1');
+            const stackImage2El = imageWrapper.querySelector('.evidence-img-stack-2');
+
+
+            if (imageWrapper && photoData && mainImageEl && stackImage1El && stackImage2El) {
                 let photos;
                 try {
                     photos = JSON.parse(photoData);
                     if (!Array.isArray(photos)) throw new Error("Photo data is not an array");
                 } catch (e) {
                     console.error('Error parsing photo data for item:', item, e);
-                    photos = []; // Default to empty if error
+                    photos = [];
                 }
+
+                // Populate images for stack effect
+                if (photos.length > 0) {
+                    mainImageEl.src = photos[0];
+                    mainImageEl.alt = item.querySelector('.evidence-title')?.textContent || 'Evidence Photo';
+
+                    if (photos.length > 1) {
+                        stackImage1El.src = photos[1];
+                        stackImage1El.style.display = 'block';
+                        stackImage1El.classList.add('has-image'); // Add class if image exists
+                    } else {
+                        stackImage1El.style.display = 'none';
+                        stackImage1El.classList.remove('has-image');
+                    }
+                    if (photos.length > 2) {
+                        stackImage2El.src = photos[2];
+                        stackImage2El.style.display = 'block';
+                        stackImage2El.classList.add('has-image');
+                    } else {
+                        stackImage2El.style.display = 'none';
+                        stackImage2El.classList.remove('has-image');
+                    }
+                } else { // No photos, hide stack elements and main image placeholder
+                    mainImageEl.src = ''; // Or a placeholder image
+                    mainImageEl.alt = 'No photos available';
+                    stackImage1El.style.display = 'none';
+                    stackImage1El.classList.remove('has-image');
+                    stackImage2El.style.display = 'none';
+                    stackImage2El.classList.remove('has-image');
+                }
+
 
                 if (!isMobile) { // Desktop: Hover and Click
                     imageWrapper.addEventListener('mouseenter', () => {
-                        if (overlay && photos.length > 0) overlay.classList.add('active');
+                        if (photos.length > 0 && overlay) overlay.classList.add('active');
+                        if (photos.length > 1) imageWrapper.classList.add('stack-hover-effect');
                     });
                     imageWrapper.addEventListener('mouseleave', () => {
                         if (overlay) overlay.classList.remove('active');
+                        imageWrapper.classList.remove('stack-hover-effect');
                     });
                     imageWrapper.addEventListener('click', (e) => {
                         e.preventDefault();
@@ -673,16 +664,14 @@ document.addEventListener('DOMContentLoaded', function() {
         function updateLightboxImage() {
             if (currentPhotos.length > 0 && currentIndex >= 0 && currentIndex < currentPhotos.length) {
                 lightboxImage.src = currentPhotos[currentIndex];
+                lightboxImage.alt = `Evidence Photo ${currentIndex + 1} of ${currentPhotos.length}`;
             } else {
-                // Handle case where there are no photos or index is out of bounds (e.g., show a placeholder or close)
-                console.warn("No photos to display or index out of bounds.");
-                // closeLightbox(); // Optionally close if no image
+                lightboxImage.src = ''; // Clear if no image
+                lightboxImage.alt = 'No photo to display';
             }
-            // Show/hide arrows based on if there are multiple photos and current position
             lightboxPrevBtn.style.display = currentPhotos.length > 1 ? 'flex' : 'none';
             lightboxNextBtn.style.display = currentPhotos.length > 1 ? 'flex' : 'none';
         }
-
 
         function showNextImage() {
             if (currentPhotos.length === 0) return;
@@ -697,7 +686,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         lightboxCloseBtn.addEventListener('click', closeLightbox);
-        lightboxBackdrop.addEventListener('click', closeLightbox); // Click backdrop to close
+        lightboxBackdrop.addEventListener('click', closeLightbox);
         lightboxPrevBtn.addEventListener('click', showPrevImage);
         lightboxNextBtn.addEventListener('click', showNextImage);
 
@@ -712,11 +701,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
-    } // End of initializePhotoGallery
+    }
+});
 
-}); // End of DOMContentLoaded
-
-// Smooth Scroll for Welcome Button (remains the same)
+// Smooth Scroll for Welcome Button
 document.querySelector('.hero-btn')?.addEventListener('click', function(e) {
     e.preventDefault();
     const headerOffset = document.querySelector('header')?.offsetHeight || 70;
@@ -728,7 +716,7 @@ document.querySelector('.hero-btn')?.addEventListener('click', function(e) {
     setTimeout(() => { this.style.boxShadow = 'var(--glow)'; }, 500);
 });
 
-// Contact Form Submission (remains the same)
+// Contact Form Submission
 document.getElementById('contactForm')?.addEventListener('submit', async function(e) {
     e.preventDefault();
     const form = e.target;
