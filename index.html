@@ -186,15 +186,172 @@
         .equipment-item:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: var(--glow); }
         .equipment-icon { font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem; }
         .equipment-name { font-size: 1.2rem; color: var(--secondary); margin-bottom: 0.5rem; }
+
+        /* --- Evidence Item Overlay (NEW/MODIFIED CSS) --- */
+        .evidence-image-wrapper {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            display: block; /* Ensure it behaves like a block for image child */
+            border-radius: inherit; /* Inherit from .evidence-item if it has one */
+        }
+        .evidence-image-wrapper .evidence-img { /* Ensure image within wrapper is block and full width */
+            display: block;
+            width: 100%;
+            height: auto; /* Maintain aspect ratio, or set fixed height if needed */
+            transition: transform 0.3s ease; /* Optional: slight zoom on hover */
+        }
+        .evidence-item:hover .evidence-image-wrapper .evidence-img {
+             /* filter: grayscale(0%) contrast(1.2) brightness(0.8); /* Dim image slightly on hover */
+             /* transform: scale(1.05); /* Optional zoom effect */
+        }
+        .evidence-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 10, 20, 0.7); /* Slightly bluish dark overlay */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            border-radius: inherit;
+            z-index: 1;
+        }
+        .evidence-overlay.active { /* Class to show overlay via JS for desktop hover */
+            opacity: 1;
+            visibility: visible;
+        }
+        .overlay-text {
+            color: var(--secondary); /* Cyan text */
+            font-size: 1.2rem; /* Increased size a bit */
+            text-align: center;
+            padding: 15px;
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.7); /* Add glow to text */
+        }
+        .overlay-text strong u {
+            /* Default browser styling for bold and underline is usually sufficient */
+            /* You can add more specific styling here if needed */
+        }
+
+        /* --- Original Evidence Item styles --- */
         .evidence-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
         .evidence-item { background: rgba(20, 20, 20, 0.7); border-radius: 10px; overflow: hidden; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); }
         .evidence-item p { color: var(--light); }
         .evidence-item:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), var(--glow); }
-        .evidence-img { width: 100%; height: 200px; object-fit: cover; filter: grayscale(30%) contrast(1.1); transition: filter 0.3s ease; }
-        .evidence-item:hover .evidence-img { filter: grayscale(0%) contrast(1.2); }
+        /* .evidence-img is now inside .evidence-image-wrapper */
+        .evidence-item:hover .evidence-image-wrapper .evidence-img {
+             filter: grayscale(0%) contrast(1.1) brightness(0.7); /* Keep this for dimming effect */
+        }
         .evidence-info { padding: 1.5rem; }
         .evidence-title { font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--secondary); }
         .evidence-date { color: var(--primary); font-size: 0.9rem; margin-bottom: 1rem; display: block; }
+
+
+        /* --- Lightbox Modal (NEW CSS) --- */
+        body.lightbox-open {
+            overflow: hidden;
+        }
+        .lightbox-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            display: none; /* Flex will be added by JS */
+            justify-content: center;
+            align-items: center;
+            padding: 20px; /* Padding for smaller screens */
+        }
+        .lightbox-modal.show {
+            display: flex;
+        }
+        .lightbox-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85); /* Darker backdrop */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            cursor: pointer; /* Indicate backdrop can be clicked to close */
+        }
+        .lightbox-content {
+            position: relative;
+            background-color: var(--darker);
+            padding: 15px;
+            border-radius: 8px;
+            max-width: 90vw;
+            max-height: 90vh;
+            display: flex; /* For centering the image if it's smaller */
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+            z-index: 1; /* Above backdrop */
+        }
+        #lightboxImage {
+            max-width: 100%;
+            max-height: calc(90vh - 60px); /* Account for padding and some button room */
+            object-fit: contain;
+            border-radius: 4px;
+            border: 2px solid var(--primary); /* Optional border */
+        }
+        .lightbox-close,
+        .lightbox-prev,
+        .lightbox-next {
+            position: absolute;
+            background-color: rgba(30, 30, 30, 0.7);
+            color: var(--secondary);
+            border: 1px solid var(--secondary);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem; /* Adjusted size */
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+            z-index: 2; /* Above image and content */
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 1;
+        }
+        .lightbox-close:hover,
+        .lightbox-prev:hover,
+        .lightbox-next:hover {
+            background-color: var(--primary);
+            color: var(--light);
+            border-color: var(--light);
+            transform: scale(1.1);
+        }
+        .lightbox-close {
+            top: -15px; /* Position slightly outside */
+            right: -15px;
+            font-size: 1.8rem;
+        }
+        .lightbox-prev {
+            top: 50%;
+            left: -50px; /* Position outside content box */
+            transform: translateY(-50%);
+        }
+        .lightbox-next {
+            top: 50%;
+            right: -50px; /* Position outside content box */
+            transform: translateY(-50%);
+        }
+        /* Media query for smaller screens to bring controls slightly in */
+        @media (max-width: 768px) {
+            .lightbox-prev { left: 5px; }
+            .lightbox-next { right: 5px; }
+            .lightbox-close { top: 5px; right: 5px; }
+            #lightboxImage { max-height: calc(85vh - 50px); }
+        }
+
+
         .contact-container { display: flex; gap: 3rem; }
         .contact-info { flex: 1; }
         .contact-info h3 { color: var(--secondary); margin-bottom: 1.5rem; font-size: 1.5rem; }
@@ -227,7 +384,12 @@
         @keyframes float { 0%, 100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(-20px) translateX(10px); } }
 
         @media (max-width: 992px) { .about-content, .contact-container { flex-direction: column; } .about-image { margin-top: 2rem; } .section-title { font-size: 2rem; } }
-        @media (max-width: 768px) { header { padding: 1rem 5%; } .logo-text { font-size: 1.2rem; } nav ul { gap: 1rem; } .hero-title { font-size: 2.5rem; } .hero-subtitle { font-size: 1.2rem; } section { padding: 4rem 5%; } }
+        @media (max-width: 768px) { header { padding: 1rem 5%; } .logo-text { font-size: 1.2rem; } nav ul { gap: 1rem; } .hero-title { font-size: 2.5rem; } .hero-subtitle { font-size: 1.2rem; } section { padding: 4rem 5%; }
+            .lightbox-prev { left: 10px; } /* Adjusted for smaller screens */
+            .lightbox-next { right: 10px; } /* Adjusted for smaller screens */
+            .lightbox-close { top: 10px; right: 10px; } /* Adjusted for smaller screens */
+            #lightboxImage { max-height: calc(85vh - 70px); }
+        }
         @media (max-width: 576px) { .logo-img { height: 40px; } .logo-text { font-size: 1rem; } .logo-subtext { font-size: 0.6rem; letter-spacing: 2px; } nav { display: none; } .hero-title { font-size: 2rem; } .evidence-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -247,9 +409,52 @@
     <section id="about"> <h2 class="section-title">OUR STORY</h2> <div class="section-content about-content"> <div class="about-text"> <p>Founded in late 2024, Lake Erie Shadow Hunters is a unique father-and-son paranormal investigation team based in Ashtabula, Ohio. Christian and his 13-year-old son Caden (who many say is the youngest investigator they know) explore haunted locations throughout Ohio and maybe even other states 👀.</p> <p>What began as a shared interest in the paranormal has grown into a special bonding experience that strengthens our relationship while documenting the paranormal. We're passionate about sharing our experiences with the world.</p> <p>Our approach combines traditional paranormal research methods with the fresh perspective of a new generation, creating a unique dynamic that helps us connect with both spirits and our growing audience.</p> </div> <div class="about-image"> </div> </div> </section>
     <section id="team"> <h2 class="section-title">MEET THE TEAM</h2> <div class="section-content"> <div class="team-container"> <div class="team-member"> <h3 class="member-name">CHRISTIAN</h3> <span class="member-role">Father</span> <p class="member-bio">Starting in late 2024 my dad and me have been obsessed with the paranormal, he's always had his own personal experiences and loves being able to support me and do investigations with me.</p> <p class="member-fact">"I love getting to spend time with my son and explore another side of life that many people are scared to dive into."</p> </div> <div class="team-member"> <h3 class="member-name">CADEN</h3> <span class="member-role">Son</span> <p class="member-bio">At just 13 years old, I'm become one of the youngest investigators known by some people. My fresh perspective and natural sensitivity to spiritual energy make me an invaluable team member.</p> <p class="member-fact">"I love investigating with my dad - it's a special connection not many people have"</p> </div> </div> </div> </section>
     <section id="equipment" class="equipment-section"> <h2 class="section-title">OUR GEAR</h2> <div class="section-content"> <div class="equipment-grid"> <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-broadcast-tower"></i></div> <h3 class="equipment-name">SB7 Spirit Box</h3> <p>Radio sweep device for real-time communication</p> </div> <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-ghost"></i></div> <h3 class="equipment-name">REM Pod</h3> <p>Electromagnetic field disturbance detector</p> </div> <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-lightbulb"></i></div> <h3 class="equipment-name">Catballs</h3> <p>Motion-activated light devices</p> </div> <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-wave-square"></i></div> <h3 class="equipment-name">EMF Detector</h3> <p>Measures electromagnetic fluctuations</p> </div> <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-microphone"></i></div> <h3 class="equipment-name">EVP Recorder</h3> <p>Captures electronic voice phenomena</p> </div> <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-bell"></i></div> <h3 class="equipment-name">Dead Bell</h3> <p>Traditional device for spirit communication</p> </div> <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-project-diagram"></i></div> <h3 class="equipment-name">DOTS Projector</h3> <p>Laser grid for detecting movement</p> </div> <div class="equipment-item"> <div class="equipment-icon"><i class="fas fa-video"></i></div> <h3 class="equipment-name">Night Vision Cameras</h3> <p>Full-spectrum video documentation</p> </div> </div> </div> </section>
-    <section id="evidence"> <h2 class="section-title">PLACES WE HAVE INVESTIGATED</h2> <div class="section-content evidence-grid"> <div class="evidence-item"> <img src="https://ewscripps.brightspotcdn.com/dims4/default/276469f/2147483647/strip/true/crop/1786x1005+0+65/resize/1280x720!/quality/90/?url=http%3A%2F%2Fewscripps-brightspot.s3.amazonaws.com%2F9a%2Fdd%2Fdb3223e046e2ba8bc1d8a113258b%2Fscreen-shot-2019-03-05-at-8.07.33%20PM.png" alt="Madison State Seminary" class="evidence-img"> <div class="evidence-info"> <h3 class="evidence-title">Madison State Seminary</h3> <span class="evidence-date">Madison, Ohio</span> <p>Our investigation of this historic location captured several intelligent responses through our spirit box and multiple EMF spikes, heard a little girl voice, my father felt a hand on his back, and had insane activity with the rem-pod.</p> </div> </div> <div class="evidence-item"> <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Fairfield_County_Infirmary.jpg" alt="Fairfield Infirmary" class="evidence-img"> <div class="evidence-info"> <h3 class="evidence-title">Fairfield Infirmary</h3> <span class="evidence-date">Fairfield, Ohio</span> <p>During our overnight investigation, we did not get much activity but getting to be there and soak in it's rich history was awesome.</p> </div> </div> </div> </section>
+
+    <section id="evidence">
+        <h2 class="section-title">PLACES WE HAVE INVESTIGATED</h2>
+        <div class="section-content evidence-grid">
+            <div class="evidence-item" data-photos='["https://ewscripps.brightspotcdn.com/dims4/default/276469f/2147483647/strip/true/crop/1786x1005+0+65/resize/1280x720!/quality/90/?url=http%3A%2F%2Fewscripps-brightspot.s3.amazonaws.com%2F9a%2Fdd%2Fdb3223e046e2ba8bc1d8a113258b%2Fscreen-shot-2019-03-05-at-8.07.33%20PM.png", "https://www.onlyinyourstate.com/wp-content/uploads/2016/01/5-Madison-Seminary-2-700x466.jpg", "https://media-cdn.tripadvisor.com/media/photo-s/1c/09/aa/9c/madison-seminary.jpg"]'>
+                <div class="evidence-image-wrapper">
+                    <img src="https://ewscripps.brightspotcdn.com/dims4/default/276469f/2147483647/strip/true/crop/1786x1005+0+65/resize/1280x720!/quality/90/?url=http%3A%2F%2Fewscripps-brightspot.s3.amazonaws.com%2F9a%2Fdd%2Fdb3223e046e2ba8bc1d8a113258b%2Fscreen-shot-2019-03-05-at-8.07.33%20PM.png" alt="Madison State Seminary" class="evidence-img">
+                    <div class="evidence-overlay">
+                        <span class="overlay-text"><strong><u>Click to view photos</u></strong></span>
+                    </div>
+                </div>
+                <div class="evidence-info">
+                    <h3 class="evidence-title">Madison State Seminary</h3>
+                    <span class="evidence-date">Madison, Ohio</span>
+                    <p>Our investigation of this historic location captured several intelligent responses through our spirit box and multiple EMF spikes, heard a little girl voice, my father felt a hand on his back, and had insane activity with the rem-pod.</p>
+                </div>
+            </div>
+            <div class="evidence-item" data-photos='["https://upload.wikimedia.org/wikipedia/commons/9/99/Fairfield_County_Infirmary.jpg", "https://live.staticflickr.com/4167/33650989824_0af9d08af1_b.jpg", "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/3f/a6/66/photo0jpg.jpg?w=1200&h=-1&s=1"]'>
+                <div class="evidence-image-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Fairfield_County_Infirmary.jpg" alt="Fairfield Infirmary" class="evidence-img">
+                    <div class="evidence-overlay">
+                         <span class="overlay-text"><strong><u>Click to view photos</u></strong></span>
+                    </div>
+                </div>
+                <div class="evidence-info">
+                    <h3 class="evidence-title">Fairfield Infirmary</h3>
+                    <span class="evidence-date">Fairfield, Ohio</span>
+                    <p>During our overnight investigation, we did not get much activity but getting to be there and soak in it's rich history was awesome.</p>
+                </div>
+            </div>
+            {/* Add more .evidence-item divs here with their respective data-photos and content */}
+        </div>
+    </section>
+
     <section id="contact"> <h2 class="section-title">CONTACT US</h2> <div class="section-content contact-container"> <div class="contact-info"> <h3>REPORT A SIGHTING</h3> <div class="contact-details"> <p><i class="fas fa-envelope"></i> lakeeriesoulseekers@gmail.com</p> <p><i class="fas fa-map-marker-alt"></i> Ashtabula, Ohio</p> </div> <h3>FOLLOW OUR INVESTIGATIONS</h3> <div class="social-links"> <a href="https://www.tiktok.com/@lake.erie.shadow.hunters" target="_blank" class="social-link"><i class="fab fa-tiktok"></i></a> <a href="https://www.youtube.com/channel/UC-UIQJkH3wS0OibYvaEI44g" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a> <a href="https://www.instagram.com/lake_erie_shadow_hunters/" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a> </div> </div> <form id="contactForm" class="contact-form"> <div class="form-group"> <label for="name">Your Name</label> <input type="text" id="name" name="name" class="form-control" required> </div> <div class="form-group"> <label for="email">Email Address</label> <input type="email" id="email" name="email" class="form-control" required> </div> <div class="form-group"> <label for="location">Location of Sighting</label> <input type="text" id="location" name="location" class="form-control" required> </div> <div class="form-group"> <label for="message">Details of Your Experience</label> <textarea id="message" name="message" class="form-control" required></textarea> </div> <button type="submit" class="submit-btn">SEND REPORT</button> <div class="security-message"> <i class="fas fa-lock"></i> <span>Your information is sent securely directly to our team</span> </div> <div id="formMessage"></div> </form> </div> </section>
     <footer> <div class="footer-content"> <div class="footer-logo"> <img src="https://raw.githubusercontent.com/Vexo1234/picassetsssss/main/channels4_profile_modified__1_683cdfdfd0d75_png.png" alt="Lake Erie Shadow Hunters Logo"> <span class="footer-logo-text">LAKE ERIE SHADOW HUNTERS</span> </div> <div class="footer-links"> <a href="#home">Home</a> <a href="#about">About</a> <a href="#team">Our Team</a> <a href="#equipment">Equipment</a> <a href="#evidence">Evidence</a> <a href="#contact">Contact</a> </div> <p class="copyright">© 2025 Lake Erie Shadow Hunters. All rights reserved.</p> </div> </footer>
+
+    <div id="photoLightbox" class="lightbox-modal">
+        <div class="lightbox-backdrop"></div>
+        <div class="lightbox-content">
+            <img id="lightboxImage" src="" alt="Evidence Photo">
+            <button class="lightbox-close" aria-label="Close gallery">&times;</button>
+            <button class="lightbox-prev" aria-label="Previous photo">&#10094;</button>
+            <button class="lightbox-next" aria-label="Next photo">&#10095;</button>
+        </div>
+    </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -260,10 +465,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const logoLoadingContainer = document.querySelector('.logo-loading-container');
     const headerLogoContainer = document.querySelector('.logo-container');
     const header = document.querySelector('header');
-    
+
     if (header) header.style.opacity = '0';
-    
-    document.querySelectorAll('body > *:not(#loading-screen):not(.logo-loading-container):not(script)').forEach(el => {
+
+    document.querySelectorAll('body > *:not(#loading-screen):not(.logo-loading-container):not(script):not(#photoLightbox)').forEach(el => {
         el.style.opacity = '0';
     });
 
@@ -272,159 +477,250 @@ document.addEventListener('DOMContentLoaded', function() {
     const duration = 3500;
     const intervalTime = 30;
     const increments = (intervalTime / duration) * targetProgress;
-    
+
     if (progressBarFill && progressCounter && loadingText) {
         const loadingInterval = setInterval(() => {
             progress += increments;
             progress = Math.min(progress, targetProgress);
-            
             progressBarFill.style.width = progress + '%';
             progressCounter.textContent = Math.round(progress) + '%';
-            
             if (progress < 30) { loadingText.textContent = 'Initializing'; }
             else if (progress < 70) { loadingText.textContent = 'Loading Resources'; }
             else { loadingText.textContent = 'Almost There'; }
-            
+
             if (progress >= targetProgress) {
                 clearInterval(loadingInterval);
                 progressCounter.textContent = '100%';
                 loadingText.textContent = 'Ready';
-                
                 setTimeout(() => {
                     if (loadingScreen) loadingScreen.style.opacity = '0';
                     if (logoLoadingContainer) logoLoadingContainer.style.opacity = '1';
-                    
                     setTimeout(() => {
                         if (headerLogoContainer && logoLoadingContainer) {
                             const headerRect = headerLogoContainer.getBoundingClientRect();
                             const logoFinalHeight = 50;
                             const finalTop = headerRect.top + (headerRect.height / 2) - (logoFinalHeight / 2);
                             const finalLeft = headerRect.left;
-                            
                             logoLoadingContainer.style.position = 'fixed';
                             logoLoadingContainer.style.top = finalTop + 'px';
                             logoLoadingContainer.style.left = finalLeft + 'px';
                             logoLoadingContainer.style.transform = 'translate(0, 0)';
                             logoLoadingContainer.style.gap = '10px';
-                            
                             const logoLoading = logoLoadingContainer.querySelector('.logo-loading');
                             const logoTextLoading = logoLoadingContainer.querySelector('.logo-text-loading');
-                            
                             if (logoLoading) logoLoading.style.height = logoFinalHeight + 'px';
                             if (logoTextLoading) logoTextLoading.style.fontSize = '1.5rem';
-                            
                             setTimeout(() => {
                                 if (header) header.style.opacity = '1';
                                 if (logoLoadingContainer) logoLoadingContainer.style.opacity = '0';
-                                
                                 setTimeout(() => {
                                     if (loadingScreen) loadingScreen.remove();
                                     if (logoLoadingContainer) logoLoadingContainer.remove();
-                                    document.querySelectorAll('body > *:not(script)').forEach(el => {
-                                        if(el !== header && (!el.classList || (!el.classList.contains('orb') && !el.classList.contains('ghost')))) { 
+                                    document.querySelectorAll('body > *:not(script):not(#photoLightbox)').forEach(el => {
+                                        if(el !== header && (!el.classList || (!el.classList.contains('orb') && !el.classList.contains('ghost')))) {
                                             el.style.opacity = '1';
                                         }
                                     });
                                     if (header && header.style.opacity === '0') header.style.opacity = '1';
-                                    
-                                    initIntersectionObserver(); // Initialize section animations
-                                    animateTitle(); // Initialize hero title animation
+                                    initIntersectionObserver();
+                                    animateTitle();
+                                    initializePhotoGallery(); // Initialize the new gallery feature
                                 }, 1000);
                             }, 1000);
-                        } else { // Fallback
+                        } else {
                              if (header) header.style.opacity = '1';
                              if (loadingScreen) loadingScreen.remove();
                              if (logoLoadingContainer) logoLoadingContainer.remove();
-                             document.querySelectorAll('body > *:not(script)').forEach(el => { 
+                             document.querySelectorAll('body > *:not(script):not(#photoLightbox)').forEach(el => {
                                 if (!el.classList || (!el.classList.contains('orb') && !el.classList.contains('ghost'))) {
-                                   el.style.opacity = '1'; 
+                                   el.style.opacity = '1';
                                 }
                              });
                              initIntersectionObserver();
                              animateTitle();
+                             initializePhotoGallery(); // Initialize the new gallery feature
                         }
                     }, 500);
                 }, 500);
             }
         }, intervalTime);
-    } else { // Fallback if loading elements are missing
-        console.warn('Loading elements (progressBarFill, progressCounter, or loadingText) not found, skipping loading animation.');
+    } else {
+        console.warn('Loading elements not found, skipping loading animation.');
         if (loadingScreen) loadingScreen.remove();
         if (logoLoadingContainer) logoLoadingContainer.remove();
         if (header) header.style.opacity = '1';
-        document.querySelectorAll('body > *:not(script)').forEach(el => {
+        document.querySelectorAll('body > *:not(script):not(#photoLightbox)').forEach(el => {
             if (!el.classList || (!el.classList.contains('orb') && !el.classList.contains('ghost'))) {
                 el.style.opacity = '1';
             }
         });
         initIntersectionObserver();
         animateTitle();
+        initializePhotoGallery(); // Initialize the new gallery feature
     }
 
     function initIntersectionObserver() {
-        const sections = document.querySelectorAll('section:not(.hero)'); // Exclude hero from this specific observer logic if it has its own
+        const sections = document.querySelectorAll('section:not(.hero)');
         if (sections.length === 0) return;
-        
-        const observerOptions = {
-            threshold: 0.1, 
-            rootMargin: '0px 0px -50px 0px' 
-        };
-        
-        const observer = new IntersectionObserver((entries, obs) => { 
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries, obs) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('section-visible');
-                    obs.unobserve(entry.target); 
+                    obs.unobserve(entry.target);
                 }
             });
         }, observerOptions);
-        
-        sections.forEach(section => {
-            // Initial state is now handled by CSS: section {} rules
-            observer.observe(section);
-        });
+        sections.forEach(section => { observer.observe(section); });
     }
 
     function animateTitle() {
         const title = document.getElementById('animated-title');
         if (!title) { console.warn('#animated-title element not found'); return; }
-        
-        // Use a data-text attribute if present, otherwise use textContent.
-        // This helps if the initial HTML text is different or just a placeholder.
         const textToAnimate = title.dataset.text || title.textContent.trim();
         if (!textToAnimate) { console.warn('No text content found for #animated-title'); return; }
-        
-        title.textContent = ''; // Clear current content to rebuild with spans
-        title.style.opacity = '1'; // Ensure the main H1 is visible (if not already)
-
+        title.textContent = '';
+        title.style.opacity = '1';
         for (let i = 0; i < textToAnimate.length; i++) {
             setTimeout(() => {
                 const span = document.createElement('span');
                 span.textContent = textToAnimate[i];
                 span.style.opacity = '0';
-                span.style.transform = 'translateY(20px)'; 
-                span.style.display = 'inline-block'; 
+                span.style.transform = 'translateY(20px)';
+                span.style.display = 'inline-block';
                 span.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-                // The H1 has gradient styles and color:transparent. Spans will inherit this.
                 title.appendChild(span);
-                
-                // Force reflow/repaint before applying transition end state (good practice)
-                void span.offsetWidth; 
-
-                setTimeout(() => { 
+                void span.offsetWidth;
+                setTimeout(() => {
                     span.style.opacity = '1';
                     span.style.transform = 'translateY(0)';
-                }, 20); // Minimal delay after reflow
-            }, i * 70); // Staggering delay for each letter
+                }, 20);
+            }, i * 70);
         }
     }
-});
+
+    // --- NEW PHOTO GALLERY/LIGHTBOX SCRIPT ---
+    function initializePhotoGallery() {
+        const evidenceItems = document.querySelectorAll('.evidence-item');
+        const lightbox = document.getElementById('photoLightbox');
+        const lightboxImage = document.getElementById('lightboxImage');
+        const lightboxBackdrop = lightbox.querySelector('.lightbox-backdrop');
+        const lightboxCloseBtn = lightbox.querySelector('.lightbox-close');
+        const lightboxPrevBtn = lightbox.querySelector('.lightbox-prev');
+        const lightboxNextBtn = lightbox.querySelector('.lightbox-next');
+
+        if (!lightbox || !lightboxImage || !lightboxCloseBtn || !lightboxPrevBtn || !lightboxNextBtn || !lightboxBackdrop) {
+            console.warn('Lightbox elements not found. Gallery will not function.');
+            return;
+        }
+
+        let currentPhotos = [];
+        let currentIndex = 0;
+        const isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || navigator.msMaxTouchPoints > 0;
+
+        evidenceItems.forEach(item => {
+            const imageWrapper = item.querySelector('.evidence-image-wrapper');
+            const overlay = item.querySelector('.evidence-overlay');
+            const photoData = item.dataset.photos;
+
+            if (imageWrapper && photoData) {
+                let photos;
+                try {
+                    photos = JSON.parse(photoData);
+                    if (!Array.isArray(photos)) throw new Error("Photo data is not an array");
+                } catch (e) {
+                    console.error('Error parsing photo data for item:', item, e);
+                    photos = []; // Default to empty if error
+                }
+
+                if (!isMobile) { // Desktop: Hover and Click
+                    imageWrapper.addEventListener('mouseenter', () => {
+                        if (overlay && photos.length > 0) overlay.classList.add('active');
+                    });
+                    imageWrapper.addEventListener('mouseleave', () => {
+                        if (overlay) overlay.classList.remove('active');
+                    });
+                    imageWrapper.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        if (photos.length > 0) {
+                            openLightbox(photos, 0);
+                        }
+                    });
+                } else { // Mobile: Single Tap
+                    imageWrapper.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        if (photos.length > 0) {
+                            openLightbox(photos, 0);
+                        }
+                    });
+                }
+            }
+        });
+
+        function openLightbox(photos, index) {
+            currentPhotos = photos;
+            currentIndex = index;
+            updateLightboxImage();
+            lightbox.classList.add('show');
+            document.body.classList.add('lightbox-open');
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('show');
+            document.body.classList.remove('lightbox-open');
+        }
+
+        function updateLightboxImage() {
+            if (currentPhotos.length > 0 && currentIndex >= 0 && currentIndex < currentPhotos.length) {
+                lightboxImage.src = currentPhotos[currentIndex];
+            } else {
+                // Handle case where there are no photos or index is out of bounds (e.g., show a placeholder or close)
+                console.warn("No photos to display or index out of bounds.");
+                // closeLightbox(); // Optionally close if no image
+            }
+            // Show/hide arrows based on if there are multiple photos and current position
+            lightboxPrevBtn.style.display = currentPhotos.length > 1 ? 'flex' : 'none';
+            lightboxNextBtn.style.display = currentPhotos.length > 1 ? 'flex' : 'none';
+        }
+
+
+        function showNextImage() {
+            if (currentPhotos.length === 0) return;
+            currentIndex = (currentIndex + 1) % currentPhotos.length;
+            updateLightboxImage();
+        }
+
+        function showPrevImage() {
+            if (currentPhotos.length === 0) return;
+            currentIndex = (currentIndex - 1 + currentPhotos.length) % currentPhotos.length;
+            updateLightboxImage();
+        }
+
+        lightboxCloseBtn.addEventListener('click', closeLightbox);
+        lightboxBackdrop.addEventListener('click', closeLightbox); // Click backdrop to close
+        lightboxPrevBtn.addEventListener('click', showPrevImage);
+        lightboxNextBtn.addEventListener('click', showNextImage);
+
+        document.addEventListener('keydown', (e) => {
+            if (lightbox.classList.contains('show')) {
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                } else if (e.key === 'ArrowRight' && currentPhotos.length > 1) {
+                    showNextImage();
+                } else if (e.key === 'ArrowLeft' && currentPhotos.length > 1) {
+                    showPrevImage();
+                }
+            }
+        });
+    } // End of initializePhotoGallery
+
+}); // End of DOMContentLoaded
 
 // Smooth Scroll for Welcome Button (remains the same)
 document.querySelector('.hero-btn')?.addEventListener('click', function(e) {
     e.preventDefault();
     const headerOffset = document.querySelector('header')?.offsetHeight || 70;
-    const targetSection = document.getElementById('about'); 
+    const targetSection = document.getElementById('about');
     if (!targetSection) return;
     const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - headerOffset;
     window.scrollTo({ top: targetPosition, behavior: 'smooth' });
