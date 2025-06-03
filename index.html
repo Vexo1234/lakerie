@@ -124,7 +124,7 @@
             --text-glow: 0 0 5px rgba(43, 124, 226, 0.8);
         }
 
-           .security-message {
+        .security-message {
             color: var(--secondary);
             font-size: 0.9rem;
             margin-top: 1rem;
@@ -138,56 +138,6 @@
         #formMessage {
             margin-top: 1rem;
             min-height: 20px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Courier New', monospace;
-        }
-
-        body {
-            background-color: var(--dark);
-            color: var(--light);
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Rest of your existing CSS... */
-        :root {
-            --primary: #2b7ce2;
-            --secondary: #00ffff;
-            --dark: #0a0a0a;
-            --darker: #050505;
-            --light: #f0f0f0;
-            --glow: 0 0 10px rgba(43, 124, 226, 0.7), 0 0 20px rgba(0, 255, 255, 0.5);
-            --text-glow: 0 0 5px rgba(43, 124, 226, 0.8);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Courier New', monospace;
-        }
-
-        body {
-            background-color: var(--dark);
-            color: var(--light);
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Base Styles */
-        :root {
-            --primary: #2b7ce2;
-            --secondary: #00ffff;
-            --dark: #0a0a0a;
-            --darker: #050505;
-            --light: #f0f0f0;
-            --glow: 0 0 10px rgba(43, 124, 226, 0.7), 0 0 20px rgba(0, 255, 255, 0.5);
-            --text-glow: 0 0 5px rgba(43, 124, 226, 0.8);
         }
 
         * {
@@ -1355,7 +1305,54 @@
         }, 500);
     });
     
-    // Form Submission Handler (Fixed Version)
+  <!-- Contact Section -->
+<section id="contact">
+    <h2 class="section-title">CONTACT US</h2>
+    <div class="section-content contact-container">
+        <div class="contact-info">
+            <h3>REPORT A SIGHTING</h3>
+            <div class="contact-details">
+                <p><i class="fas fa-envelope"></i> lakeeriesoulseekers@gmail.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Ashtabula, Ohio</p>
+            </div>
+            
+            <h3>FOLLOW OUR INVESTIGATIONS</h3>
+            <div class="social-links">
+                <a href="https://www.tiktok.com/@lake.erie.shadow.hunters" target="_blank" class="social-link"><i class="fab fa-tiktok"></i></a>
+                <a href="https://www.youtube.com/channel/UC-UIQJkH3wS0OibYvaEI44g" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.instagram.com/lake_erie_shadow_hunters/" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        
+        <form id="contactForm" class="contact-form">
+            <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="location">Location of Sighting</label>
+                <input type="text" id="location" name="location" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Details of Your Experience</label>
+                <textarea id="message" name="message" class="form-control" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">SEND REPORT</button>
+            
+            <div class="security-message">
+                <i class="fas fa-lock"></i>
+                <span>Your information is sent securely directly to our team</span>
+            </div>
+            
+            <div id="formMessage"></div>
+        </form>
+    </div>
+</section>
+
     document.getElementById('contactForm')?.addEventListener('submit', async function(e) {
         e.preventDefault();
         
@@ -1376,7 +1373,8 @@
             const formData = new FormData(this);
             const formObject = Object.fromEntries(formData.entries());
             
-            const scriptUrl = 'https://script.google.com/macros/s/AKfycbyAIKevF-p3bFIpCpyJ2rFJP5LGiKFK8pgPjd2bPyX2yQG1QWnThySJ90uuELSb7lqW1g/exec';
+            // Replace with your actual Google Apps Script URL
+            const scriptUrl = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
             const urlWithCacheBust = `${scriptUrl}?t=${Date.now()}`;
             
             const response = await fetch(urlWithCacheBust, {
@@ -1399,6 +1397,7 @@
             submitBtn.disabled = false;
         }
     });
+        
     </script>
 </body>
 </html>
