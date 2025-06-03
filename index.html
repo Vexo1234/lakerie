@@ -22,7 +22,7 @@
           align-items: center;
           transition: opacity 0.5s ease;
         }
-    
+
         .loading-container {
             display: flex;
             flex-direction: column;
@@ -139,20 +139,7 @@
 
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 5%; position: relative; overflow: hidden; }
         .hero::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, transparent 0%, var(--darker) 70%); z-index: -1; }
-        
-        .hero-pre-title {
-            font-size: 1.6rem; 
-            color: var(--primary);
-            text-transform: uppercase;
-            filter: blur(1.5px); 
-            margin-bottom: 0.75rem; 
-            letter-spacing: 4px;
-            font-weight: 700;
-            opacity: 0; /* Initial state for animation */
-            transform: translateY(20px); /* Initial state for animation */
-            animation: fadeInUp 1s forwards 0.3s; /* Animation to make it visible */
-            text-align: center;
-        }
+
         .hero-title { font-size: 4rem; margin-bottom: 1rem; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent !important; text-shadow: var(--text-glow); opacity:1; }
         .hero-subtitle { font-size: 1.5rem; margin-bottom: 2rem; color: var(--secondary); opacity: 0; transform: translateY(20px); animation: fadeInUp 1s forwards 1s; }
         .hero-btn { padding: 0.8rem 2rem; background: linear-gradient(45deg, var(--primary), var(--secondary)); color: var(--light); border: none; border-radius: 30px; font-size: 1.1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: var(--glow); opacity: 0; transform: translateY(20px); animation: fadeInUp 1s forwards 1.5s; position: relative; overflow: hidden; z-index: 1; }
@@ -177,7 +164,7 @@
         section .section-content { opacity: 0; transform: translateX(-60px); transition: opacity 0.8s ease-out 0.4s, transform 0.8s ease-out 0.4s; }
         section.section-visible .section-title,
         section.section-visible .section-content { opacity: 1; transform: translateX(0); }
-        
+
         .about-content { display: flex; gap: 3rem; align-items: center; }
         .about-text { flex: 1; }
         .about-image { flex: 1; position: relative; }
@@ -240,8 +227,8 @@
         @keyframes float { 0%, 100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(-20px) translateX(10px); } }
 
         @media (max-width: 992px) { .about-content, .contact-container { flex-direction: column; } .about-image { margin-top: 2rem; } .section-title { font-size: 2rem; } }
-        @media (max-width: 768px) { header { padding: 1rem 5%; } .logo-text { font-size: 1.2rem; } nav ul { gap: 1rem; } .hero-title { font-size: 2.5rem; } .hero-subtitle { font-size: 1.2rem; } section { padding: 4rem 5%; } .hero-pre-title { font-size: 1.4rem; letter-spacing: 3px; } }
-        @media (max-width: 576px) { .logo-img { height: 40px; } .logo-text { font-size: 1rem; } .logo-subtext { font-size: 0.6rem; letter-spacing: 2px; } nav { display: none; } .hero-title { font-size: 2rem; } .evidence-grid { grid-template-columns: 1fr; } .hero-pre-title { font-size: 1.2rem; letter-spacing: 2px; filter: blur(1px);}}
+        @media (max-width: 768px) { header { padding: 1rem 5%; } .logo-text { font-size: 1.2rem; } nav ul { gap: 1rem; } .hero-title { font-size: 2.5rem; } .hero-subtitle { font-size: 1.2rem; } section { padding: 4rem 5%; } }
+        @media (max-width: 576px) { .logo-img { height: 40px; } .logo-text { font-size: 1rem; } .logo-subtext { font-size: 0.6rem; letter-spacing: 2px; } nav { display: none; } .hero-title { font-size: 2rem; } .evidence-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -252,8 +239,8 @@
     <header> <div class="logo-container"> <img src="https://raw.githubusercontent.com/Vexo1234/picassetsssss/main/channels4_profile_modified__1_683cdfdfd0d75_png.png" alt="Lake Erie Shadow Hunters" class="logo-img"> <div> <span class="logo-text">LAKE ERIE SHADOW HUNTERS</span> <span class="logo-subtext">FATHER & SON PARANORMAL TEAM</span> </div> </div> <nav> <ul> <li><a href="#home">Home</a></li> <li><a href="#about">About</a></li> <li><a href="#team">Our Team</a></li> <li><a href="#equipment">Equipment</a></li> <li><a href="#evidence">Evidence</a></li> <li><a href="#contact">Contact</a></li> </ul> </nav> </header>
 
     <section class="hero" id="home">
-        <div class="hero-pre-title">LAKE ERIE SHADOW HUNTERS</div>
-        <h1 class="hero-title" id="animated-title" data-text="Lake Erie Shadow Hunters">Lake Erie Shadow Hunters</h1> <p class="hero-subtitle">Father & Son paranormal investigators exploring paranormal mysteries</p>
+        <h1 class="hero-title" id="animated-title" data-text="Lake Erie Shadow Hunters">Lake Erie Shadow Hunters</h1>
+        <p class="hero-subtitle">Father & Son paranormal investigators exploring paranormal mysteries</p>
         <button class="hero-btn">Welcome</button>
     </section>
 
