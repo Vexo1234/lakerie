@@ -50,7 +50,7 @@
         }
 
         .progress-bar-fill {
-             height: 100%;
+            height: 100%;
             width: 0;
             background: linear-gradient(90deg, #00ffff, #0088ff);
             transition: width 0.1s linear;
@@ -60,14 +60,14 @@
        .progress-counter {
             color: #fff;
             font-size: 1.2rem;
-            margin-bottom: 10px;
+            margin-bottom: 10px; /* Adjusted from original prompt's CSS to match yours */
         }
 
       .loading-text {
             color: #fff;
             font-size: 1.2rem;
-            margin-bottom: 20px;
-            min-height: 1.5em;
+            margin-bottom: 20px; /* Adjusted from original prompt's CSS to match yours */
+            min-height: 1.5em; /* Added from your CSS */
         }
 
         /* Logo and text during loading */
@@ -104,7 +104,7 @@
         }
 
         /* Hide all page content initially */
-        body > *:not(#loading-screen):not(.logo-loading-container) {
+        body > *:not(#loading-screen):not(.logo-loading-container):not(script) { /* Added :not(script) to be safe, though your JS has it */
             opacity: 0;
         }
 
@@ -254,8 +254,8 @@
             padding: 0 5%;
             position: relative;
             overflow: hidden;
-            opacity: 0;
-            transition: opacity 0.5s ease;
+            opacity: 0; /* Initial opacity set by JS for sections too */
+            transition: opacity 0.5s ease; /* Transition for fade-in */
         }
 
         .hero::before {
@@ -279,7 +279,7 @@
             text-shadow: var(--text-glow);
             opacity: 0;
             transform: translateY(20px);
-            animation: fadeInUp 1s forwards 0.5s;
+            /* animation: fadeInUp 1s forwards 0.5s; */ /* Controlled by JS animateTitle */
         }
 
         .hero-subtitle {
@@ -288,7 +288,7 @@
             color: var(--secondary);
             opacity: 0;
             transform: translateY(20px);
-            animation: fadeInUp 1s forwards 1s;
+            animation: fadeInUp 1s forwards 1s; /* Keep this if not JS controlled */
         }
 
         .hero-btn {
@@ -303,7 +303,7 @@
             box-shadow: var(--glow);
             opacity: 0;
             transform: translateY(20px);
-            animation: fadeInUp 1s forwards 1.5s;
+            animation: fadeInUp 1s forwards 1.5s; /* Keep this if not JS controlled */
             position: relative;
             overflow: hidden;
             z-index: 1;
@@ -401,24 +401,24 @@
             left: 10px;
         }
 
-        .ghost:nth-child(4) {
+        .ghost:nth-child(4) { /* These selectors are 1-based, but HTML has orb, orb, orb, ghost, ghost. So this would be the 1st ghost */
             top: 30%;
             left: 80%;
             animation-delay: 1s;
         }
 
-        .ghost:nth-child(5) {
+        .ghost:nth-child(5) { /* This would be the 2nd ghost */
             top: 50%;
             left: 20%;
             animation-delay: 3s;
         }
 
         /* Content Sections */
-       section {
-          opacity: 0;
-          transform: translateY(20px);
-          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    }
+       section { /* Style for sections is handled by JS initIntersectionObserver now */
+            padding: 6rem 10%; /* Example padding, adjust as needed */
+            /* opacity: 0; transform: translateY(20px); transition... are set by JS */
+        }
+
 
         .section-title {
             font-size: 2.5rem;
@@ -426,9 +426,7 @@
             color: var(--primary);
             text-shadow: var(--text-glow);
             position: relative;
-            opacity: 0;
-            transform: translateX(-50px);
-            transition: all 0.8s ease;
+            /* opacity, transform, transition handled by JS for .section-visible */
         }
 
         .section-title::after {
@@ -441,16 +439,12 @@
             background: linear-gradient(to right, var(--primary), var(--secondary));
         }
 
-        .section-content {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease 0.3s;
-        }
+        /* .section-content { opacity, transform, transition handled by JS for .section-visible } */
 
         .section-visible .section-title,
         .section-visible .section-content {
             opacity: 1;
-            transform: translateX(0);
+            transform: translateX(0) translateY(0); /* Ensure Y is also reset */
         }
 
         /* About Section */
@@ -509,8 +503,7 @@
             text-align: center;
             box-shadow: var(--glow);
             transition: transform 0.3s ease;
-            opacity: 0;
-            transform: translateY(30px);
+            /* opacity & transform handled by JS animation for .section-visible */
         }
 
         .section-visible .team-member {
@@ -564,7 +557,7 @@
         /* Equipment Section */
         .equipment-section {
             background: rgba(15, 15, 15, 0.7);
-            padding: 4rem 10%;
+            padding: 4rem 10%; /* This padding is fine for the section itself */
             border-top: 1px solid rgba(43, 124, 226, 0.2);
             border-bottom: 1px solid rgba(43, 124, 226, 0.2);
         }
@@ -582,8 +575,7 @@
             text-align: center;
             transition: all 0.3s ease;
             border: 1px solid rgba(43, 124, 226, 0.3);
-            opacity: 0;
-            transform: translateY(30px);
+            /* opacity & transform handled by JS animation for .section-visible */
         }
 
         .section-visible .equipment-item {
@@ -630,8 +622,7 @@
             overflow: hidden;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            opacity: 0;
-            transform: translateY(30px);
+            /* opacity & transform handled by JS animation for .section-visible */
         }
 
         .section-visible .evidence-item {
@@ -869,7 +860,7 @@
             }
         }
 
-        @keyframes letterHop {
+        @keyframes letterHop { /* This seems unused, but kept from original */
             0% {
                 opacity: 0;
                 transform: translateY(20px);
@@ -918,7 +909,7 @@
             }
 
             section {
-                padding: 4rem 5%;
+                padding: 4rem 5%; /* Overrides general section padding for smaller screens */
             }
         }
 
@@ -937,7 +928,7 @@
             }
 
             nav {
-                display: none;
+                display: none; /* Hides nav on very small screens */
             }
 
             .hero-title {
@@ -945,13 +936,12 @@
             }
 
             .evidence-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr; /* Single column for evidence items */
             }
         }
-     </style>
+    </style>
 </head>
 <body>
-    <!-- Loading Screen -->
     <div id="loading-screen">
         <div class="loading-container">
             <div class="progress-bar-container">
@@ -964,7 +954,6 @@
         </div>
     </div>
 
-    <!-- Logo and Text Loading Animation Container -->
     <div class="logo-loading-container">
         <img src="https://raw.githubusercontent.com/Vexo1234/picassetsssss/main/channels4_profile_modified__1_683cdfdfd0d75_png.png" 
              alt="Loading Logo" 
@@ -972,7 +961,6 @@
         <div class="logo-text-loading">LAKE ERIE SHADOW HUNTERS</div>
     </div>
 
-    <!-- Your existing HTML content -->
     <div class="orb"></div>
     <div class="orb"></div>
     <div class="orb"></div>
@@ -1001,29 +989,25 @@
         </nav>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero" id="home">
         <h1 class="hero-title" id="animated-title">Lake Erie Shadow Hunters</h1>
         <p class="hero-subtitle">Father & Son paranormal investigators exploring paranormal mysteries</p>
         <button class="hero-btn">Welcome</button>
     </section>
 
-    <!-- About Section -->
     <section id="about">
         <h2 class="section-title">OUR STORY</h2>
         <div class="section-content about-content">
             <div class="about-text">
-                <p>Founded in late 2024, Lake Erie Shadow Hunters is a unique father-and-son paranormal investigation team based in Ashtabula, Ohio. Christian and his 13-year-old son Caden (who many say is the youngest investigator they know) explore haunted locations throughout Ohio and maybe even other states 👀.</p>
+                <p>Founded in late 2024, Lake Erie Shadow Hunters is a unique father-and-son paranormal investigation team based in Ashtabula, Ohio. My dad and me (who some might say is the youngest investigator they know) explore haunted locations throughout Ohio and maybe even other states 👀.</p>
                 <p>What began as a shared interest in the paranormal has grown into a special bonding experience that strengthens our relationship while documenting the paranormal. We're passionate about sharing our experiences with the world.</p>
                 <p>Our approach combines traditional paranormal research methods with the fresh perspective of a new generation, creating a unique dynamic that helps us connect with both spirits and our growing audience.</p>
             </div>
             <div class="about-image">
-                
-            </div>
+                </div>
         </div>
     </section>
 
-    <!-- Team Section -->
     <section id="team">
         <h2 class="section-title">MEET THE TEAM</h2>
         <div class="section-content">
@@ -1044,7 +1028,6 @@
         </div>
     </section>
 
-    <!-- Equipment Section -->
     <section id="equipment" class="equipment-section">
         <h2 class="section-title">OUR GEAR</h2>
         <div class="section-content">
@@ -1093,7 +1076,6 @@
         </div>
     </section>
 
-    <!-- Evidence Section -->
     <section id="evidence">
         <h2 class="section-title">PLACES WE HAVE INVESTIGATED</h2>
         <div class="section-content evidence-grid">
@@ -1116,7 +1098,6 @@
         </div>
     </section>
 
-<!-- Contact Section -->
 <section id="contact">
     <h2 class="section-title">CONTACT US</h2>
     <div class="section-content contact-container">
@@ -1129,8 +1110,7 @@
             <h3>FOLLOW OUR INVESTIGATIONS</h3>
             <div class="social-links">
                 <a href="https://www.tiktok.com/@lake.erie.shadow.hunters" target="_blank" class="social-link"><i class="fab fa-tiktok"></i></a>
-                <a href="https://www.youtube.com/channel/UC-UIQJkH3wS0OibYvaEI44g" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a>
-                <a href="https://www.instagram.com/lake_erie_shadow_hunters/" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/channel/UC-UIQJkH3wS0OibYvaEI44g" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a> <a href="https://www.instagram.com/lake_erie_shadow_hunters/" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
             </div>
         </div>
         
@@ -1163,7 +1143,6 @@
     </div>
 </section>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-logo">
@@ -1182,13 +1161,13 @@
         </div>
     </footer>
 
-   <script>
+<script>
 document.addEventListener('DOMContentLoaded', function() {
     // Cache DOM elements
     const loadingScreen = document.getElementById('loading-screen');
     const progressBarFill = document.querySelector('.progress-bar-fill');
     const progressCounter = document.querySelector('.progress-counter');
-    const loadingText = document.querySelector('.loading-text');
+    const loadingText = document.querySelector('.loading-text'); // Ensure this selector matches your HTML
     const logoLoadingContainer = document.querySelector('.logo-loading-container');
     const headerLogoContainer = document.querySelector('.logo-container');
     const header = document.querySelector('header');
@@ -1197,42 +1176,40 @@ document.addEventListener('DOMContentLoaded', function() {
     if (header) header.style.opacity = '0';
     
     // Hide all content except loading screen initially
-    document.querySelectorAll('body > *:not(#loading-screen):not(script)').forEach(el => {
+    document.querySelectorAll('body > *:not(#loading-screen):not(.logo-loading-container):not(script)').forEach(el => {
         el.style.opacity = '0';
     });
 
     // Progress animation
     let progress = 0;
     const targetProgress = 100;
-    const duration = 3500;
-    const intervalTime = 30;
+    const duration = 3500; // Milliseconds
+    const intervalTime = 30; // Milliseconds
     const increments = (intervalTime / duration) * targetProgress;
     
     // Make sure progress bar elements exist
-    if (progressBarFill && progressCounter) {
+    if (progressBarFill && progressCounter && loadingText) {
         const loadingInterval = setInterval(() => {
             progress += increments;
-            progress = Math.min(progress, targetProgress); // Ensure doesn't exceed 100%
+            progress = Math.min(progress, targetProgress);
             
             // Update progress bar
             progressBarFill.style.width = progress + '%';
             progressCounter.textContent = Math.round(progress) + '%';
             
-            // Update loading text if element exists
-            if (loadingText) {
-                if (progress < 30) {
-                    loadingText.textContent = 'Initializing';
-                } else if (progress < 70) {
-                    loadingText.textContent = 'Loading Resources';
-                } else {
-                    loadingText.textContent = 'Almost There';
-                }
+            // Update loading text
+            if (progress < 30) {
+                loadingText.textContent = 'Initializing';
+            } else if (progress < 70) {
+                loadingText.textContent = 'Loading Resources';
+            } else {
+                loadingText.textContent = 'Almost There';
             }
             
             if (progress >= targetProgress) {
                 clearInterval(loadingInterval);
-                if (progressCounter) progressCounter.textContent = '100%';
-                if (loadingText) loadingText.textContent = 'Ready';
+                progressCounter.textContent = '100%';
+                loadingText.textContent = 'Ready';
                 
                 // Start transition sequence
                 setTimeout(() => {
@@ -1241,9 +1218,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     setTimeout(() => {
                         if (headerLogoContainer && logoLoadingContainer) {
-                            // Calculate final position for logo (header position)
+                            // Calculate final position for logo
                             const headerRect = headerLogoContainer.getBoundingClientRect();
-                            const logoFinalHeight = 50; // Adjust this to match your header logo size
+                            const logoFinalHeight = 50; // Match header logo
                             const finalTop = headerRect.top + (headerRect.height / 2) - (logoFinalHeight / 2);
                             const finalLeft = headerRect.left;
                             
@@ -1251,14 +1228,14 @@ document.addEventListener('DOMContentLoaded', function() {
                             logoLoadingContainer.style.position = 'fixed';
                             logoLoadingContainer.style.top = finalTop + 'px';
                             logoLoadingContainer.style.left = finalLeft + 'px';
-                            logoLoadingContainer.style.transform = 'translate(0, 0)';
-                            logoLoadingContainer.style.gap = '10px';
+                            logoLoadingContainer.style.transform = 'translate(0, 0)'; // Reset transform if it was -50%, -50%
+                            logoLoadingContainer.style.gap = '10px'; // Match header logo container gap if needed
                             
-                            const logoLoading = document.querySelector('.logo-loading');
-                            const logoTextLoading = document.querySelector('.logo-text-loading');
+                            const logoLoading = logoLoadingContainer.querySelector('.logo-loading'); // More specific selector
+                            const logoTextLoading = logoLoadingContainer.querySelector('.logo-text-loading'); // More specific selector
                             
                             if (logoLoading) logoLoading.style.height = logoFinalHeight + 'px';
-                            if (logoTextLoading) logoTextLoading.style.fontSize = '1.5rem';
+                            if (logoTextLoading) logoTextLoading.style.fontSize = '1.5rem'; // Match header logo text size
                             
                             setTimeout(() => {
                                 // Show header and fade out loading logo
@@ -1272,23 +1249,36 @@ document.addEventListener('DOMContentLoaded', function() {
                                     
                                     // Show all page content
                                     document.querySelectorAll('body > *:not(script)').forEach(el => {
-                                        el.style.opacity = '1';
+                                        // Check if the element is not already the header which is handled
+                                        if(el !== header) {
+                                            el.style.opacity = '1';
+                                        }
                                     });
+                                    if (header && header.style.opacity === '0') header.style.opacity = '1'; // Ensure header is visible if missed
                                     
                                     // Initialize other animations
                                     initIntersectionObserver();
                                     animateTitle();
-                                }, 1000);
-                            }, 1000);
+                                }, 1000); // Duration for loading logo to fade out
+                            }, 1000); // Duration for logo to stay in header before fading
+                        } else { // Fallback if headerLogoContainer or logoLoadingContainer is missing
+                             if (header) header.style.opacity = '1';
+                             if (loadingScreen) loadingScreen.remove();
+                             if (logoLoadingContainer) logoLoadingContainer.remove();
+                             document.querySelectorAll('body > *:not(script)').forEach(el => { el.style.opacity = '1'; });
+                             initIntersectionObserver();
+                             animateTitle();
                         }
-                    }, 500);
-                }, 500);
+                    }, 500); // Duration for loading screen to fade before logo animates
+                }, 500); // Delay after "Ready"
             }
         }, intervalTime);
     } else {
-        // If progress bar elements don't exist, skip to showing content
-        console.warn('Progress bar elements not found, skipping loading animation');
+        // If elements don't exist, skip to showing content
+        console.warn('Loading elements (progressBarFill, progressCounter, or loadingText) not found, skipping loading animation.');
         if (loadingScreen) loadingScreen.remove();
+        if (logoLoadingContainer) logoLoadingContainer.remove(); // Also remove this if we skip
+        if (header) header.style.opacity = '1'; // Show header
         document.querySelectorAll('body > *:not(script)').forEach(el => {
             el.style.opacity = '1';
         });
@@ -1296,6 +1286,7 @@ document.addEventListener('DOMContentLoaded', function() {
         animateTitle();
     }
 
+    // Rest of your functions (initIntersectionObserver, animateTitle, etc.)
     function initIntersectionObserver() {
         const sections = document.querySelectorAll('section');
         if (sections.length === 0) return;
@@ -1309,13 +1300,16 @@ document.addEventListener('DOMContentLoaded', function() {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('section-visible');
+                    // Also apply styles directly for initial show, class might handle transform/opacity
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
                     observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
         
         sections.forEach(section => {
-            // Add initial state
+            // Initial state set by JS for Intersection Observer
             section.style.opacity = '0';
             section.style.transform = 'translateY(20px)';
             section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
@@ -1328,22 +1322,24 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!title) return;
         
         const text = title.textContent;
-        title.textContent = '';
+        title.textContent = ''; // Clear original text
         
         for (let i = 0; i < text.length; i++) {
             setTimeout(() => {
                 const span = document.createElement('span');
                 span.textContent = text[i];
                 span.style.opacity = '0';
-                span.style.display = 'inline-block';
+                span.style.transform = 'translateY(20px)'; // Start from below
+                span.style.display = 'inline-block'; // Needed for transform
+                span.style.transition = 'opacity 0.5s ease, transform 0.5s ease'; // Smooth transition
                 title.appendChild(span);
                 
-                setTimeout(() => {
-                    span.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                // Trigger animation
+                setTimeout(() => { // Small delay to ensure transition applies
                     span.style.opacity = '1';
                     span.style.transform = 'translateY(0)';
-                }, 50);
-            }, i * 100);
+                }, 50); 
+            }, i * 100); // Stagger animation of each letter
         }
     }
 });
@@ -1351,19 +1347,21 @@ document.addEventListener('DOMContentLoaded', function() {
 // Smooth Scroll for Welcome Button
 document.querySelector('.hero-btn')?.addEventListener('click', function(e) {
     e.preventDefault();
-    const targetSection = document.getElementById('about');
+    const headerOffset = document.querySelector('header')?.offsetHeight || 70; // Dynamic header height or fallback
+    const targetSection = document.getElementById('about'); 
     if (!targetSection) return;
     
-    const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - 70;
+    const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - headerOffset;
     
     window.scrollTo({
         top: targetPosition,
         behavior: 'smooth'
     });
     
-    this.style.boxShadow = '0 0 25px rgba(0, 255, 255, 0.8)';
+    // Glow effect for button
+    this.style.boxShadow = '0 0 25px rgba(0, 255, 255, 0.8)'; // Brighter glow
     setTimeout(() => {
-        this.style.boxShadow = 'var(--glow)';
+        this.style.boxShadow = 'var(--glow)'; // Reset to default glow
     }, 500);
 });
 
@@ -1378,7 +1376,7 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
     submitBtn.textContent = 'Sending...';
     submitBtn.disabled = true;
     formMessage.textContent = '';
-    formMessage.style.color = '';
+    formMessage.style.color = ''; // Reset color
     
     try {
         const formData = {
@@ -1388,26 +1386,30 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
             message: form.message.value
         };
         
+        // It's better to use a server-side proxy for Google Apps Script to avoid CORS issues if 'no-cors' isn't sufficient
+        // For now, using the direct link as provided
         const scriptUrl = 'https://script.google.com/macros/s/AKfycbzUlJQna9Edv5GDpZz79f1mH15_tDVQzLYkH83oGzm2G83FcO8DsAknXPDFC0rNYBe3LQ/exec';
-        const urlWithCacheBust = `${scriptUrl}?timestamp=${Date.now()}`;
-        
-        await fetch(urlWithCacheBust, {
+        // 'no-cors' mode means you won't be able to read the response, but the request will be sent.
+        // This is usually fine for "fire and forget" submissions to Google Scripts.
+        await fetch(scriptUrl, { 
             method: 'POST',
+            mode: 'no-cors', // Important for Google Apps Script when not handling response
             headers: {
-                'Content-Type': 'application/json',
+              'Content-Type': 'application/json', // Still good practice to send, though Apps Script might use older ways
             },
-            body: JSON.stringify(formData),
-            mode: 'no-cors'
+            body: JSON.stringify(formData) // Will be sent as plain text due to typical Apps Script handling
         });
         
+        // Since 'no-cors' prevents reading the response, we assume success if no network error.
         formMessage.textContent = 'Report submitted successfully! We\'ll be in touch soon.';
-        formMessage.style.color = '#00ff00';
+        formMessage.style.color = 'var(--secondary)'; // Use theme color
         form.reset();
         
     } catch (error) {
+        // This catch block might not be very effective for 'no-cors' issues beyond network failure.
         formMessage.textContent = 'Your report was submitted! If you don\'t hear back, please email us directly at lakeeriesoulseekers@gmail.com';
-        formMessage.style.color = '#ffff00';
-        console.error('Error:', error);
+        formMessage.style.color = 'yellow'; // Warning color
+        console.error('Form Submission Error (may be due to no-cors):', error);
     } finally {
         submitBtn.textContent = 'SEND REPORT';
         submitBtn.disabled = false;
