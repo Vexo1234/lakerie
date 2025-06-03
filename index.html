@@ -1367,6 +1367,50 @@
                 this.style.boxShadow = 'var(--glow)';
             }, 500);
         });
+        
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const submitBtn = document.querySelector('.submit-btn');
+    const formMessage = document.getElementById('formMessage');
+    
+    // Change button text to indicate processing
+    submitBtn.textContent = 'Sending...';
+    submitBtn.disabled = true;
+    formMessage.textContent = '';
+    formMessage.style.color = '';
+    
+    // Get form data
+    const formData = new FormData(this);
+    const formObject = {};
+    formData.forEach((value, key) => formObject[key] = value);
+    
+    // Replace with your Google Apps Script Web App URL
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbyzq1IDmwIc7SQ-vTC0oDf52EowUPJ_07P3i9KBr3c7ly6lKp0VF2GIDl1J66PuvJrp/exec';
+    
+    fetch(scriptUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formObject)
+    })
+    .then(() => {
+        formMessage.textContent = 'Message sent successfully!';
+        formMessage.style.color = '#00ff00';
+        this.reset();
+    })
+    .catch(error => {
+        formMessage.textContent = 'Error sending message. Please try again.';
+        formMessage.style.color = '#ff0000';
+        console.error('Error:', error);
+    })
+    .finally(() => {
+        submitBtn.textContent = 'SEND REPORT';
+        submitBtn.disabled = false;
+    });
+});
     </script>
 </body>
 </html>
