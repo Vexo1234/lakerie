@@ -1277,15 +1277,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function initIntersectionObserver() {
         const sections = document.querySelectorAll('section');
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px' // Adjust this to trigger animation earlier/later
+        };
+        
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('section-visible');
+                    // Stop observing after animation triggers to improve performance
+                    observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1 });
+        }, observerOptions);
         
         sections.forEach(section => {
+            // Add initial state
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
             observer.observe(section);
         });
     }
@@ -1332,6 +1343,7 @@ document.querySelector('.hero-btn')?.addEventListener('click', function(e) {
     }, 500);
 });
 
+// Contact Form Submission
 document.getElementById('contactForm')?.addEventListener('submit', async function(e) {
     e.preventDefault();
     
@@ -1353,7 +1365,7 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
         };
         
         // Replace with your actual Google Apps Script deployment URL
-        const scriptUrl = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbzUlJQna9Edv5GDpZz79f1mH15_tDVQzLYkH83oGzm2G83FcO8DsAknXPDFC0rNYBe3LQ/exec';
         
         // Add timestamp to prevent caching
         const urlWithCacheBust = `${scriptUrl}?timestamp=${Date.now()}`;
@@ -1382,6 +1394,7 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
         submitBtn.textContent = 'SEND REPORT';
         submitBtn.disabled = false;
     }
-</script>
+});
+   </script>
 </body>
 </html>
