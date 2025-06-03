@@ -39,40 +39,35 @@
             max-width: 400px;
         }
 
-        .progress-bar {
-            height: 20px;
-            width: 100%;
-            background-color: rgba(43, 124, 226, 0.2);
-            border-radius: 10px;
+      .progress-bar {
+            width: 80%;
+            max-width: 400px;
+            height: 10px;
+            background: #333;
+            border-radius: 5px;
+            margin: 20px 0;
             overflow: hidden;
-            position: relative;
         }
 
         .progress-bar-fill {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #2b7ce2, #00ffff);
-            border-radius: 10px;
-            transition: width 0.05s linear;
+             height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #00ffff, #0088ff);
+            transition: width 0.1s linear;
+            border-radius: 5px;
         }
 
-        .progress-counter {
-            color: #f0f0f0;
+       .progress-counter {
+            color: #fff;
             font-size: 1.2rem;
-            min-width: 40px;
-            text-align: right;
-            font-family: 'Courier New', monospace;
+            margin-bottom: 10px;
         }
 
-        .loading-text {
-            color: #00ffff;
-            font-size: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.5s ease;
+      .loading-text {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            min-height: 1.5em;
         }
 
         /* Logo and text during loading */
@@ -1188,7 +1183,6 @@
     </footer>
 
    <script>
-// Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Cache DOM elements
     const loadingScreen = document.getElementById('loading-screen');
@@ -1196,13 +1190,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const progressCounter = document.querySelector('.progress-counter');
     const loadingText = document.querySelector('.loading-text');
     const logoLoadingContainer = document.querySelector('.logo-loading-container');
+    const headerLogoContainer = document.querySelector('.logo-container');
     const header = document.querySelector('header');
-    const mainContent = document.querySelector('main');
     
-    // Hide content initially
-    header.style.opacity = '0';
-    mainContent.style.opacity = '0';
-    mainContent.style.pointerEvents = 'none'; // Prevent interaction during loading
+    // Hide header initially
+    if (header) header.style.opacity = '0';
+    
+    // Hide all content except loading screen initially
+    document.querySelectorAll('body > *:not(#loading-screen):not(script)').forEach(el => {
+        el.style.opacity = '0';
+    });
 
     // Progress animation
     let progress = 0;
@@ -1211,74 +1208,117 @@ document.addEventListener('DOMContentLoaded', function() {
     const intervalTime = 30;
     const increments = (intervalTime / duration) * targetProgress;
     
-    const loadingInterval = setInterval(() => {
-        progress += increments;
-        progress = Math.min(progress, targetProgress); // Ensure doesn't exceed 100%
-        progressBarFill.style.width = progress + '%';
-        progressCounter.textContent = Math.round(progress) + '%';
-        
-        // Update loading text
-        if (progress < 30) {
-            loadingText.textContent = 'Initializing';
-        } else if (progress < 70) {
-            loadingText.textContent = 'Loading Resources';
-        } else {
-            loadingText.textContent = 'Almost There';
-        }
-        
-        if (progress >= targetProgress) {
-            clearInterval(loadingInterval);
-            completeLoading();
-        }
-    }, intervalTime);
-
-    function completeLoading() {
-        // Fade out loading screen
-        loadingScreen.style.opacity = '0';
-        loadingScreen.style.transition = 'opacity 0.5s ease';
-        
-        // After fade out, remove loading screen
-        setTimeout(() => {
-            loadingScreen.remove();
+    // Make sure progress bar elements exist
+    if (progressBarFill && progressCounter) {
+        const loadingInterval = setInterval(() => {
+            progress += increments;
+            progress = Math.min(progress, targetProgress); // Ensure doesn't exceed 100%
             
-            // Show header and main content
-            header.style.opacity = '1';
-            header.style.transition = 'opacity 0.5s ease';
+            // Update progress bar
+            progressBarFill.style.width = progress + '%';
+            progressCounter.textContent = Math.round(progress) + '%';
             
-            mainContent.style.opacity = '1';
-            mainContent.style.pointerEvents = 'auto';
-            mainContent.style.transition = 'opacity 0.5s ease';
+            // Update loading text if element exists
+            if (loadingText) {
+                if (progress < 30) {
+                    loadingText.textContent = 'Initializing';
+                } else if (progress < 70) {
+                    loadingText.textContent = 'Loading Resources';
+                } else {
+                    loadingText.textContent = 'Almost There';
+                }
+            }
             
-            // Initialize animations
-            initIntersectionObserver();
-            animateTitle();
-        }, 500);
+            if (progress >= targetProgress) {
+                clearInterval(loadingInterval);
+                if (progressCounter) progressCounter.textContent = '100%';
+                if (loadingText) loadingText.textContent = 'Ready';
+                
+                // Start transition sequence
+                setTimeout(() => {
+                    if (loadingScreen) loadingScreen.style.opacity = '0';
+                    if (logoLoadingContainer) logoLoadingContainer.style.opacity = '1';
+                    
+                    setTimeout(() => {
+                        if (headerLogoContainer && logoLoadingContainer) {
+                            // Calculate final position for logo (header position)
+                            const headerRect = headerLogoContainer.getBoundingClientRect();
+                            const logoFinalHeight = 50; // Adjust this to match your header logo size
+                            const finalTop = headerRect.top + (headerRect.height / 2) - (logoFinalHeight / 2);
+                            const finalLeft = headerRect.left;
+                            
+                            // Animate logo to final position
+                            logoLoadingContainer.style.position = 'fixed';
+                            logoLoadingContainer.style.top = finalTop + 'px';
+                            logoLoadingContainer.style.left = finalLeft + 'px';
+                            logoLoadingContainer.style.transform = 'translate(0, 0)';
+                            logoLoadingContainer.style.gap = '10px';
+                            
+                            const logoLoading = document.querySelector('.logo-loading');
+                            const logoTextLoading = document.querySelector('.logo-text-loading');
+                            
+                            if (logoLoading) logoLoading.style.height = logoFinalHeight + 'px';
+                            if (logoTextLoading) logoTextLoading.style.fontSize = '1.5rem';
+                            
+                            setTimeout(() => {
+                                // Show header and fade out loading logo
+                                if (header) header.style.opacity = '1';
+                                if (logoLoadingContainer) logoLoadingContainer.style.opacity = '0';
+                                
+                                setTimeout(() => {
+                                    // Remove loading elements and show page content
+                                    if (loadingScreen) loadingScreen.remove();
+                                    if (logoLoadingContainer) logoLoadingContainer.remove();
+                                    
+                                    // Show all page content
+                                    document.querySelectorAll('body > *:not(script)').forEach(el => {
+                                        el.style.opacity = '1';
+                                    });
+                                    
+                                    // Initialize other animations
+                                    initIntersectionObserver();
+                                    animateTitle();
+                                }, 1000);
+                            }, 1000);
+                        }
+                    }, 500);
+                }, 500);
+            }
+        }, intervalTime);
+    } else {
+        // If progress bar elements don't exist, skip to showing content
+        console.warn('Progress bar elements not found, skipping loading animation');
+        if (loadingScreen) loadingScreen.remove();
+        document.querySelectorAll('body > *:not(script)').forEach(el => {
+            el.style.opacity = '1';
+        });
+        initIntersectionObserver();
+        animateTitle();
     }
 
     function initIntersectionObserver() {
         const sections = document.querySelectorAll('section');
+        if (sections.length === 0) return;
         
-        // Set initial state for all sections
-        sections.forEach(section => {
-            section.style.opacity = '0';
-            section.style.transform = 'translateY(20px)';
-            section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-        });
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
         
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.classList.add('section-visible');
                     observer.unobserve(entry.target);
                 }
             });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        });
+        }, observerOptions);
         
         sections.forEach(section => {
+            // Add initial state
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
             observer.observe(section);
         });
     }
@@ -1287,26 +1327,24 @@ document.addEventListener('DOMContentLoaded', function() {
         const title = document.getElementById('animated-title');
         if (!title) return;
         
-        const text = title.textContent.trim();
+        const text = title.textContent;
         title.textContent = '';
-        title.style.opacity = '1'; // Ensure container is visible
         
-        text.split('').forEach((char, i) => {
+        for (let i = 0; i < text.length; i++) {
             setTimeout(() => {
                 const span = document.createElement('span');
-                span.textContent = char;
+                span.textContent = text[i];
                 span.style.opacity = '0';
                 span.style.display = 'inline-block';
-                span.style.transform = 'translateY(-20px)';
                 title.appendChild(span);
                 
                 setTimeout(() => {
-                    span.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                    span.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
                     span.style.opacity = '1';
                     span.style.transform = 'translateY(0)';
-                }, 10);
+                }, 50);
             }, i * 100);
-        });
+        }
     }
 });
 
@@ -1323,11 +1361,9 @@ document.querySelector('.hero-btn')?.addEventListener('click', function(e) {
         behavior: 'smooth'
     });
     
-    // Add temporary glow effect
-    const btn = e.currentTarget;
-    btn.style.boxShadow = '0 0 25px rgba(0, 255, 255, 0.8)';
+    this.style.boxShadow = '0 0 25px rgba(0, 255, 255, 0.8)';
     setTimeout(() => {
-        btn.style.boxShadow = '';
+        this.style.boxShadow = 'var(--glow)';
     }, 500);
 });
 
@@ -1339,9 +1375,6 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
     const submitBtn = form.querySelector('.submit-btn');
     const formMessage = document.getElementById('formMessage');
     
-    if (!submitBtn || !formMessage) return;
-    
-    // Update UI for submission state
     submitBtn.textContent = 'Sending...';
     submitBtn.disabled = true;
     formMessage.textContent = '';
@@ -1360,7 +1393,9 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
         
         await fetch(urlWithCacheBust, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify(formData),
             mode: 'no-cors'
         });
