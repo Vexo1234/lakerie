@@ -1346,7 +1346,7 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
         const formObject = Object.fromEntries(formData.entries());
         
         // Replace with your actual Google Apps Script URL
-        const scriptUrl = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbzauOdIzs3xwB7Vw5dPRxxcnMuE-KBJzYG07hgx4xIXv8QvsV5lsbk6KyrIA4YSKXi26Q/exec';
         const urlWithCacheBust = `${scriptUrl}?t=${Date.now()}`;
         
         const response = await fetch(urlWithCacheBust, {
