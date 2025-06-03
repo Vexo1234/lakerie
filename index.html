@@ -1184,220 +1184,191 @@
         </div>
     </footer>
 
-    <script>
-    // Loading Animation Code
-    document.addEventListener('DOMContentLoaded', function() {
-        const loadingScreen = document.getElementById('loading-screen');
-        const progressBarFill = document.querySelector('.progress-bar-fill');
-        const progressCounter = document.querySelector('.progress-counter');
-        const loadingText = document.querySelector('.loading-text');
-        const logoLoadingContainer = document.querySelector('.logo-loading-container');
-        const headerLogoContainer = document.querySelector('.logo-container');
-        
-        document.querySelector('header').style.opacity = '0';
+   <script>
+// Loading Animation Code
+document.addEventListener('DOMContentLoaded', function() {
+    const loadingScreen = document.getElementById('loading-screen');
+    const progressBarFill = document.querySelector('.progress-bar-fill');
+    const progressCounter = document.querySelector('.progress-counter');
+    const loadingText = document.querySelector('.loading-text');
+    const logoLoadingContainer = document.querySelector('.logo-loading-container');
+    const headerLogoContainer = document.querySelector('.logo-container');
+    
+    // Hide header initially
+    document.querySelector('header').style.opacity = '0';
 
-        let progress = 0;
-        const targetProgress = 100;
-        const duration = 3500;
-        const intervalTime = 30;
-        const increments = (intervalTime / duration) * targetProgress;
+    let progress = 0;
+    const targetProgress = 100;
+    const duration = 3500;
+    const intervalTime = 30;
+    const increments = (intervalTime / duration) * targetProgress;
+    
+    const loadingInterval = setInterval(() => {
+        progress += increments;
+        progressBarFill.style.width = progress + '%';
+        progressCounter.textContent = Math.round(progress) + '%';
         
-        const loadingInterval = setInterval(() => {
-            progress += increments;
-            progressBarFill.style.width = progress + '%';
-            progressCounter.textContent = Math.round(progress) + '%';
+        // Update loading text based on progress
+        if (progress < 30) {
+            loadingText.textContent = 'Initializing';
+        } else if (progress < 70) {
+            loadingText.textContent = 'Loading Resources';
+        } else {
+            loadingText.textContent = 'Almost There';
+        }
+        
+        if (progress >= targetProgress) {
+            clearInterval(loadingInterval);
+            progressCounter.textContent = '100%';
+            loadingText.textContent = 'Ready';
             
-            if (progress >= targetProgress) {
-                clearInterval(loadingInterval);
-                loadingText.textContent = 'Finished';
+            // Start transition sequence
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
+                logoLoadingContainer.style.opacity = '1';
                 
                 setTimeout(() => {
-                    loadingScreen.style.opacity = '0';
-                    logoLoadingContainer.style.opacity = '1';
+                    // Calculate final position for logo (header position)
+                    const headerRect = headerLogoContainer.getBoundingClientRect();
+                    const logoFinalHeight = 50;
+                    const finalTop = headerRect.top + (headerRect.height / 2) - (logoFinalHeight / 2);
+                    const finalLeft = headerRect.left;
+                    
+                    // Animate logo to final position
+                    logoLoadingContainer.style.top = finalTop + 'px';
+                    logoLoadingContainer.style.left = finalLeft + 'px';
+                    logoLoadingContainer.style.transform = 'translate(0, 0)';
+                    logoLoadingContainer.style.gap = '10px';
+                    document.querySelector('.logo-loading').style.height = logoFinalHeight + 'px';
+                    document.querySelector('.logo-text-loading').style.fontSize = '1.5rem';
                     
                     setTimeout(() => {
-                        const finalPos = headerLogoContainer.getBoundingClientRect();
-                        const logoFinalHeight = 50;
-                        const finalTop = finalPos.top + (finalPos.height / 2) - (logoFinalHeight / 2);
-                        const finalLeft = finalPos.left;
-                        
-                        logoLoadingContainer.style.top = finalTop + 'px';
-                        logoLoadingContainer.style.left = finalLeft + 'px';
-                        logoLoadingContainer.style.transform = 'translate(0, 0)';
-                        logoLoadingContainer.style.gap = '10px';
-                        document.querySelector('.logo-loading').style.height = logoFinalHeight + 'px';
-                        document.querySelector('.logo-text-loading').style.fontSize = '1.5rem';
+                        // Show header and fade out loading logo
+                        document.querySelector('header').style.opacity = '1';
+                        logoLoadingContainer.style.opacity = '0';
                         
                         setTimeout(() => {
-                            document.querySelector('header').style.opacity = '1';
-                            logoLoadingContainer.style.opacity = '0';
+                            // Remove loading elements and show page content
+                            loadingScreen.remove();
+                            logoLoadingContainer.remove();
                             
-                            setTimeout(() => {
-                                loadingScreen.remove();
-                                logoLoadingContainer.remove();
-                                document.querySelectorAll('body > *:not(script):not(header)').forEach(el => {
-                                    el.style.opacity = '1';
-                                });
-                                initIntersectionObserver();
-                                animateTitle();
-                            }, 1000);
+                            // Show all page content
+                            document.querySelectorAll('body > *:not(script)').forEach(el => {
+                                el.style.opacity = '1';
+                            });
+                            
+                            // Initialize other animations
+                            initIntersectionObserver();
+                            animateTitle();
                         }, 1000);
                     }, 1000);
                 }, 500);
-            }
-        }, intervalTime);
-
-        function initIntersectionObserver() {
-            const sections = document.querySelectorAll('section');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('section-visible');
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            sections.forEach(section => {
-                observer.observe(section);
-                section.style.opacity = '1';
-            });
+            }, 500);
         }
+    }, intervalTime);
 
-        function animateTitle() {
-            const title = document.getElementById('animated-title');
-            if (title) {
-                const text = title.textContent;
-                title.textContent = '';
-                
-                for (let i = 0; i < text.length; i++) {
-                    setTimeout(() => {
-                        const span = document.createElement('span');
-                        span.textContent = text[i];
-                        span.style.opacity = '0';
-                        span.style.display = 'inline-block';
-                        title.appendChild(span);
-                        
-                        setTimeout(() => {
-                            span.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                            span.style.opacity = '1';
-                            span.style.transform = 'translateY(0)';
-                        }, 50);
-                    }, i * 100);
+    function initIntersectionObserver() {
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('section-visible');
                 }
+            });
+        }, { threshold: 0.1 });
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    }
+
+    function animateTitle() {
+        const title = document.getElementById('animated-title');
+        if (title) {
+            const text = title.textContent;
+            title.textContent = '';
+            
+            for (let i = 0; i < text.length; i++) {
+                setTimeout(() => {
+                    const span = document.createElement('span');
+                    span.textContent = text[i];
+                    span.style.opacity = '0';
+                    span.style.display = 'inline-block';
+                    title.appendChild(span);
+                    
+                    setTimeout(() => {
+                        span.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                        span.style.opacity = '1';
+                        span.style.transform = 'translateY(0)';
+                    }, 50);
+                }, i * 100);
             }
         }
-    });
+    }
+});
 
-    // Smooth Scroll for Welcome Button
-    document.querySelector('.hero-btn')?.addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetSection = document.getElementById('about');
-        const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - 70;
-        
-        window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-        });
-        
-        this.style.boxShadow = '0 0 25px rgba(0, 255, 255, 0.8)';
-        setTimeout(() => {
-            this.style.boxShadow = 'var(--glow)';
-        }, 500);
+// Smooth Scroll for Welcome Button
+document.querySelector('.hero-btn')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    const targetSection = document.getElementById('about');
+    const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - 70;
+    
+    window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
     });
     
-  <!-- Contact Section -->
-<section id="contact">
-    <h2 class="section-title">CONTACT US</h2>
-    <div class="section-content contact-container">
-        <div class="contact-info">
-            <h3>REPORT A SIGHTING</h3>
-            <div class="contact-details">
-                <p><i class="fas fa-envelope"></i> lakeeriesoulseekers@gmail.com</p>
-                <p><i class="fas fa-map-marker-alt"></i> Ashtabula, Ohio</p>
-            </div>
-            
-            <h3>FOLLOW OUR INVESTIGATIONS</h3>
-            <div class="social-links">
-                <a href="https://www.tiktok.com/@lake.erie.shadow.hunters" target="_blank" class="social-link"><i class="fab fa-tiktok"></i></a>
-                <a href="https://www.youtube.com/channel/UC-UIQJkH3wS0OibYvaEI44g" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a>
-                <a href="https://www.instagram.com/lake_erie_shadow_hunters/" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
-            </div>
-        </div>
-        
-        <form id="contactForm" class="contact-form">
-            <div class="form-group">
-                <label for="name">Your Name</label>
-                <input type="text" id="name" name="name" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="location">Location of Sighting</label>
-                <input type="text" id="location" name="location" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="message">Details of Your Experience</label>
-                <textarea id="message" name="message" class="form-control" required></textarea>
-            </div>
-            <button type="submit" class="submit-btn">SEND REPORT</button>
-            
-            <div class="security-message">
-                <i class="fas fa-lock"></i>
-                <span>Your information is sent securely directly to our team</span>
-            </div>
-            
-            <div id="formMessage"></div>
-        </form>
-    </div>
-</section>
+    this.style.boxShadow = '0 0 25px rgba(0, 255, 255, 0.8)';
+    setTimeout(() => {
+        this.style.boxShadow = 'var(--glow)';
+    }, 500);
+});
 
-    document.getElementById('contactForm')?.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const submitBtn = this.querySelector('.submit-btn');
-        const formMessage = document.getElementById('formMessage');
-        
-        if (!this.checkValidity()) {
-            this.reportValidity();
-            return;
-        }
+// Contact Form Submission
+document.getElementById('contactForm')?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const submitBtn = this.querySelector('.submit-btn');
+    const formMessage = document.getElementById('formMessage');
+    
+    if (!this.checkValidity()) {
+        this.reportValidity();
+        return;
+    }
 
-        submitBtn.textContent = 'Sending...';
-        submitBtn.disabled = true;
-        formMessage.textContent = '';
-        formMessage.style.color = '';
+    submitBtn.textContent = 'Sending...';
+    submitBtn.disabled = true;
+    formMessage.textContent = '';
+    formMessage.style.color = '';
+    
+    try {
+        const formData = new FormData(this);
+        const formObject = Object.fromEntries(formData.entries());
         
-        try {
-            const formData = new FormData(this);
-            const formObject = Object.fromEntries(formData.entries());
-            
-            // Replace with your actual Google Apps Script URL
-            const scriptUrl = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
-            const urlWithCacheBust = `${scriptUrl}?t=${Date.now()}`;
-            
-            const response = await fetch(urlWithCacheBust, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formObject)
-            });
-            
-            if (!response.ok) throw new Error('Failed to send');
-            
-            formMessage.textContent = 'Message sent successfully!';
-            formMessage.style.color = '#00ff00';
-            this.reset();
-        } catch (error) {
-            formMessage.textContent = 'Message sent successfully! (If you don\'t hear back, please email us directly)';
-            formMessage.style.color = '#ffff00';
-            console.error('Submission error:', error);
-        } finally {
-            submitBtn.textContent = 'SEND REPORT';
-            submitBtn.disabled = false;
-        }
-    });
+        // Replace with your actual Google Apps Script URL
+        const scriptUrl = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+        const urlWithCacheBust = `${scriptUrl}?t=${Date.now()}`;
         
-    </script>
+        const response = await fetch(urlWithCacheBust, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formObject)
+        });
+        
+        if (!response.ok) throw new Error('Failed to send');
+        
+        formMessage.textContent = 'Message sent successfully!';
+        formMessage.style.color = '#00ff00';
+        this.reset();
+    } catch (error) {
+        formMessage.textContent = 'Message sent successfully! (If you don\'t hear back, please email us directly)';
+        formMessage.style.color = '#ffff00';
+        console.error('Submission error:', error);
+    } finally {
+        submitBtn.textContent = 'SEND REPORT';
+        submitBtn.disabled = false;
+    }
+});
+</script>
 </body>
 </html>
