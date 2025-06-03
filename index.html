@@ -205,16 +205,15 @@
             position: relative;
             cursor: pointer;
             display: block;
-            border-radius: 10px 10px 0 0; /* Rounded top corners */
-            height: 200px; /* Fixed height for consistency */
-            /* overflow: hidden; /* Removed to allow stack images to peek */
+            border-radius: 10px 10px 0 0;
+            height: 200px;
         }
         .evidence-img, .evidence-img-main, .evidence-img-stack {
             display: block;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 8px; /* Slightly rounded corners for images */
+            border-radius: 8px;
         }
         .evidence-img-main {
             position: relative;
@@ -225,14 +224,13 @@
             position: absolute;
             top: 0;
             left: 0;
-            opacity: 0; /* Initially hidden */
+            opacity: 0;
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease-in-out;
         }
         .evidence-img-stack-1 { z-index: 2; transform: rotate(0deg) scale(1) translateX(0) translateY(0); }
         .evidence-img-stack-2 { z-index: 1; transform: rotate(0deg) scale(1) translateX(0) translateY(0); }
 
-        /* Desktop hover effect for stack */
         .evidence-image-wrapper.stack-hover-effect .evidence-img-main {
             transform: translateX(-10px) translateY(-5px) rotate(-5deg) scale(0.92);
         }
@@ -258,8 +256,8 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
-            border-radius: 8px; /* Match image rounding */
-            z-index: 11; /* Above all images in the stack */
+            border-radius: 8px;
+            z-index: 11;
         }
         .evidence-overlay.active { opacity: 1; visibility: visible; }
         .overlay-text { color: var(--secondary); font-size: 1.2rem; text-align: center; padding: 15px; text-shadow: 0 0 8px rgba(0, 255, 255, 0.7); }
@@ -281,7 +279,7 @@
             display: none;
             justify-content: center;
             align-items: center;
-            padding: 15px;
+            padding: 20px; /* Padding for the viewport, ensures controls are not cut off */
         }
         .lightbox-modal.show { display: flex; }
         .lightbox-backdrop {
@@ -290,33 +288,31 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.88);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            background-color: rgba(0, 0, 0, 0.9); /* Darker backdrop */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             cursor: pointer;
         }
-        .lightbox-content {
-            position: relative;
-            background-color: transparent;
-            padding: 0;
-            border-radius: 8px;
-            max-width: 90vw;
-            max-height: 90vh;
+        .lightbox-content { /* This now acts as the container for the image AND the controls that are positioned relative to viewport */
+            position: relative; /* Context for absolutely positioned controls if needed, but not strictly necessary if controls are fixed to viewport edges */
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 20001;
+            width: 100%; /* Take up padded space */
+            height: 100%;
+            z-index: 20001; /* Above backdrop */
         }
         #lightboxImage {
-            max-width: 100%;
-            max-height: 100%;
+            display: block;
+            max-width: calc(100% - 80px); /* Max width considering space for side arrows */
+            max-height: calc(100% - 80px); /* Max height considering space for top/bottom clearance */
             object-fit: contain;
             border-radius: 6px;
             border: 2px solid var(--secondary);
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 35px rgba(0, 255, 255, 0.35);
             opacity: 0;
-            transform: scale(1); /* Start at final scale for fade-in */
-            transition: opacity 0.3s ease 0.05s; /* Fade in slightly after clone is hidden */
+            transform: scale(1); /* Final scale, clone handles zoom-in */
+            transition: opacity 0.3s ease; /* Only fade in the actual image */
         }
         .lightbox-modal.show #lightboxImage.loaded {
             opacity: 1;
@@ -326,21 +322,21 @@
             position: fixed;
             object-fit: cover;
             border-radius: 8px;
-            z-index: 20005;
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-                        width 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-                        height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-                        top 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-                        left 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-                        opacity 0.2s ease 0.4s; /* Fade out slightly delayed, after positional anim */
+            z-index: 20005; /* Highest during animation */
+            transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1), /* Smooth easing */
+                        width 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                        height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                        top 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                        left 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.2s ease 0.4s; /* Fade out after reaching center, slightly delayed */
             pointer-events: none;
         }
 
-        .lightbox-controls {
+        .lightbox-controls { /* This div itself doesn't need to be visible or positioned explicitly */
             opacity: 0;
             filter: blur(5px);
-            transition: opacity 0.4s ease 0.5s, filter 0.4s ease 0.5s; /* Delay after image animation */
-            /* Buttons inside are absolutely positioned relative to lightbox-content or lightbox-modal */
+            transition: opacity 0.3s ease 0.5s, filter 0.3s ease 0.5s; /* Delay after image animation */
+            /* This class is added to the controls wrapper to make them appear */
         }
         .lightbox-modal.show .lightbox-controls.visible {
             opacity: 1;
@@ -348,27 +344,28 @@
         }
 
         .lightbox-close, .lightbox-prev, .lightbox-next {
-            position: absolute;
-            background-color: rgba(30, 30, 30, 0.6);
+            position: fixed; /* Fixed to viewport for consistent placement */
+            background-color: rgba(30, 30, 30, 0.7);
             color: var(--secondary);
             border: 1px solid var(--secondary);
             border-radius: 50%;
             cursor: pointer;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
-            z-index: 20002;
-            width: 44px;
-            height: 44px;
+            z-index: 20002; /* Above lightbox image */
+            width: 48px; /* Slightly larger for easier clicking */
+            height: 48px;
             display: flex;
             justify-content: center;
             align-items: center;
             line-height: 1;
+            padding:0;
         }
         .lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover { background-color: var(--primary); color: var(--light); border-color: var(--light); transform: scale(1.1); }
 
-        .lightbox-close { top: 20px; right: 20px; font-size: 1.8rem; } /* Positioned relative to viewport */
-        .lightbox-prev { top: 50%; left: 20px; transform: translateY(-50%); } /* Positioned relative to viewport */
-        .lightbox-next { top: 50%; right: 20px; transform: translateY(-50%); } /* Positioned relative to viewport */
+        .lightbox-close { top: 20px; right: 20px; font-size: 2rem; }
+        .lightbox-prev { top: 50%; left: 20px; transform: translateY(-50%); }
+        .lightbox-next { top: 50%; right: 20px; transform: translateY(-50%); }
 
 
         .contact-container { display: flex; gap: 3rem; }
@@ -405,10 +402,10 @@
         @media (max-width: 992px) { .about-content, .contact-container { flex-direction: column; } .about-image { margin-top: 2rem; } .section-title { font-size: 2rem; } }
         @media (max-width: 768px) {
             header { padding: 1rem 5%; } .logo-text { font-size: 1.2rem; } nav ul { gap: 1rem; } .hero-title { font-size: 2.5rem; } .hero-subtitle { font-size: 1.2rem; } section { padding: 4rem 5%; }
-            .lightbox-prev { left: 10px; width: 38px; height: 38px; font-size: 1.2rem; }
-            .lightbox-next { right: 10px; width: 38px; height: 38px; font-size: 1.2rem; }
-            .lightbox-close { top: 10px; right: 10px; width: 38px; height: 38px; font-size: 1.5rem;}
-            #lightboxImage { max-height: calc(85vh - 60px); }
+            .lightbox-prev { left: 10px; width: 40px; height: 40px; font-size: 1.2rem; }
+            .lightbox-next { right: 10px; width: 40px; height: 40px; font-size: 1.2rem; }
+            .lightbox-close { top: 10px; right: 10px; width: 40px; height: 40px; font-size: 1.5rem;}
+            #lightboxImage { max-height: calc(85vh - 60px); max-width: calc(100% - 60px); }
         }
         @media (max-width: 576px) { .logo-img { height: 40px; } .logo-text { font-size: 1rem; } .logo-subtext { font-size: 0.6rem; letter-spacing: 2px; } nav { display: none; } .hero-title { font-size: 2rem; } .evidence-grid { grid-template-columns: 1fr; } }
     </style>
@@ -440,9 +437,9 @@
                 "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/madison/madison-4.jpg"
             ]'>
                 <div class="evidence-image-wrapper">
-                    <img class="evidence-img evidence-img-main" src="" alt="Madison State Seminary">
-                    <img class="evidence-img-stack evidence-img-stack-1" src="" alt="Madison stack image 1" style="display: none;">
-                    <img class="evidence-img-stack evidence-img-stack-2" src="" alt="Madison stack image 2" style="display: none;">
+                    <img class="evidence-img evidence-img-main" src="" alt="Madison State Seminary"> {/* Src set by JS */}
+                    <img class="evidence-img-stack evidence-img-stack-1" src="" alt="" style="display: none;">
+                    <img class="evidence-img-stack evidence-img-stack-2" src="" alt="" style="display: none;">
                     <div class="evidence-overlay">
                         <span class="overlay-text"><strong><u>Click to view photos</u></strong></span>
                     </div>
@@ -461,9 +458,9 @@
                 "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/fairfield-5.jpg"
             ]'>
                 <div class="evidence-image-wrapper">
-                    <img class="evidence-img evidence-img-main" src="" alt="Fairfield Infirmary">
-                    <img class="evidence-img-stack evidence-img-stack-1" src="" alt="Fairfield stack image 1" style="display: none;">
-                    <img class="evidence-img-stack evidence-img-stack-2" src="" alt="Fairfield stack image 2" style="display: none;">
+                    <img class="evidence-img evidence-img-main" src="" alt="Fairfield Infirmary"> {/* Src set by JS */}
+                    <img class="evidence-img-stack evidence-img-stack-1" src="" alt="" style="display: none;">
+                    <img class="evidence-img-stack evidence-img-stack-2" src="" alt="" style="display: none;">
                     <div class="evidence-overlay">
                          <span class="overlay-text"><strong><u>Click to view photos</u></strong></span>
                     </div>
@@ -484,14 +481,14 @@
         <div class="lightbox-backdrop"></div>
         <div class="lightbox-content">
             <img id="lightboxImage" src="" alt="Evidence Photo">
-            <div class="lightbox-controls"> {/* Wrapper for controls */}
-                <button class="lightbox-close" aria-label="Close gallery">×</button>
-                <button class="lightbox-prev" aria-label="Previous photo">❮</button>
-                <button class="lightbox-next" aria-label="Next photo">❯</button>
-            </div>
+            {/* Controls are now positioned by fixed CSS relative to viewport edges */}
+        </div>
+        <div class="lightbox-controls"> {/* This wrapper is for opacity/filter animation */}
+            <button class="lightbox-close" aria-label="Close gallery">×</button>
+            <button class="lightbox-prev" aria-label="Previous photo">❮</button>
+            <button class="lightbox-next" aria-label="Next photo">❯</button>
         </div>
     </div>
-    <!-- Temporary image clone for animation -->
     <img id="animatingImageClone" src="" alt="" style="display: none;">
 
 
@@ -657,7 +654,8 @@ document.addEventListener('DOMContentLoaded', function() {
         let currentPhotos = [];
         let currentIndex = 0;
         const isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || navigator.msMaxTouchPoints > 0;
-        let cloneAnimationTimer = null;
+        let cloneAnimationTimer = null; // Timer for clone animation completion
+        let cloneFadeOutTimer = null; // Timer for clone fade out completion
 
 
         evidenceItems.forEach(item => {
@@ -730,27 +728,29 @@ document.addEventListener('DOMContentLoaded', function() {
             currentIndex = index;
 
             const rect = clickedImageElement.getBoundingClientRect();
-            animatingImageClone.src = clickedImageElement.src;
+            animatingImageClone.src = clickedImageElement.src; // Source for the clone
             animatingImageClone.style.display = 'block';
             animatingImageClone.style.top = `${rect.top}px`;
             animatingImageClone.style.left = `${rect.left}px`;
             animatingImageClone.style.width = `${rect.width}px`;
             animatingImageClone.style.height = `${rect.height}px`;
-            animatingImageClone.style.transform = 'scale(1) rotate(0deg)';
+            animatingImageClone.style.transform = 'scale(1) rotate(0deg)'; // Initial state for clone
             animatingImageClone.style.opacity = '1';
 
             lightbox.classList.add('show');
             document.body.classList.add('lightbox-open');
-            lightboxImageEl.classList.remove('loaded');
+            lightboxImageEl.classList.remove('loaded'); // Prepare actual image for fade-in
+            lightboxImageEl.style.opacity = '0'; // Ensure it starts transparent
             lightboxControls.classList.remove('visible');
 
             const tempImg = new Image();
             tempImg.onload = () => {
                 const naturalAspectRatio = tempImg.naturalWidth / tempImg.naturalHeight;
-                let finalWidth = Math.min(window.innerWidth * 0.85, tempImg.naturalWidth); // Use 85vw for a bit more margin
+                const padding = 40; // Space for controls around the image
+                let finalWidth = Math.min(window.innerWidth - padding * 2, tempImg.naturalWidth);
                 let finalHeight = finalWidth / naturalAspectRatio;
-                const maxHeight = window.innerHeight * 0.85;
 
+                const maxHeight = window.innerHeight - padding * 2;
                 if (finalHeight > maxHeight) {
                     finalHeight = maxHeight;
                     finalWidth = finalHeight * naturalAspectRatio;
@@ -765,38 +765,44 @@ document.addEventListener('DOMContentLoaded', function() {
                 animatingImageClone.style.left = `${targetLeft}px`;
                 animatingImageClone.style.width = `${finalWidth}px`;
                 animatingImageClone.style.height = `${finalHeight}px`;
-                // The transform for rotation is already handled by the main image style,
-                // but if you want the clone to also rotate to 0deg during transition:
-                // animatingImageClone.style.transform = 'scale(1) rotate(0deg)';
+                animatingImageClone.style.transform = 'scale(1) rotate(0deg)'; // End at normal scale/rotation
 
+                // Set actual lightbox image src now, it will be hidden until clone animation finishes
+                updateLightboxImage();
 
-                // Clear any existing timer
                 if (cloneAnimationTimer) clearTimeout(cloneAnimationTimer);
+                if (cloneFadeOutTimer) clearTimeout(cloneFadeOutTimer);
 
                 cloneAnimationTimer = setTimeout(() => {
-                    updateLightboxImage(); // Set src for actual lightbox image
-                    lightboxImageEl.classList.add('loaded'); // Fade in actual image
+                    lightboxImageEl.classList.add('loaded'); // This triggers opacity transition for actual image
                     animatingImageClone.style.opacity = '0'; // Start fading out the clone
                     lightboxControls.classList.add('visible'); // Fade in controls
 
-                    // Hide clone after its own opacity transition (0.2s delay + 0.4s duration from CSS)
-                    setTimeout(() => {
-                         if (animatingImageClone.style.opacity === '0') { // Check if it actually faded out
+                    cloneFadeOutTimer = setTimeout(() => {
+                         if (animatingImageClone.style.opacity === '0' || parseFloat(getComputedStyle(animatingImageClone).opacity) < 0.1) {
                             animatingImageClone.style.display = 'none';
                          }
-                    }, 600); // Sum of opacity delay and duration
-
-                }, 500); // Duration of the clone's main transform/size animation (0.5s)
+                    }, 200); // Duration of clone's opacity fade-out (from CSS transition)
+                }, 450); // Duration of the clone's main transform/size animation (0.45s from CSS)
             };
-            tempImg.src = photos[index]; // Load the target image to get its dimensions
+            tempImg.onerror = () => { // Handle if the target image fails to load
+                console.error("Failed to load image for lightbox:", photos[index]);
+                // Potentially close lightbox or show error
+                closeLightbox();
+            };
+            tempImg.src = photos[index];
         }
+
 
         function closeLightbox() {
             lightbox.classList.remove('show');
             document.body.classList.remove('lightbox-open');
             lightboxImageEl.classList.remove('loaded');
+            lightboxImageEl.style.opacity = '0'; // Ensure it's hidden for next open
             lightboxControls.classList.remove('visible');
-            if (cloneAnimationTimer) clearTimeout(cloneAnimationTimer); // Clear timer if lightbox is closed early
+            if (cloneAnimationTimer) clearTimeout(cloneAnimationTimer);
+            if (cloneFadeOutTimer) clearTimeout(cloneFadeOutTimer);
+            animatingImageClone.style.display = 'none'; // Ensure clone is hidden immediately
         }
 
         function updateLightboxImage() {
@@ -812,21 +818,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function showNextImage() {
-            if (currentPhotos.length === 0) return;
+            if (currentPhotos.length <= 1) return; // No next if only one or zero photos
             currentIndex = (currentIndex + 1) % currentPhotos.length;
-            lightboxImageEl.classList.remove('loaded');
+            lightboxImageEl.classList.remove('loaded'); // Prepare for fade in
+            lightboxImageEl.style.opacity = '0';
             setTimeout(() => {
                 updateLightboxImage();
+                void lightboxImageEl.offsetWidth; // Reflow
                 lightboxImageEl.classList.add('loaded');
-            }, 50); // Short delay for visual swap
+            }, 50);
         }
 
         function showPrevImage() {
-            if (currentPhotos.length === 0) return;
+            if (currentPhotos.length <= 1) return; // No prev if only one or zero photos
             currentIndex = (currentIndex - 1 + currentPhotos.length) % currentPhotos.length;
             lightboxImageEl.classList.remove('loaded');
+            lightboxImageEl.style.opacity = '0';
             setTimeout(() => {
                 updateLightboxImage();
+                void lightboxImageEl.offsetWidth; // Reflow
                 lightboxImageEl.classList.add('loaded');
             }, 50);
         }
@@ -847,8 +857,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
-    }
-});
+    } // End of initializePhotoGallery
+
+}); // End of DOMContentLoaded
 
 // Smooth Scroll for Welcome Button
 document.querySelector('.hero-btn')?.addEventListener('click', function(e) {
