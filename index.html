@@ -1193,18 +1193,23 @@
     </footer>
 
    <script>
-// Loading Animation Code
+// Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
+    // Cache DOM elements
     const loadingScreen = document.getElementById('loading-screen');
     const progressBarFill = document.querySelector('.progress-bar-fill');
     const progressCounter = document.querySelector('.progress-counter');
     const loadingText = document.querySelector('.loading-text');
     const logoLoadingContainer = document.querySelector('.logo-loading-container');
-    const headerLogoContainer = document.querySelector('.logo-container');
+    const header = document.querySelector('header');
+    const mainContent = document.querySelector('main');
     
-    // Hide header initially
-    document.querySelector('header').style.opacity = '0';
+    // Hide content initially
+    header.style.opacity = '0';
+    mainContent.style.opacity = '0';
+    mainContent.style.pointerEvents = 'none'; // Prevent interaction during loading
 
+    // Progress animation
     let progress = 0;
     const targetProgress = 100;
     const duration = 3500;
@@ -1213,10 +1218,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const loadingInterval = setInterval(() => {
         progress += increments;
+        progress = Math.min(progress, targetProgress); // Ensure doesn't exceed 100%
         progressBarFill.style.width = progress + '%';
         progressCounter.textContent = Math.round(progress) + '%';
         
-        // Update loading text based on progress
+        // Update loading text
         if (progress < 30) {
             loadingText.textContent = 'Initializing';
         } else if (progress < 70) {
@@ -1227,102 +1233,85 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (progress >= targetProgress) {
             clearInterval(loadingInterval);
-            progressCounter.textContent = '100%';
-            loadingText.textContent = 'Ready';
-            
-            // Start transition sequence
-            setTimeout(() => {
-                loadingScreen.style.opacity = '0';
-                logoLoadingContainer.style.opacity = '1';
-                
-                setTimeout(() => {
-                    // Calculate final position for logo (header position)
-                    const headerRect = headerLogoContainer.getBoundingClientRect();
-                    const logoFinalHeight = 50;
-                    const finalTop = headerRect.top + (headerRect.height / 2) - (logoFinalHeight / 2);
-                    const finalLeft = headerRect.left;
-                    
-                    // Animate logo to final position
-                    logoLoadingContainer.style.top = finalTop + 'px';
-                    logoLoadingContainer.style.left = finalLeft + 'px';
-                    logoLoadingContainer.style.transform = 'translate(0, 0)';
-                    logoLoadingContainer.style.gap = '10px';
-                    document.querySelector('.logo-loading').style.height = logoFinalHeight + 'px';
-                    document.querySelector('.logo-text-loading').style.fontSize = '1.5rem';
-                    
-                    setTimeout(() => {
-                        // Show header and fade out loading logo
-                        document.querySelector('header').style.opacity = '1';
-                        logoLoadingContainer.style.opacity = '0';
-                        
-                        setTimeout(() => {
-                            // Remove loading elements and show page content
-                            loadingScreen.remove();
-                            logoLoadingContainer.remove();
-                            
-                            // Show all page content
-                            document.querySelectorAll('body > *:not(script)').forEach(el => {
-                                el.style.opacity = '1';
-                            });
-                            
-                            // Initialize other animations
-                            initIntersectionObserver();
-                            animateTitle();
-                        }, 1000);
-                    }, 1000);
-                }, 500);
-            }, 500);
+            completeLoading();
         }
     }, intervalTime);
 
+    function completeLoading() {
+        // Fade out loading screen
+        loadingScreen.style.opacity = '0';
+        loadingScreen.style.transition = 'opacity 0.5s ease';
+        
+        // After fade out, remove loading screen
+        setTimeout(() => {
+            loadingScreen.remove();
+            
+            // Show header and main content
+            header.style.opacity = '1';
+            header.style.transition = 'opacity 0.5s ease';
+            
+            mainContent.style.opacity = '1';
+            mainContent.style.pointerEvents = 'auto';
+            mainContent.style.transition = 'opacity 0.5s ease';
+            
+            // Initialize animations
+            initIntersectionObserver();
+            animateTitle();
+        }, 500);
+    }
+
     function initIntersectionObserver() {
         const sections = document.querySelectorAll('section');
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px' // Adjust this to trigger animation earlier/later
-        };
+        
+        // Set initial state for all sections
+        sections.forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+        });
         
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('section-visible');
-                    // Stop observing after animation triggers to improve performance
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
                     observer.unobserve(entry.target);
                 }
             });
-        }, observerOptions);
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        });
         
         sections.forEach(section => {
-            // Add initial state
-            section.style.opacity = '0';
-            section.style.transform = 'translateY(20px)';
-            section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
             observer.observe(section);
         });
     }
 
     function animateTitle() {
         const title = document.getElementById('animated-title');
-        if (title) {
-            const text = title.textContent;
-            title.textContent = '';
-            
-            for (let i = 0; i < text.length; i++) {
+        if (!title) return;
+        
+        const text = title.textContent.trim();
+        title.textContent = '';
+        title.style.opacity = '1'; // Ensure container is visible
+        
+        text.split('').forEach((char, i) => {
+            setTimeout(() => {
+                const span = document.createElement('span');
+                span.textContent = char;
+                span.style.opacity = '0';
+                span.style.display = 'inline-block';
+                span.style.transform = 'translateY(-20px)';
+                title.appendChild(span);
+                
                 setTimeout(() => {
-                    const span = document.createElement('span');
-                    span.textContent = text[i];
-                    span.style.opacity = '0';
-                    span.style.display = 'inline-block';
-                    title.appendChild(span);
-                    
-                    setTimeout(() => {
-                        span.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                        span.style.opacity = '1';
-                        span.style.transform = 'translateY(0)';
-                    }, 50);
-                }, i * 100);
-            }
-        }
+                    span.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                    span.style.opacity = '1';
+                    span.style.transform = 'translateY(0)';
+                }, 10);
+            }, i * 100);
+        });
     }
 });
 
@@ -1330,6 +1319,8 @@ document.addEventListener('DOMContentLoaded', function() {
 document.querySelector('.hero-btn')?.addEventListener('click', function(e) {
     e.preventDefault();
     const targetSection = document.getElementById('about');
+    if (!targetSection) return;
+    
     const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - 70;
     
     window.scrollTo({
@@ -1337,9 +1328,11 @@ document.querySelector('.hero-btn')?.addEventListener('click', function(e) {
         behavior: 'smooth'
     });
     
-    this.style.boxShadow = '0 0 25px rgba(0, 255, 255, 0.8)';
+    // Add temporary glow effect
+    const btn = e.currentTarget;
+    btn.style.boxShadow = '0 0 25px rgba(0, 255, 255, 0.8)';
     setTimeout(() => {
-        this.style.boxShadow = 'var(--glow)';
+        btn.style.boxShadow = '';
     }, 500);
 });
 
@@ -1351,6 +1344,9 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
     const submitBtn = form.querySelector('.submit-btn');
     const formMessage = document.getElementById('formMessage');
     
+    if (!submitBtn || !formMessage) return;
+    
+    // Update UI for submission state
     submitBtn.textContent = 'Sending...';
     submitBtn.disabled = true;
     formMessage.textContent = '';
@@ -1364,24 +1360,16 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
             message: form.message.value
         };
         
-        // Replace with your actual Google Apps Script deployment URL
         const scriptUrl = 'https://script.google.com/macros/s/AKfycbzUlJQna9Edv5GDpZz79f1mH15_tDVQzLYkH83oGzm2G83FcO8DsAknXPDFC0rNYBe3LQ/exec';
-        
-        // Add timestamp to prevent caching
         const urlWithCacheBust = `${scriptUrl}?timestamp=${Date.now()}`;
         
-        const response = await fetch(urlWithCacheBust, {
+        await fetch(urlWithCacheBust, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData),
-            // Important for CORS with Google Apps Script
             mode: 'no-cors'
         });
         
-        // Since we're using no-cors, we can't read the response directly
-        // So we'll assume success if no network error occurred
         formMessage.textContent = 'Report submitted successfully! We\'ll be in touch soon.';
         formMessage.style.color = '#00ff00';
         form.reset();
@@ -1395,6 +1383,6 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
         submitBtn.disabled = false;
     }
 });
-   </script>
+</script>
 </body>
 </html>
