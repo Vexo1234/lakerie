@@ -234,8 +234,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            max-width: calc(100vw - 120px); /* Max width considering space for side arrows */
-            max-height: calc(100vh - 80px); /* Max height considering space for top/bottom clearance */
+            max-width: calc(100vw - 120px);
+            max-height: calc(100vh - 80px);
             z-index: 20002; /* Above backdrop, below fixed controls */
         }
         #lightboxImage {
@@ -249,9 +249,9 @@
             opacity: 0; /* Initial state: transparent */
             transform: scale(0.95); /* Start slightly scaled down */
             filter: blur(3px); /* Start blurred */
-            transition: opacity var(--lightbox-transition-duration) ease,
-                        transform var(--lightbox-transition-duration) ease,
-                        filter var(--lightbox-transition-duration) ease;
+            transition: opacity var(--lightbox-transition-duration) ease var(--lightbox-transition-duration), /* Delay opacity to sync with simplified opening */
+                        transform var(--lightbox-transition-duration) ease var(--lightbox-transition-duration),
+                        filter var(--lightbox-transition-duration) ease var(--lightbox-transition-duration);
         }
         .lightbox-modal.show #lightboxImage.loaded {
             opacity: 1;
@@ -267,7 +267,7 @@
             border: 1px solid var(--secondary);
             border-radius: 50%;
             cursor: pointer;
-            font-family: Arial, sans-serif; /* For better symbol rendering */
+            font-family: Arial, sans-serif;
             font-size: 1.6rem;
             transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease,
                         opacity var(--controls-fade-duration, 0.3s) ease var(--controls-fade-delay, 0.2s),
@@ -368,13 +368,11 @@
         <h2 class="section-title">PLACES WE HAVE INVESTIGATED</h2>
         <div class="section-content evidence-grid">
             <div class="evidence-item" data-photos='[
-                "https://ewscripps.brightspotcdn.com/dims4/default/276469f/2147483647/strip/true/crop/1786x1005+0+65/resize/1280x720!/quality/90/?url=http%3A%2F%2Fewscripps-brightspot.s3.amazonaws.com%2F9a%2Fdd%2Fdb3223e046e2ba8bc1d8a113258b%2Fscreen-shot-2019-03-05-at-8.07.33%20PM.png",
-                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/refs/heads/main/madison/IMG_0405.JPEG",
-                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/refs/heads/main/madison/IMG_0408.JPEG",
-                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/refs/heads/main/madison/IMG_0904.JPEG",
-                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/refs/heads/main/madison/IMG_0905.JPEG",
-                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/refs/heads/main/madison/IMG_0906.JPEG",
-                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/refs/heads/main/madison/att.kNA07syhyVOUlLoGTv_vPp7ZT4z41cssjfFWoRKEfsE.MP4"
+                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/madison/IMG_0904.JPEG",
+                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/madison/IMG_0905.JPEG",
+                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/madison/IMG_0906.JPEG",
+                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/madison/IMG_0405.JPEG",
+                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/madison/IMG_0408.JPEG"
             ]'>
                 <div class="evidence-image-wrapper">
                     <img class="evidence-img evidence-img-main" src="" alt="Madison State Seminary">
@@ -391,14 +389,13 @@
                 </div>
             </div>
             <div class="evidence-item" data-photos='[
-                "https://upload.wikimedia.org/wikipedia/commons/9/99/Fairfield_County_Infirmary.jpg",
-                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/refs/heads/main/fairfield/IMG_1655.JPEG",
-                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/refs/heads/main/fairfield/IMG_1656.JPEG",
-                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/refs/heads/main/fairfield/IMG_1657.JPEG",
-                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/refs/heads/main/fairfield/IMG_1658.JPEG",
-                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/refs/heads/main/fairfield/IMG_1659.JPEG",
-                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/refs/heads/main/fairfield/IMG_1660.JPEG",
-                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/refs/heads/main/fairfield/IMG_1661.JPEG"
+                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/IMG_1655.JPEG",
+                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/IMG_1656.JPEG",
+                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/IMG_1657.JPEG",
+                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/IMG_1658.JPEG",
+                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/IMG_1659.JPEG",
+                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/IMG_1660.JPEG",
+                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/IMG_1661.JPEG"
             ]'>
                 <div class="evidence-image-wrapper">
                     <img class="evidence-img evidence-img-main" src="" alt="Fairfield Infirmary">
@@ -429,11 +426,13 @@
         <button class="lightbox-prev" aria-label="Previous photo">❮</button>
         <button class="lightbox-next" aria-label="Next photo">❯</button>
     </div>
-    <script>
+
+<script>
 document.addEventListener('DOMContentLoaded', function() {
     const lightboxTransitionDurationMs = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--lightbox-transition-duration').replace('s', '')) * 1000 || 300;
     const controlsFadeDurationMs = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--controls-fade-duration').replace('s', '')) * 1000 || 300;
-    const controlsFadeDelayMs = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--controls-fade-delay').replace('s', '')) * 1000 || 200; // Adjusted delay
+    const controlsFadeDelayMs = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--controls-fade-delay').replace('s', '')) * 1000 || 200;
+
 
     const loadingScreen = document.getElementById('loading-screen');
     const progressBarFill = document.querySelector('.progress-bar-fill');
@@ -595,7 +594,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || navigator.msMaxTouchPoints > 0;
         let controlsTimer = null;
 
-
         evidenceItems.forEach(item => {
             const imageWrapper = item.querySelector('.evidence-image-wrapper');
             const overlay = item.querySelector('.evidence-overlay');
@@ -666,19 +664,27 @@ document.addEventListener('DOMContentLoaded', function() {
                         openSimpleLightbox(photos, 0);
                     } else {
                         console.warn("No photos to display for this item.");
+                         // Optionally open lightbox with an error message if no photos
+                        updateLightboxImageContent('https://placehold.co/600x400/0a0a0a/FFFFFF?text=No+Photos+Available', "No Photos Available", 0, 0);
+                        lightbox.classList.add('show');
+                        document.body.classList.add('lightbox-open');
+                        lightboxImageEl.classList.add('loaded');
+                        [lightboxCloseBtn].forEach(btn => btn.classList.add('visible')); // Only show close
+                        lightboxPrevBtn.style.display = 'none';
+                        lightboxNextBtn.style.display = 'none';
+
                     }
                 });
             }
         });
 
         function openSimpleLightbox(photos, index) {
-            // Validate the specific image URL we are trying to open initially
             if (!photos || photos.length === 0 || index < 0 || index >= photos.length || typeof photos[index] !== 'string' || !photos[index].trim() || photos[index].includes('{/*')) {
-                console.error("Cannot open lightbox: Invalid photos array or the specific image URL is problematic.", "Attempted index:", index, "Photos array:", photos);
+                console.error("Cannot open lightbox: Invalid photos array or initial image URL.", "Attempted index:", index, "Photos array:", photos);
                 updateLightboxImageContent('https://placehold.co/600x400/000000/FFFFFF?text=Error+Loading+Image', "Error Loading Image", photos ? photos.length : 0, index);
                 lightbox.classList.add('show');
                 document.body.classList.add('lightbox-open');
-                lightboxImageEl.classList.add('loaded'); // Show placeholder
+                lightboxImageEl.classList.add('loaded');
                 [lightboxCloseBtn, lightboxPrevBtn, lightboxNextBtn].forEach(btn => btn.classList.add('visible'));
                 return;
             }
@@ -686,26 +692,24 @@ document.addEventListener('DOMContentLoaded', function() {
             currentPhotos = photos;
             currentIndex = index;
 
-            lightboxImageEl.style.opacity = '0'; // Ensure it starts transparent for fade-in
+            lightboxImageEl.style.opacity = '0';
             lightboxImageEl.classList.remove('loaded');
             [lightboxCloseBtn, lightboxPrevBtn, lightboxNextBtn].forEach(btn => btn.classList.remove('visible'));
 
-            updateLightboxImageContent(); // Sets the first image src and alt
+            updateLightboxImageContent();
 
-            lightbox.classList.add('show'); // Fade in modal and backdrop
+            lightbox.classList.add('show');
             document.body.classList.add('lightbox-open');
 
             if (controlsTimer) clearTimeout(controlsTimer);
-            // Short delay for modal to become display:flex, then trigger image and control animations
             setTimeout(() => {
-                lightboxImageEl.classList.add('loaded'); // Triggers CSS opacity, scale, filter transition
-
-                controlsTimer = setTimeout(() => { // Delay for controls
+                lightboxImageEl.classList.add('loaded');
+                controlsTimer = setTimeout(() => {
                     [lightboxCloseBtn, lightboxPrevBtn, lightboxNextBtn].forEach(btn => {
-                        if (btn) btn.classList.add('visible');
+                        if(btn) btn.classList.add('visible');
                     });
-                }, controlsFadeDelayMs);
-            }, 50);
+                }, parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--controls-fade-delay').replace('s',''))*1000 || 200);
+            }, 50); // Delay for modal to be display:flex before starting transitions
         }
 
         function closeLightbox() {
@@ -727,19 +731,22 @@ document.addEventListener('DOMContentLoaded', function() {
             if(errorSrc) {
                 displaySrc = errorSrc;
                 displayAlt = errorAlt || "Error loading image";
-                photosToConsider = typeof photoCountForError === 'number' ? new Array(photoCountForError) : []; // For button logic
+                photosToConsider = typeof photoCountForError === 'number' ? new Array(photoCountForError) : [];
             } else if (photosToConsider && photosToConsider.length > 0 && indexToConsider >= 0 && indexToConsider < photosToConsider.length) {
                 const imageUrl = photosToConsider[indexToConsider];
-                // Final check for invalid URL string before assigning to src
                 if (typeof imageUrl === 'string' && imageUrl.trim() !== '' && !imageUrl.includes('{/*') && (imageUrl.startsWith('http') || imageUrl.startsWith('/'))) {
                     displaySrc = imageUrl;
                     displayAlt = `Evidence Photo ${indexToConsider + 1} of ${photosToConsider.length}`;
                 } else {
-                    console.error("UPDATE LIGHTBOX: Invalid image URL detected at index", indexToConsider, ":", imageUrl, ". Displaying placeholder.");
+                    console.error("UPDATE LIGHTBOX: Invalid image URL detected at index", indexToConsider, ":", `"${imageUrl}"`, ". Displaying placeholder.");
                     displayAlt = "Invalid image data";
                 }
             } else {
-                console.warn("UPDATE LIGHTBOX: No photos to display or index out of bounds. CurrentIndex:", indexToConsider, "Photos:", photosToConsider);
+                if(!(photosToConsider && photosToConsider.length > 0)){
+                     console.warn("UPDATE LIGHTBOX: No photos in currentPhotos array. Displaying placeholder.");
+                } else {
+                     console.warn("UPDATE LIGHTBOX: Index out of bounds. CurrentIndex:", indexToConsider, "Photos array length:", photosToConsider.length, ". Displaying placeholder.");
+                }
                 displayAlt = 'No photo to display';
             }
 
@@ -750,6 +757,7 @@ document.addEventListener('DOMContentLoaded', function() {
             lightboxPrevBtn.style.display = hasMultiplePhotos ? 'flex' : 'none';
             lightboxNextBtn.style.display = hasMultiplePhotos ? 'flex' : 'none';
         }
+
 
         function showNextImage() {
             if (!currentPhotos || currentPhotos.length <= 1) return;
