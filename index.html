@@ -15,12 +15,12 @@
             --light: #f0f0f0;
             --glow: 0 0 10px rgba(43, 124, 226, 0.7), 0 0 20px rgba(0, 255, 255, 0.5);
             --text-glow: 0 0 5px rgba(43, 124, 226, 0.8);
-            --lightbox-animation-duration: 0.4s; /* Consistent animation speed */
-            --controls-animation-duration: 0.3s;
-            --controls-animation-delay: 0.45s; /* After clone animation + slight buffer */
+            --lightbox-transition-duration: 0.3s;
+            --controls-fade-duration: 0.3s;
+            --controls-fade-delay: 0.2s;
         }
 
-        /* Loading Screen Styles */
+        /* Loading Screen (existing styles) */
         #loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s ease; }
         .loading-container { display: flex; flex-direction: column; align-items: center; gap: 30px; width: 100%; }
         .progress-bar-container { display: flex; align-items: center; gap: 15px; width: 80%; max-width: 400px; }
@@ -28,23 +28,17 @@
         .progress-bar-fill { height: 100%; width: 0; background: linear-gradient(90deg, #00ffff, #0088ff); transition: width 0.1s linear; border-radius: 5px; }
         .progress-counter { color: #fff; font-size: 1.2rem; margin-bottom: 10px; }
         .loading-text { color: #fff; font-size: 1.2rem; margin-bottom: 20px; min-height: 1.5em; }
-
         .logo-loading-container { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 15px; z-index: 100000; opacity: 0; transition: all 2s cubic-bezier(0.22, 1, 0.36, 1); }
         .logo-loading { height: 60px; filter: drop-shadow(0 0 15px rgba(43, 124, 226, 0.7)); transition: all 2s cubic-bezier(0.22, 1, 0.36, 1); }
         .logo-text-loading { font-size: 2rem; font-weight: bold; background: linear-gradient(to right, #2b7ce2, #00ffff); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: 0 0 5px rgba(43, 124, 226, 0.8); letter-spacing: 2px; white-space: nowrap; transition: all 2s cubic-bezier(0.22, 1, 0.36, 1); }
 
-        body > *:not(#loading-screen):not(.logo-loading-container):not(script):not(#photoLightbox):not(#animatingImageClone) {
+        body > *:not(#loading-screen):not(.logo-loading-container):not(script):not(#photoLightbox) {
             opacity: 0;
         }
-
-        .security-message { color: var(--secondary); font-size: 0.9rem; margin-top: 1rem; display: flex; align-items: center; gap: 8px; }
-        .security-message i { color: var(--primary); }
-        #formMessage { margin-top: 1rem; min-height: 20px; }
-
+        /* General Styles (existing styles) */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Courier New', monospace; }
         body { background-color: var(--dark); color: var(--light); overflow-x: hidden; position: relative; }
         body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M20,20 Q30,10 40,20 T60,20 T80,20" stroke="rgba(43,124,226,0.1)" fill="none" stroke-width="0.5"/></svg>'); opacity: 0.1; pointer-events: none; z-index: -1; }
-
         header { position: fixed; top: 0; left: 0; width: 100%; padding: 1.5rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background-color: rgba(10, 10, 10, 0.9); backdrop-filter: blur(0px); border-bottom: 1px solid rgba(43, 124, 226, 0.2); }
         .logo-container { display: flex; align-items: center; gap: 1rem; }
         .logo-img { height: 50px; filter: drop-shadow(0 0 5px var(--primary)); transition: all 0.5s ease; }
@@ -55,7 +49,6 @@
         nav a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: linear-gradient(to right, var(--primary), var(--secondary)); transition: width 0.3s ease; }
         nav a:hover { color: var(--secondary); text-shadow: var(--text-glow); }
         nav a:hover::after { width: 100%; }
-
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 5%; position: relative; overflow: hidden; }
         .hero::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, transparent 0%, var(--darker) 70%); z-index: -1; }
         .hero-title { font-size: 4rem; margin-bottom: 1rem; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent !important; text-shadow: var(--text-glow); opacity:1; }
@@ -64,7 +57,6 @@
         .hero-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent); transition: 0.5s; z-index: -1; }
         .hero-btn:hover::before { left: 100%; }
         .hero-btn:hover { transform: translateY(-5px); box-shadow: 0 0 20px var(--primary); }
-
         .orb { position: absolute; border-radius: 50%; filter: blur(10px); opacity: 0.3; z-index: -1; animation: float 15s infinite ease-in-out; }
         .orb:nth-child(1) { width: 100px; height: 100px; background: var(--primary); top: 20%; left: 10%; animation-delay: 0s; }
         .orb:nth-child(2) { width: 150px; height: 150px; background: var(--secondary); top: 60%; left: 70%; animation-delay: 2s; }
@@ -74,7 +66,6 @@
         .ghost::after { content: ''; position: absolute; width: 60px; height: 30px; border-radius: 0 0 30px 30px; background: rgba(255, 255, 255, 0.2); bottom: 0; left: 10px; }
         .ghost:nth-of-type(1) { top: 30%; left: 80%; animation-delay: 1s; }
         .ghost:nth-of-type(2) { top: 50%; left: 20%; animation-delay: 3s; }
-
         section { padding: 6rem 10%; opacity: 0; transform: translateX(-80px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
         section.section-visible { opacity: 1; transform: translateX(0); }
         section .section-title { font-size: 2.5rem; margin-bottom: 3rem; color: var(--primary); text-shadow: var(--text-glow); position: relative; opacity: 0; transform: translateX(-60px); transition: opacity 0.8s ease-out 0.2s, transform 0.8s ease-out 0.2s; }
@@ -83,100 +74,20 @@
         section.section-visible .section-title,
         section.section-visible .section-content { opacity: 1; transform: translateX(0); }
 
-        .about-content { display: flex; gap: 3rem; align-items: center; }
-        .about-text { flex: 1; }
-        .about-image { flex: 1; position: relative; }
-        .about-image img { width: 100%; border-radius: 10px; box-shadow: var(--glow); transition: transform 0.5s ease; }
-        .about-image:hover img { transform: scale(1.03); }
-        .about-image::before { content: ''; position: absolute; top: -10px; left: -10px; right: 10px; bottom: 10px; border: 2px solid var(--primary); border-radius: 10px; z-index: -1; opacity: 0.5; }
-        .team-container { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; }
-        .team-member { background: rgba(20, 20, 20, 0.7); border-radius: 10px; padding: 2rem; width: 300px; text-align: center; box-shadow: var(--glow); transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .team-member:hover { transform: translateY(-10px) scale(1.03); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), var(--glow); }
-        .member-image { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); margin: 0 auto 1.5rem; box-shadow: var(--glow); }
-        .member-name { font-size: 1.5rem; color: var(--secondary); margin-bottom: 0.5rem; }
-        .member-role { color: var(--primary); font-size: 1.1rem; margin-bottom: 1rem; display: block; }
-        .member-bio { margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.6; }
-        .member-fact { font-style: italic; color: var(--secondary); margin-top: 1rem; font-size: 0.9rem; }
-        .equipment-section { background: rgba(15, 15, 15, 0.7); padding: 4rem 10%; border-top: 1px solid rgba(43, 124, 226, 0.2); border-bottom: 1px solid rgba(43, 124, 226, 0.2); }
-        .equipment-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem; }
-        .equipment-item { background: rgba(30, 30, 30, 0.7); border-radius: 10px; padding: 1.5rem; text-align: center; transition: all 0.3s ease; border: 1px solid rgba(43, 124, 226, 0.3); }
-        .equipment-item p { color: var(--light); }
-        .equipment-item:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: var(--glow); }
-        .equipment-icon { font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem; }
-        .equipment-name { font-size: 1.2rem; color: var(--secondary); margin-bottom: 0.5rem; }
-
         /* --- Evidence Item & Photo Stack Styles --- */
         .evidence-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
-        .evidence-item {
-            background: rgba(20, 20, 20, 0.7);
-            border-radius: 10px;
-            overflow: visible;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            position: relative;
-        }
-        .evidence-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), var(--glow);
-        }
-        .evidence-image-wrapper {
-            position: relative;
-            cursor: pointer;
-            display: block;
-            border-radius: 10px 10px 0 0;
-            height: 200px;
-        }
-        .evidence-img, .evidence-img-main, .evidence-img-stack {
-            display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-        .evidence-img-main {
-            position: relative;
-            z-index: 3;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .evidence-img-stack {
-            position: absolute;
-            top: 0;
-            left: 0;
-            opacity: 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease-in-out;
-        }
+        .evidence-item { background: rgba(20, 20, 20, 0.7); border-radius: 10px; overflow: visible; transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); position: relative; }
+        .evidence-item:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), var(--glow); }
+        .evidence-image-wrapper { position: relative; cursor: pointer; display: block; border-radius: 10px 10px 0 0; height: 200px; }
+        .evidence-img, .evidence-img-main, .evidence-img-stack { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+        .evidence-img-main { position: relative; z-index: 3; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .evidence-img-stack { position: absolute; top: 0; left: 0; opacity: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.3); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease-in-out; }
         .evidence-img-stack-1 { z-index: 2; transform: rotate(0deg) scale(1) translateX(0) translateY(0); }
         .evidence-img-stack-2 { z-index: 1; transform: rotate(0deg) scale(1) translateX(0) translateY(0); }
-
-        .evidence-image-wrapper.stack-hover-effect .evidence-img-main {
-            transform: translateX(-10px) translateY(-5px) rotate(-5deg) scale(0.92);
-        }
-        .evidence-image-wrapper.stack-hover-effect .evidence-img-stack-1.has-image {
-            opacity: 0.9;
-            transform: translateX(0px) translateY(0px) rotate(2deg) scale(0.94);
-        }
-        .evidence-image-wrapper.stack-hover-effect .evidence-img-stack-2.has-image {
-            opacity: 0.8;
-            transform: translateX(10px) translateY(5px) rotate(7deg) scale(0.96);
-        }
-
-        .evidence-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(10, 10, 20, 0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            border-radius: 8px;
-            z-index: 11;
-        }
+        .evidence-image-wrapper.stack-hover-effect .evidence-img-main { transform: translateX(-10px) translateY(-5px) rotate(-5deg) scale(0.92); }
+        .evidence-image-wrapper.stack-hover-effect .evidence-img-stack-1.has-image { opacity: 0.9; transform: translateX(0px) translateY(0px) rotate(2deg) scale(0.94); }
+        .evidence-image-wrapper.stack-hover-effect .evidence-img-stack-2.has-image { opacity: 0.8; transform: translateX(10px) translateY(5px) rotate(7deg) scale(0.96); }
+        .evidence-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(10, 10, 20, 0.6); display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; border-radius: 8px; z-index: 11; }
         .evidence-overlay.active { opacity: 1; visibility: visible; }
         .overlay-text { color: var(--secondary); font-size: 1.2rem; text-align: center; padding: 15px; text-shadow: 0 0 8px rgba(0, 255, 255, 0.7); }
         .evidence-info { padding: 1.5rem; }
@@ -184,113 +95,77 @@
         .evidence-date { color: var(--primary); font-size: 0.9rem; margin-bottom: 1rem; display: block; }
         .evidence-item p { color: var(--light); }
 
-
-        /* --- Lightbox Modal Styles (REVISED) --- */
+        /* --- Lightbox Modal Styles (SIMPLIFIED ANIMATION & CONTROLS) --- */
         body.lightbox-open { overflow: hidden; }
         .lightbox-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 20000;
-            display: none; /* Shown by JS */
-            justify-content: center;
-            align-items: center;
-            padding: 20px; /* Padding for the viewport edges */
+            display: none;
+            justify-content: center; align-items: center;
+            opacity: 0;
+            transition: opacity var(--lightbox-transition-duration) ease;
         }
-        .lightbox-modal.show { display: flex; }
-        .lightbox-backdrop {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.92); /* Darker backdrop */
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            cursor: pointer;
-        }
-        .lightbox-content { /* Contains the image */
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            max-width: calc(100% - 100px); /* Max width considering space for side arrows */
-            max-height: calc(100% - 80px); /* Max height considering space for top/bottom clearance */
-            z-index: 20001;
-        }
-        #lightboxImage {
-            display: block;
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            border-radius: 6px;
+        .lightbox-modal.show { display: flex; opacity: 1; }
+        .lightbox-backdrop { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); cursor: pointer; z-index: 20001; }
+        .lightbox-content { position: relative; display: flex; justify-content: center; align-items: center; max-width: calc(100vw - 120px); max-height: calc(100vh - 80px); z-index: 20002; }
+        #lightboxImage, #lightboxVideo {
+            display: none; /* Hide both initially, JS will show one */
+            max-width: 100%; max-height: 100%;
+            object-fit: contain; border-radius: 6px;
             border: 2px solid var(--secondary);
             box-shadow: 0 0 35px rgba(0, 255, 255, 0.35);
-            opacity: 0; /* Initial state: transparent */
-            transform: scale(1); /* Final scale, no transform animation on this element itself */
-            transition: opacity 0.3s ease; /* Only fade in */
-        }
-        .lightbox-modal.show #lightboxImage.loaded {
-            opacity: 1;
-        }
-
-        #animatingImageClone {
-            position: fixed;
-            object-fit: cover;
-            border-radius: 8px;
-            z-index: 20005;
-            transition: top var(--lightbox-animation-duration) cubic-bezier(0.4, 0, 0.2, 1),
-                        left var(--lightbox-animation-duration) cubic-bezier(0.4, 0, 0.2, 1),
-                        width var(--lightbox-animation-duration) cubic-bezier(0.4, 0, 0.2, 1),
-                        height var(--lightbox-animation-duration) cubic-bezier(0.4, 0, 0.2, 1),
-                        opacity 0.3s ease; /* Opacity transition for fade out */
-            pointer-events: none;
-        }
-
-        /* Controls are positioned fixed relative to viewport */
-        .lightbox-controls {
             opacity: 0;
-            filter: blur(5px);
-            transition: opacity var(--controls-animation-duration) ease var(--controls-animation-delay),
-                        filter var(--controls-animation-duration) ease var(--controls-animation-delay);
-            pointer-events: none; /* Wrapper doesn't take clicks initially */
+            transform: scale(0.95);
+            filter: blur(3px);
+            transition: opacity var(--lightbox-transition-duration) ease,
+                        transform var(--lightbox-transition-duration) ease,
+                        filter var(--lightbox-transition-duration) ease;
         }
-        .lightbox-modal.show .lightbox-controls.visible {
+        .lightbox-modal.show #lightboxImage.loaded,
+        .lightbox-modal.show #lightboxVideo.loaded {
+            display: block; /* Or inline-block, flex depending on element */
             opacity: 1;
+            transform: scale(1);
             filter: blur(0px);
-            pointer-events: auto; /* Buttons inside will handle pointer events */
         }
+        #lightboxVideo.loaded { display: block; } /* Ensure video becomes block */
 
+
+        /* Lightbox Controls - Positioned Fixed to Viewport */
         .lightbox-close, .lightbox-prev, .lightbox-next {
-            position: fixed; /* Fixed to viewport */
-            background-color: rgba(30, 30, 30, 0.6);
+            position: fixed;
+            background-color: rgba(30, 30, 30, 0.7);
             color: var(--secondary);
             border: 1px solid var(--secondary);
             border-radius: 50%;
             cursor: pointer;
-            font-size: 1.6rem; /* Adjusted from image */
-            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
-            z-index: 20002; /* Above image */
-            width: 48px;
-            height: 48px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            line-height: 1;
-            padding:0;
+            font-family: Arial, sans-serif;
+            font-size: 1.6rem;
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease,
+                        opacity var(--controls-fade-duration) ease var(--controls-fade-delay),
+                        filter var(--controls-fade-duration) ease var(--controls-fade-delay);
+            z-index: 20003; /* Above lightbox content */
+            width: 48px; height: 48px;
+            display: flex; justify-content: center; align-items: center;
+            line-height: 1; padding:0;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            pointer-events: auto; /* Ensure buttons are clickable */
+            opacity: 0; filter: blur(3px); pointer-events: none;
         }
-        .lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover { background-color: var(--primary); color: var(--light); border-color: var(--light); transform: scale(1.1) translateY(-50%); }
-        .lightbox-close:hover { transform: scale(1.1); } /* Reset transform for close button */
+        .lightbox-close.visible,
+        .lightbox-prev.visible,
+        .lightbox-next.visible {
+            opacity: 1; filter: blur(0px); pointer-events: auto;
+        }
+        .lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover {
+            background-color: var(--primary); color: var(--light); border-color: var(--light);
+        }
+        .lightbox-close { top: 25px; right: 25px; font-size: 2rem; }
+        .lightbox-prev { top: 50%; left: 25px; transform: translateY(-50%); }
+        .lightbox-next { top: 50%; right: 25px; transform: translateY(-50%); }
+        .lightbox-prev:hover, .lightbox-next:hover { transform: translateY(-50%) scale(1.1); }
+        .lightbox-close:hover { transform: scale(1.1); }
 
-        .lightbox-close { top: 20px; right: 20px; font-size: 2rem; }
-        .lightbox-prev { top: 50%; left: 20px; transform: translateY(-50%); }
-        .lightbox-next { top: 50%; right: 20px; transform: translateY(-50%); }
-
-
+        /* ... Other existing CSS ... */
         .contact-container { display: flex; gap: 3rem; }
         .contact-info { flex: 1; }
         .contact-info h3 { color: var(--secondary); margin-bottom: 1.5rem; font-size: 1.5rem; }
@@ -328,8 +203,8 @@
             .lightbox-prev { left: 10px; width: 40px; height: 40px; font-size: 1.2rem; }
             .lightbox-next { right: 10px; width: 40px; height: 40px; font-size: 1.2rem; }
             .lightbox-close { top: 10px; right: 10px; width: 40px; height: 40px; font-size: 1.5rem;}
-            .lightbox-content { max-width: calc(100vw - 80px); max-height: calc(100vh - 60px); }
-            #lightboxImage { max-height: 100%; max-width: 100%; }
+            .lightbox-content { max-width: calc(100vw - 60px); max-height: calc(100vh - 60px); }
+            #lightboxImage, #lightboxVideo { max-height: 100%; max-width: 100%; }
         }
         @media (max-width: 576px) { .logo-img { height: 40px; } .logo-text { font-size: 1rem; } .logo-subtext { font-size: 0.6rem; letter-spacing: 2px; } nav { display: none; } .hero-title { font-size: 2rem; } .evidence-grid { grid-template-columns: 1fr; } }
     </style>
@@ -355,10 +230,13 @@
         <h2 class="section-title">PLACES WE HAVE INVESTIGATED</h2>
         <div class="section-content evidence-grid">
             <div class="evidence-item" data-photos='[
-                "https://ewscripps.brightspotcdn.com/dims4/default/276469f/2147483647/strip/true/crop/1786x1005+0+65/resize/1280x720!/quality/90/?url=http%3A%2F%2Fewscripps-brightspot.s3.amazonaws.com%2F9a%2Fdd%2Fdb3223e046e2ba8bc1d8a113258b%2Fscreen-shot-2019-03-05-at-8.07.33%20PM.png",
-                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/madison/YOUR_SECOND_MADISON_IMAGE.jpg",
-                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/madison/YOUR_THIRD_MADISON_IMAGE.jpg",
-                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/madison/YOUR_FOURTH_MADISON_IMAGE.jpg"
+                {"type": "image", "src": "https://ewscripps.brightspotcdn.com/dims4/default/276469f/2147483647/strip/true/crop/1786x1005+0+65/resize/1280x720!/quality/90/?url=http%3A%2F%2Fewscripps-brightspot.s3.amazonaws.com%2F9a%2Fdd%2Fdb3223e046e2ba8bc1d8a113258b%2Fscreen-shot-2019-03-05-at-8.07.33%20PM.png"},
+                {"type": "image", "src": "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/madison/IMG_0906.JPEG"},
+                {"type": "image", "src": "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/madison/IMG_0405.JPEG"},
+                {"type": "video", "src": "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/madison/att.kNA07syhyVOUlLoGTv_vPp7ZT4z41cssjfFWoRKEfsE.MP4", "poster": "https://ewscripps.brightspotcdn.com/dims4/default/276469f/2147483647/strip/true/crop/1786x1005+0+65/resize/1280x720!/quality/90/?url=http%3A%2F%2Fewscripps-brightspot.s3.amazonaws.com%2F9a%2Fdd%2Fdb3223e046e2ba8bc1d8a113258b%2Fscreen-shot-2019-03-05-at-8.07.33%20PM.png"},
+                {"type": "image", "src": "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/madison/IMG_0408.JPEG"},
+                {"type": "image", "src": "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/madison/IMG_0904.JPEG"},
+                {"type": "image", "src": "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/madison/IMG_0905.JPEG"}
             ]'>
                 <div class="evidence-image-wrapper">
                     <img class="evidence-img evidence-img-main" src="" alt="Madison State Seminary">
@@ -375,11 +253,14 @@
                 </div>
             </div>
             <div class="evidence-item" data-photos='[
-                "https://upload.wikimedia.org/wikipedia/commons/9/99/Fairfield_County_Infirmary.jpg",
-                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/YOUR_SECOND_FAIRFIELD_IMAGE.jpg",
-                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/YOUR_THIRD_FAIRFIELD_IMAGE.jpg",
-                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/YOUR_FOURTH_FAIRFIELD_IMAGE.jpg",
-                "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/YOUR_FIFTH_FAIRFIELD_IMAGE.jpg"
+                {"type": "image", "src": "https://upload.wikimedia.org/wikipedia/commons/9/99/Fairfield_County_Infirmary.jpg"},
+                {"type": "image", "src": "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/IMG_1658.JPEG"},
+                {"type": "image", "src": "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/IMG_1660.JPEG"},
+                {"type": "image", "src": "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/IMG_1655.JPEG"},
+                {"type": "image", "src": "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/IMG_1656.JPEG"},
+                {"type": "image", "src": "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/IMG_1657.JPEG"},
+                {"type": "image", "src": "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/IMG_1659.JPEG"},
+                {"type": "image", "src": "https://raw.githubusercontent.com/Vexo1234/sdfsdfsdfsdf/main/fairfield/IMG_1661.JPEG"}
             ]'>
                 <div class="evidence-image-wrapper">
                     <img class="evidence-img evidence-img-main" src="" alt="Fairfield Infirmary">
@@ -404,19 +285,20 @@
     <div id="photoLightbox" class="lightbox-modal">
         <div class="lightbox-backdrop"></div>
         <div class="lightbox-content">
-            <img id="lightboxImage" src="" alt="Evidence Photo">
+            <img id="lightboxImage" src="" alt="Evidence Photo" style="display: none;">
+            <video id="lightboxVideo" controls style="display: none; max-width: 100%; max-height: 100%; border-radius: 6px; border: 2px solid var(--secondary);"></video>
         </div>
         <button class="lightbox-close" aria-label="Close gallery">×</button>
         <button class="lightbox-prev" aria-label="Previous photo">❮</button>
         <button class="lightbox-next" aria-label="Next photo">❯</button>
     </div>
-    <img id="animatingImageClone" src="" alt="" style="display: none;">
-
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Ensure this is a number for calculations
-    const lightboxAnimationDuration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--lightbox-animation-duration').replace('s', '')) * 1000 || 400;
+    const lightboxTransitionDurationMs = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--lightbox-transition-duration').replace('s', '')) * 1000 || 300;
+    const controlsFadeDurationMs = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--controls-fade-duration').replace('s', '')) * 1000 || 300;
+    const controlsFadeDelayMs = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--controls-fade-delay').replace('s', '')) * 1000 || 200;
+
 
     const loadingScreen = document.getElementById('loading-screen');
     const progressBarFill = document.querySelector('.progress-bar-fill');
@@ -428,15 +310,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (header) header.style.opacity = '0';
 
-    document.querySelectorAll('body > *:not(#loading-screen):not(.logo-loading-container):not(script):not(#photoLightbox):not(#animatingImageClone)').forEach(el => {
+    document.querySelectorAll('body > *:not(#loading-screen):not(.logo-loading-container):not(script):not(#photoLightbox)').forEach(el => {
         el.style.opacity = '0';
     });
 
     let progress = 0;
     const targetProgress = 100;
-    const duration = 3500;
+    const loadingAnimDuration = 3500;
     const intervalTime = 30;
-    const increments = (intervalTime / duration) * targetProgress;
+    const increments = (intervalTime / loadingAnimDuration) * targetProgress;
 
     if (progressBarFill && progressCounter && loadingText) {
         const loadingInterval = setInterval(() => {
@@ -476,7 +358,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 setTimeout(() => {
                                     if (loadingScreen) loadingScreen.remove();
                                     if (logoLoadingContainer) logoLoadingContainer.remove();
-                                    document.querySelectorAll('body > *:not(script):not(#photoLightbox):not(#animatingImageClone)').forEach(el => {
+                                    document.querySelectorAll('body > *:not(script):not(#photoLightbox)').forEach(el => {
                                         if(el !== header && (!el.classList || (!el.classList.contains('orb') && !el.classList.contains('ghost')))) {
                                             el.style.opacity = '1';
                                         }
@@ -491,7 +373,7 @@ document.addEventListener('DOMContentLoaded', function() {
                              if (header) header.style.opacity = '1';
                              if (loadingScreen) loadingScreen.remove();
                              if (logoLoadingContainer) logoLoadingContainer.remove();
-                             document.querySelectorAll('body > *:not(script):not(#photoLightbox):not(#animatingImageClone)').forEach(el => {
+                             document.querySelectorAll('body > *:not(script):not(#photoLightbox)').forEach(el => {
                                 if (!el.classList || (!el.classList.contains('orb') && !el.classList.contains('ghost'))) {
                                    el.style.opacity = '1';
                                 }
@@ -509,7 +391,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (loadingScreen) loadingScreen.remove();
         if (logoLoadingContainer) logoLoadingContainer.remove();
         if (header) header.style.opacity = '1';
-        document.querySelectorAll('body > *:not(script):not(#photoLightbox):not(#animatingImageClone)').forEach(el => {
+        document.querySelectorAll('body > *:not(script):not(#photoLightbox)').forEach(el => {
             if (!el.classList || (!el.classList.contains('orb') && !el.classList.contains('ghost'))) {
                 el.style.opacity = '1';
             }
@@ -563,82 +445,82 @@ document.addEventListener('DOMContentLoaded', function() {
         const evidenceItems = document.querySelectorAll('.evidence-item');
         const lightbox = document.getElementById('photoLightbox');
         const lightboxImageEl = document.getElementById('lightboxImage');
+        const lightboxVideoEl = document.getElementById('lightboxVideo'); // Get video element
         const lightboxBackdrop = lightbox.querySelector('.lightbox-backdrop');
-        // const lightboxControlsWrapper = lightbox.querySelector('.lightbox-controls-container'); // Wrapper for combined fade
         const lightboxCloseBtn = lightbox.querySelector('.lightbox-close');
         const lightboxPrevBtn = lightbox.querySelector('.lightbox-prev');
         const lightboxNextBtn = lightbox.querySelector('.lightbox-next');
-        const animatingImageClone = document.getElementById('animatingImageClone');
 
-        if (!lightbox || !lightboxImageEl || !lightboxCloseBtn || !lightboxPrevBtn || !lightboxNextBtn || !lightboxBackdrop || !animatingImageClone /*|| !lightboxControlsWrapper*/) {
+        if (!lightbox || !lightboxImageEl || !lightboxVideoEl || !lightboxCloseBtn || !lightboxPrevBtn || !lightboxNextBtn || !lightboxBackdrop) {
             console.warn('One or more lightbox elements not found. Gallery will not function fully.');
             return;
         }
 
-        let currentPhotos = [];
+        let currentMediaItems = [];
         let currentIndex = 0;
         const isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || navigator.msMaxTouchPoints > 0;
-        let clonePositionalAnimationTimer = null;
-        let cloneFadeOutCompletionTimer = null;
-
+        let controlsTimer = null;
 
         evidenceItems.forEach(item => {
             const imageWrapper = item.querySelector('.evidence-image-wrapper');
             const overlay = item.querySelector('.evidence-overlay');
-            const photoData = item.dataset.photos;
+            const mediaData = item.dataset.photos; // Renamed to mediaData for clarity
 
             const mainImageEl = imageWrapper.querySelector('.evidence-img-main');
             const stackImage1El = imageWrapper.querySelector('.evidence-img-stack-1');
             const stackImage2El = imageWrapper.querySelector('.evidence-img-stack-2');
 
-            if (imageWrapper && photoData && mainImageEl && stackImage1El && stackImage2El) {
-                let photos;
+            if (imageWrapper && mediaData && mainImageEl && stackImage1El && stackImage2El) {
+                let mediaItems;
                 try {
-                    photos = JSON.parse(photoData);
-                    if (!Array.isArray(photos) || photos.some(p => typeof p !== 'string' || !p.trim() || p.includes('{/*'))) {
-                        let errorMsg = 'Invalid photo data: not an array of valid, non-empty, non-comment strings.';
-                        if (photos && photos.find(p => typeof p === 'string' && p.includes('{/*'))) {
-                            errorMsg = 'Invalid photo data: Found an HTML comment string in photo URLs.';
+                    mediaItems = JSON.parse(mediaData);
+                    if (!Array.isArray(mediaItems) || mediaItems.some(m => typeof m !== 'object' || !m.type || !m.src || typeof m.src !== 'string' || !m.src.trim() || m.src.includes('{/*'))) {
+                        let errorMsg = 'Invalid media data: Must be an array of objects with type and valid src.';
+                        if (mediaItems && Array.isArray(mediaItems)) {
+                            const problematicEntry = mediaItems.find(m => typeof m !== 'object' || !m.type || !m.src || typeof m.src !== 'string' || !m.src.trim() || m.src.includes('{/*'));
+                            if (problematicEntry) errorMsg += ` Problematic entry: ${JSON.stringify(problematicEntry)}`;
                         }
-                        console.error(errorMsg, 'Original data:', photoData, 'for item:', item.querySelector('.evidence-title')?.textContent || item);
-                        photos = [];
+                        console.error(errorMsg, 'Original data:', mediaData, 'for item:', item.querySelector('.evidence-title')?.textContent || 'Unknown Item');
+                        mediaItems = [];
                     }
                 } catch (e) {
-                    console.error('Error parsing photo data for item:', item.querySelector('.evidence-title')?.textContent || item, '. Original data:', photoData, e);
-                    photos = [];
+                    console.error('Error parsing media data for item:', item.querySelector('.evidence-title')?.textContent || 'Unknown Item', '. Original data:', mediaData, e);
+                    mediaItems = [];
                 }
 
-                if (photos.length > 0) {
-                    mainImageEl.src = photos[0];
-                    mainImageEl.alt = item.querySelector('.evidence-title')?.textContent || 'Evidence Photo';
+                // Populate main and stack images (assuming first 3 items are images if available)
+                const populateDisplayImage = (imgEl, mediaItem, altSuffix) => {
+                    if (mediaItem && mediaItem.type === 'image' && typeof mediaItem.src === 'string' && mediaItem.src.trim() !== '' && !mediaItem.src.includes('{/*')) {
+                        imgEl.src = mediaItem.src;
+                        imgEl.alt = (item.querySelector('.evidence-title')?.textContent || 'Evidence') + altSuffix;
+                        if (imgEl.classList.contains('evidence-img-stack')) {
+                             imgEl.style.display = 'block';
+                             imgEl.classList.add('has-image');
+                        }
+                    } else {
+                        if (imgEl === mainImageEl) {
+                            imgEl.src = 'https://placehold.co/300x200/0a0a0a/333333?text=No+Cover';
+                            imgEl.alt = 'No cover image';
+                        } else {
+                            imgEl.style.display = 'none';
+                            imgEl.classList.remove('has-image');
+                        }
+                        if (mediaItem) console.warn("Invalid media item for display/stack:", mediaItem, "for item:", item.querySelector('.evidence-title')?.textContent);
+                    }
+                };
 
-                    if (photos.length > 1 && photos[1]) {
-                        stackImage1El.src = photos[1];
-                        stackImage1El.style.display = 'block';
-                        stackImage1El.classList.add('has-image');
-                    } else {
-                        stackImage1El.style.display = 'none';
-                        stackImage1El.classList.remove('has-image');
-                    }
-                    if (photos.length > 2 && photos[2]) {
-                        stackImage2El.src = photos[2];
-                        stackImage2El.style.display = 'block';
-                        stackImage2El.classList.add('has-image');
-                    } else {
-                        stackImage2El.style.display = 'none';
-                        stackImage2El.classList.remove('has-image');
-                    }
-                } else {
-                    mainImageEl.src = 'https://placehold.co/600x400/0a0a0a/333333?text=No+Images';
-                    mainImageEl.alt = 'No photos available';
-                    stackImage1El.style.display = 'none'; stackImage1El.classList.remove('has-image');
-                    stackImage2El.style.display = 'none'; stackImage2El.classList.remove('has-image');
-                }
+                populateDisplayImage(mainImageEl, mediaItems[0], " - Main");
+                populateDisplayImage(stackImage1El, mediaItems[1], " - Stack 1");
+                populateDisplayImage(stackImage2El, mediaItems[2], " - Stack 2");
+
 
                 if (!isMobile) {
                     imageWrapper.addEventListener('mouseenter', () => {
-                        if (photos.length > 0 && overlay) overlay.classList.add('active');
-                        if (photos.length > 1) imageWrapper.classList.add('stack-hover-effect');
+                        if (mediaItems.length > 0 && overlay) overlay.classList.add('active');
+                        // Show stack if there's at least one actual stack image (i.e., mediaItems.length > 1)
+                        if (mediaItems.length > 1 && ( (mediaItems[1] && mediaItems[1].type === 'image') || (mediaItems[2] && mediaItems[2].type === 'image') ) ) {
+                            imageWrapper.classList.add('stack-hover-effect');
+                        }
                     });
                     imageWrapper.addEventListener('mouseleave', () => {
                         if (overlay) overlay.classList.remove('active');
@@ -647,200 +529,178 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 imageWrapper.addEventListener('click', (e) => {
                     e.preventDefault();
-                    if (photos.length > 0) {
-                        openLightboxWithAnimation(photos, 0, mainImageEl);
+                    if (mediaItems.length > 0) {
+                        openSimpleLightbox(mediaItems, 0);
+                    } else {
+                        console.warn("No media to display for this item when clicked.");
+                        // Show placeholder in lightbox
+                        updateLightboxMedia('https://placehold.co/600x400/0a0a0a/FFFFFF?text=No+Media+Available', "No Media Available", 0, 0);
+                        lightbox.classList.add('show');
+                        document.body.classList.add('lightbox-open');
+                        (lightboxImageEl.style.display === 'block' ? lightboxImageEl : lightboxVideoEl).classList.add('loaded');
+                        lightboxCloseBtn.classList.add('visible');
+                        lightboxPrevBtn.style.display = 'none';
+                        lightboxNextBtn.style.display = 'none';
                     }
                 });
             }
         });
 
-        function openLightboxWithAnimation(photos, index, clickedImageElement) {
-            if (!photos || photos.length === 0 || typeof photos[index] !== 'string' || photos[index].trim() === '' || photos[index].includes('{/*')) {
-                console.error("Cannot open lightbox: Invalid photos array or initial image URL.", photos, index);
-                // Optionally, display an error message to the user
+        function openSimpleLightbox(media, index) {
+            if (!media || media.length === 0 || index < 0 || index >= media.length || typeof media[index] !== 'object' || !media[index].src || typeof media[index].src !== 'string' || !media[index].src.trim() || media[index].src.includes('{/*') ) {
+                console.error("Cannot open lightbox: Invalid media array or initial item.", "Attempted index:", index, "Media array:", media);
+                updateLightboxMedia(null, 'https://placehold.co/600x400/000000/FFFFFF?text=Error+Loading+Media', "Error Loading Media", media ? media.length : 0, index);
+                lightbox.classList.add('show');
+                document.body.classList.add('lightbox-open');
+                (lightboxImageEl.style.display === 'block' ? lightboxImageEl : lightboxVideoEl).classList.add('loaded');
+                [lightboxCloseBtn, lightboxPrevBtn, lightboxNextBtn].forEach(btn => btn.classList.add('visible'));
                 return;
             }
-            currentPhotos = photos;
+
+            currentMediaItems = media;
             currentIndex = index;
 
-            const rect = clickedImageElement.getBoundingClientRect();
-            animatingImageClone.src = clickedImageElement.src;
-            animatingImageClone.style.display = 'block';
-            animatingImageClone.style.top = `${rect.top}px`;
-            animatingImageClone.style.left = `${rect.left}px`;
-            animatingImageClone.style.width = `${rect.width}px`;
-            animatingImageClone.style.height = `${rect.height}px`;
-            animatingImageClone.style.transform = 'scale(1) rotate(0deg)';
-            animatingImageClone.style.opacity = '1'; // Start clone as visible
-
-            lightbox.classList.add('show');
-            document.body.classList.add('lightbox-open');
-            lightboxImageEl.style.opacity = '0'; // Actual image starts transparent
+            lightboxImageEl.style.opacity = '0';
             lightboxImageEl.classList.remove('loaded');
-            // lightboxControlsWrapper.classList.remove('visible');
-            // Position controls directly, wrapper is gone or not used for positioning
-            lightboxCloseBtn.style.opacity = '0'; lightboxCloseBtn.style.filter = 'blur(5px)'; lightboxCloseBtn.style.pointerEvents = 'none';
-            lightboxPrevBtn.style.opacity = '0'; lightboxPrevBtn.style.filter = 'blur(5px)'; lightboxPrevBtn.style.pointerEvents = 'none';
-            lightboxNextBtn.style.opacity = '0'; lightboxNextBtn.style.filter = 'blur(5px)'; lightboxNextBtn.style.pointerEvents = 'none';
+            lightboxVideoEl.style.opacity = '0';
+            lightboxVideoEl.classList.remove('loaded');
+            lightboxVideoEl.pause();
+            lightboxVideoEl.currentTime = 0;
 
 
-            const tempImg = new Image();
-            tempImg.onload = () => {
-                const naturalAspectRatio = tempImg.naturalWidth / tempImg.naturalHeight;
-                const padding = 80;
-                let finalWidth = Math.min(window.innerWidth - padding, tempImg.naturalWidth);
-                let finalHeight = finalWidth / naturalAspectRatio;
-                const maxHeight = window.innerHeight - padding;
+            [lightboxCloseBtn, lightboxPrevBtn, lightboxNextBtn].forEach(btn => btn.classList.remove('visible'));
 
-                if (finalHeight > maxHeight) {
-                    finalHeight = maxHeight;
-                    finalWidth = finalHeight * naturalAspectRatio;
+            updateLightboxMedia(); // Sets the first media src and alt
+
+            lightbox.classList.add('show'); // Fade in modal and backdrop
+            document.body.classList.add('lightbox-open');
+
+            if (controlsTimer) clearTimeout(controlsTimer);
+            setTimeout(() => {
+                const currentItem = currentMediaItems[currentIndex];
+                if (currentItem.type === 'image') {
+                    lightboxImageEl.classList.add('loaded');
+                } else if (currentItem.type === 'video') {
+                    lightboxVideoEl.classList.add('loaded');
                 }
-                
-                const targetTop = (window.innerHeight - finalHeight) / 2;
-                const targetLeft = (window.innerWidth - finalWidth) / 2;
-
-                // Set actual lightbox image src and dimensions *before* clone animation
-                // It's opacity 0, so this won't cause a flash
-                lightboxImageEl.style.width = `${finalWidth}px`;
-                lightboxImageEl.style.height = `${finalHeight}px`;
-                updateLightboxImage(); // Sets src & alt for lightboxImageEl
-
-                void animatingImageClone.offsetWidth; // Force reflow
-
-                animatingImageClone.style.top = `${targetTop}px`;
-                animatingImageClone.style.left = `${targetLeft}px`;
-                animatingImageClone.style.width = `${finalWidth}px`;
-                animatingImageClone.style.height = `${finalHeight}px`;
-
-                if (clonePositionalAnimationTimer) clearTimeout(clonePositionalAnimationTimer);
-                if (cloneFadeOutCompletionTimer) clearTimeout(cloneFadeOutCompletionTimer);
-
-                // This timer waits for the clone's positional/size animation to complete
-                clonePositionalAnimationTimer = setTimeout(() => {
-                    lightboxImageEl.classList.add('loaded'); // Triggers opacity transition for actual image
-                    animatingImageClone.style.opacity = '0'; // Start fading out the clone
-
-                    // Make controls visible with their own transitions
-                    lightboxCloseBtn.style.transition = 'opacity 0.3s ease 0.1s, filter 0.3s ease 0.1s';
-                    lightboxPrevBtn.style.transition = 'opacity 0.3s ease 0.1s, filter 0.3s ease 0.1s';
-                    lightboxNextBtn.style.transition = 'opacity 0.3s ease 0.1s, filter 0.3s ease 0.1s';
-                    
-                    lightboxCloseBtn.style.opacity = '1'; lightboxCloseBtn.style.filter = 'blur(0px)'; lightboxCloseBtn.style.pointerEvents = 'auto';
-                    lightboxPrevBtn.style.opacity = '1'; lightboxPrevBtn.style.filter = 'blur(0px)'; lightboxPrevBtn.style.pointerEvents = 'auto';
-                    lightboxNextBtn.style.opacity = '1'; lightboxNextBtn.style.filter = 'blur(0px)'; lightboxNextBtn.style.pointerEvents = 'auto';
-
-
-                    // Hide clone after its own opacity transition
-                    const cloneOpacityTransitionDuration = parseFloat(getComputedStyle(animatingImageClone).transitionDuration.split(',').pop()) * 1000 || 300;
-                    cloneFadeOutCompletionTimer = setTimeout(() => {
-                         if (parseFloat(getComputedStyle(animatingImageClone).opacity) < 0.1) {
-                            animatingImageClone.style.display = 'none';
-                         }
-                    }, cloneOpacityTransitionDuration);
-                }, animationDuration); // Use var --lightbox-animation-duration
-            };
-            tempImg.onerror = () => {
-                console.error("Failed to load image for lightbox animation:", photos[index]);
-                lightboxImageEl.alt = "Image failed to load";
-                lightboxImageEl.src = 'https://placehold.co/600x400/000000/FFFFFF?text=Error+Loading+Image';
-                lightboxImageEl.classList.add('loaded');
-                animatingImageClone.style.display = 'none';
-                // Make controls visible even on error
-                lightboxCloseBtn.style.opacity = '1'; lightboxCloseBtn.style.filter = 'blur(0px)'; lightboxCloseBtn.style.pointerEvents = 'auto';
-                lightboxPrevBtn.style.opacity = '1'; lightboxPrevBtn.style.filter = 'blur(0px)'; lightboxPrevBtn.style.pointerEvents = 'auto';
-                lightboxNextBtn.style.opacity = '1'; lightboxNextBtn.style.filter = 'blur(0px)'; lightboxNextBtn.style.pointerEvents = 'auto';
-            };
-
-            if (photos && photos.length > index && typeof photos[index] === 'string' && photos[index].trim() !== '' && !photos[index].includes('{/*')) {
-                tempImg.src = photos[index];
-            } else {
-                console.error("Initial load: Invalid or missing image URL for lightbox at index:", index, photos);
-                tempImg.onerror();
-            }
+                controlsTimer = setTimeout(() => {
+                    [lightboxCloseBtn, lightboxPrevBtn, lightboxNextBtn].forEach(btn => {
+                        if(btn) btn.classList.add('visible');
+                    });
+                }, controlsFadeDelayMs + lightboxTransitionDurationMs);
+            }, 50);
         }
-
 
         function closeLightbox() {
             lightbox.classList.remove('show');
             document.body.classList.remove('lightbox-open');
             lightboxImageEl.classList.remove('loaded');
             lightboxImageEl.style.opacity = '0';
-            // lightboxControlsWrapper.classList.remove('visible');
-            lightboxCloseBtn.style.opacity = '0'; lightboxCloseBtn.style.filter = 'blur(5px)'; lightboxCloseBtn.style.pointerEvents = 'none';
-            lightboxPrevBtn.style.opacity = '0'; lightboxPrevBtn.style.filter = 'blur(5px)'; lightboxPrevBtn.style.pointerEvents = 'none';
-            lightboxNextBtn.style.opacity = '0'; lightboxNextBtn.style.filter = 'blur(5px)'; lightboxNextBtn.style.pointerEvents = 'none';
-
-            if (clonePositionalAnimationTimer) clearTimeout(clonePositionalAnimationTimer);
-            if (cloneFadeOutCompletionTimer) clearTimeout(cloneFadeOutCompletionTimer);
-            animatingImageClone.style.display = 'none'; // Ensure clone is hidden
+            lightboxVideoEl.classList.remove('loaded');
+            lightboxVideoEl.style.opacity = '0';
+            lightboxVideoEl.pause();
+            [lightboxCloseBtn, lightboxPrevBtn, lightboxNextBtn].forEach(btn => btn.classList.remove('visible'));
+            if (controlsTimer) clearTimeout(controlsTimer);
         }
 
-        function updateLightboxImage() {
-            const placeholderErrorSrc = 'https://placehold.co/600x400/000000/FFFFFF?text=Error+Loading';
-            if (currentPhotos && currentPhotos.length > 0 && currentIndex >= 0 && currentIndex < currentPhotos.length) {
-                const imageUrl = currentPhotos[currentIndex];
-                if (typeof imageUrl === 'string' && imageUrl.trim() !== '' && !imageUrl.includes('{/*')) {
-                    lightboxImageEl.src = imageUrl;
-                    lightboxImageEl.alt = `Evidence Photo ${currentIndex + 1} of ${currentPhotos.length}`;
+        function updateLightboxMedia(errorItem, errorSrc, errorAlt, mediaCountForError) {
+            const placeholderErrorSrc = 'https://placehold.co/800x600/0a0a0a/FFFFFF?text=Media+Error';
+            let currentItem = errorItem === null ? currentMediaItems[currentIndex] : errorItem; // Use errorItem if provided explicitly
+
+            if (errorSrc) { // Explicit error display
+                lightboxImageEl.src = errorSrc;
+                lightboxImageEl.alt = errorAlt || "Error loading media";
+                lightboxImageEl.style.display = 'block';
+                lightboxVideoEl.style.display = 'none';
+                lightboxVideoEl.pause();
+                const numMedia = typeof mediaCountForError === 'number' ? mediaCountForError : 0;
+                lightboxPrevBtn.style.display = numMedia > 1 ? 'flex' : 'none';
+                lightboxNextBtn.style.display = numMedia > 1 ? 'flex' : 'none';
+                return;
+            }
+
+            if (currentItem && typeof currentItem === 'object' && currentItem.src && typeof currentItem.src === 'string' && currentItem.src.trim() !== '' && !currentItem.src.includes('{/*') && (currentItem.src.startsWith('http') || currentItem.src.startsWith('/'))) {
+                if (currentItem.type === 'image') {
+                    lightboxImageEl.src = currentItem.src;
+                    lightboxImageEl.alt = `Evidence Photo ${currentIndex + 1} of ${currentMediaItems.length}`;
+                    lightboxImageEl.style.display = 'block';
+                    lightboxVideoEl.style.display = 'none';
+                    lightboxVideoEl.pause();
+                    lightboxVideoEl.currentTime = 0;
+                } else if (currentItem.type === 'video') {
+                    lightboxVideoEl.src = currentItem.src;
+                    lightboxVideoEl.poster = currentItem.poster || '';
+                    lightboxVideoEl.alt = `Evidence Video ${currentIndex + 1} of ${currentMediaItems.length}`; // Alt for video (though not standard)
+                    lightboxVideoEl.style.display = 'block';
+                    lightboxImageEl.style.display = 'none';
                 } else {
-                    console.error("UPDATE: Invalid image URL at index", currentIndex, ":", imageUrl);
+                    console.error("UPDATE LIGHTBOX: Unknown media type or invalid src for item at index", currentIndex, ":", currentItem);
                     lightboxImageEl.src = placeholderErrorSrc;
-                    lightboxImageEl.alt = "Invalid image data";
+                    lightboxImageEl.alt = "Unsupported media type";
+                    lightboxImageEl.style.display = 'block';
+                    lightboxVideoEl.style.display = 'none';
+                    lightboxVideoEl.pause();
                 }
             } else {
-                console.warn("UPDATE: No photos to display or index out of bounds. CurrentIndex:", currentIndex, "Photos:", currentPhotos);
+                console.error("UPDATE LIGHTBOX: Invalid media item or URL at index", currentIndex, ":", currentItem, ". Displaying placeholder.");
                 lightboxImageEl.src = placeholderErrorSrc;
-                lightboxImageEl.alt = 'No photo to display';
+                lightboxImageEl.alt = "Invalid media data";
+                lightboxImageEl.style.display = 'block';
+                lightboxVideoEl.style.display = 'none';
+                lightboxVideoEl.pause();
             }
-            const hasMultiplePhotos = currentPhotos && currentPhotos.length > 1;
-            lightboxPrevBtn.style.display = hasMultiplePhotos ? 'flex' : 'none';
-            lightboxNextBtn.style.display = hasMultiplePhotos ? 'flex' : 'none';
+
+            const hasMultipleMedia = currentMediaItems && currentMediaItems.length > 1;
+            lightboxPrevBtn.style.display = hasMultipleMedia ? 'flex' : 'none';
+            lightboxNextBtn.style.display = hasMultipleMedia ? 'flex' : 'none';
         }
 
-        function showNextImage() {
-            if (currentPhotos.length <= 1) return;
-            currentIndex = (currentIndex + 1) % currentPhotos.length;
-            lightboxImageEl.classList.remove('loaded'); // Remove loaded to trigger fade-in via CSS transition
-            lightboxImageEl.style.opacity = '0';
+
+        function showNextMedia() {
+            if (!currentMediaItems || currentMediaItems.length <= 1) return;
+            currentIndex = (currentIndex + 1) % currentMediaItems.length;
+            lightboxImageEl.classList.remove('loaded'); lightboxImageEl.style.opacity = '0';
+            lightboxVideoEl.classList.remove('loaded'); lightboxVideoEl.style.opacity = '0'; lightboxVideoEl.pause();
             setTimeout(() => {
-                updateLightboxImage(); // This sets the new src
-                void lightboxImageEl.offsetWidth; // Force reflow
-                lightboxImageEl.classList.add('loaded'); // Add loaded to trigger fade-in
-            }, 50); // Brief delay to allow opacity to reset before transition
+                updateLightboxMedia();
+                const currentItem = currentMediaItems[currentIndex];
+                if(currentItem.type === 'image') { void lightboxImageEl.offsetWidth; lightboxImageEl.classList.add('loaded'); }
+                else if (currentItem.type === 'video') { void lightboxVideoEl.offsetWidth; lightboxVideoEl.classList.add('loaded');}
+            }, 50);
         }
 
-        function showPrevImage() {
-            if (currentPhotos.length <= 1) return;
-            currentIndex = (currentIndex - 1 + currentPhotos.length) % currentPhotos.length;
-            lightboxImageEl.classList.remove('loaded');
-            lightboxImageEl.style.opacity = '0';
+        function showPrevMedia() {
+            if (!currentMediaItems || currentMediaItems.length <= 1) return;
+            currentIndex = (currentIndex - 1 + currentMediaItems.length) % currentMediaItems.length;
+            lightboxImageEl.classList.remove('loaded'); lightboxImageEl.style.opacity = '0';
+            lightboxVideoEl.classList.remove('loaded'); lightboxVideoEl.style.opacity = '0'; lightboxVideoEl.pause();
             setTimeout(() => {
-                updateLightboxImage();
-                void lightboxImageEl.offsetWidth;
-                lightboxImageEl.classList.add('loaded');
+                updateLightboxMedia();
+                const currentItem = currentMediaItems[currentIndex];
+                if(currentItem.type === 'image') { void lightboxImageEl.offsetWidth; lightboxImageEl.classList.add('loaded'); }
+                else if (currentItem.type === 'video') { void lightboxVideoEl.offsetWidth; lightboxVideoEl.classList.add('loaded');}
             }, 50);
         }
 
         lightboxCloseBtn.addEventListener('click', closeLightbox);
         lightboxBackdrop.addEventListener('click', closeLightbox);
-        lightboxPrevBtn.addEventListener('click', showPrevImage);
-        lightboxNextBtn.addEventListener('click', showNextImage);
+        lightboxPrevBtn.addEventListener('click', showPrevMedia);
+        lightboxNextBtn.addEventListener('click', showNextMedia);
 
         document.addEventListener('keydown', (e) => {
             if (lightbox.classList.contains('show')) {
                 if (e.key === 'Escape') {
                     closeLightbox();
-                } else if (e.key === 'ArrowRight' && currentPhotos.length > 1) {
-                    showNextImage();
-                } else if (e.key === 'ArrowLeft' && currentPhotos.length > 1) {
-                    showPrevImage();
+                } else if (e.key === 'ArrowRight' && currentMediaItems && currentMediaItems.length > 1) {
+                    showNextMedia();
+                } else if (e.key === 'ArrowLeft' && currentMediaItems && currentMediaItems.length > 1) {
+                    showPrevMedia();
                 }
             }
         });
-    } // End of initializePhotoGallery
+    }
 
-}); // End of DOMContentLoaded
+});
 
 // Smooth Scroll for Welcome Button
 document.querySelector('.hero-btn')?.addEventListener('click', function(e) {
