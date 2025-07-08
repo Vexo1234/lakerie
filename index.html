@@ -301,6 +301,78 @@
     text-align: center;
     user-select: none;
   }
+       
+/* Modal Styling */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 99999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.9);
+  backdrop-filter: blur(5px);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #111;
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 90%;
+  color: var(--light);
+  position: relative;
+  box-shadow: var(--glow);
+  animation: fadeInUp 0.4s ease;
+}
+
+.modal-content h2 {
+  color: var(--secondary);
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.modal-content hr {
+  border: none;
+  border-bottom: 1px solid var(--primary);
+  margin-bottom: 1rem;
+}
+
+.close-button {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 1.5rem;
+  color: var(--light);
+  cursor: pointer;
+}
+
+#socialLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--secondary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.social-link i {
+  font-size: 1.2rem;
+}
+
+.social-link:hover {
+  color: var(--primary);
+}
 </style>
 
 </head>
@@ -724,6 +796,59 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
         submitBtn.textContent = 'SEND REPORT';
         submitBtn.disabled = false;
     }
+});
+    // === Collab Box Custom Social Modals with Icons ===
+const teamSocials = {
+  "Trapped Souls": [
+    { name: "YouTube", url: "https://youtube.com/@trappedsouls", icon: "fab fa-youtube" },
+    { name: "Instagram", url: "https://instagram.com/trappedsouls", icon: "fab fa-instagram" }
+  ],
+};
+
+// Create modal container once
+const modal = document.createElement("div");
+modal.id = "socialModal";
+modal.className = "modal";
+modal.innerHTML = `
+  <div class="modal-content">
+    <span class="close-button">&times;</span>
+    <h2>Socials</h2>
+    <hr />
+    <div id="socialLinks"></div>
+  </div>
+`;
+document.body.appendChild(modal);
+
+const closeBtn = modal.querySelector(".close-button");
+const linksContainer = modal.querySelector("#socialLinks");
+
+// Setup each team box with a modal trigger
+document.querySelectorAll('.collab-box').forEach(box => {
+  const name = box.querySelector('.collab-name')?.textContent?.trim();
+  if (name && teamSocials[name]) {
+    box.style.cursor = 'pointer';
+    box.addEventListener('click', () => {
+      linksContainer.innerHTML = ''; // Clear previous
+      teamSocials[name].forEach(social => {
+        const link = document.createElement('a');
+        link.href = social.url;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.className = 'social-link';
+        link.innerHTML = `<i class="${social.icon}"></i> ${social.name}`;
+        linksContainer.appendChild(link);
+      });
+      modal.style.display = 'flex';
+    });
+  }
+});
+
+// Modal close behavior
+closeBtn.addEventListener("click", () => {
+  modal.style.display = "none";
+});
+window.addEventListener("click", e => {
+  if (e.target === modal) modal.style.display = "none";
 });
 </script>
 </body>
