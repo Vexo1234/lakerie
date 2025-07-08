@@ -242,7 +242,58 @@
         @media (max-width: 992px) { .about-content, .contact-container { flex-direction: column; } .about-image { margin-top: 2rem; } .section-title { font-size: 2rem; } }
         @media (max-width: 768px) { header { padding: 1rem 5%; } .logo-text { font-size: 1.2rem; } nav ul { gap: 1rem; } .hero-title { font-size: 2.5rem; } .hero-subtitle { font-size: 1.2rem; } section { padding: 4rem 5%; } .hero-pre-title { font-size: 1.4rem; letter-spacing: 3px; } }
         @media (max-width: 576px) { .logo-img { height: 40px; } .logo-text { font-size: 1rem; } .logo-subtext { font-size: 0.6rem; letter-spacing: 2px; } nav { display: none; } .hero-title { font-size: 2rem; } .evidence-grid { grid-template-columns: 1fr; } .hero-pre-title { font-size: 1.2rem; letter-spacing: 2px; filter: blur(1px);}}
-    </style>
+
+ .collabs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.5rem;
+    justify-items: center;
+    align-items: center;
+  }
+
+  .collab-box {
+    background: rgba(20, 20, 20, 0.7);
+    border-radius: 10px;
+    width: 140px;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: var(--glow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: default;
+  }
+
+  .collab-box:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), var(--glow);
+  }
+
+  .collab-logo {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 0.8rem;
+    box-shadow: var(--glow);
+    border: 2px solid var(--primary);
+    transition: filter 0.3s ease;
+  }
+
+  .collab-box:hover .collab-logo {
+    filter: drop-shadow(0 0 15px var(--secondary));
+  }
+
+  .collab-name {
+    color: var(--secondary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: center;
+    user-select: none;
+  }
+</style>
+        
 </head>
 <body>
     <div id="loading-screen"> <div class="loading-container"> <div class="progress-bar-container"> <div class="progress-bar"> <div class="progress-bar-fill"></div> </div> <span class="progress-counter">0%</span> </div> <div class="loading-text">Loading</div> </div> </div>
