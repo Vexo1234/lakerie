@@ -225,46 +225,6 @@
     .footer a { color: var(--secondary); text-decoration: none; font-weight: bold; }
     .footer a:hover { text-decoration: underline; }
 
-    /* Collabs Grid - Your main question */
-    .collabs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      grid-gap: 15px;
-      justify-content: flex-start; /* Keeps items left aligned by default */
-      margin-bottom: 2rem;
-    }
-
-    .collab-box {
-      width: 140px;
-      height: 140px;
-      border-radius: 20px;
-      background: linear-gradient(to right, #2b7ce2, #00ffff);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 0 15px rgba(43, 124, 226, 0.7);
-      padding: 1rem;
-      gap: 1rem;
-      color: #0a0a0a;
-      cursor: pointer;
-      transition: all 0.2s ease-in-out;
-      user-select: none;
-      font-weight: 600;
-      font-size: 1.1rem;
-      text-align: center;
-      filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.6));
-    }
-
-    .collab-box:hover {
-      filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.9));
-      background: linear-gradient(135deg, #0a0a0a 0%, #1f1f1f 100%);
-      color: #fff;
-      box-shadow: 0 0 30px rgba(0, 255, 255, 0.9);
-      transform: scale(1.05);
-      border: 2px solid #00ffff;
-    }
-
     /* Animations */
     @keyframes fadeInUp {
         to {
@@ -289,6 +249,58 @@
         .about-content { flex-direction: column; }
     }
 
+  /* ... your existing CSS ... */
+
+  /* Add the Teams We've Collabed With styles here */
+  .collabs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.5rem;
+    justify-items: center;
+    align-items: center;
+  }
+
+  .collab-box {
+    background: rgba(20, 20, 20, 0.7);
+    border-radius: 10px;
+    width: 140px;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: var(--glow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: default;
+  }
+
+  .collab-box:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), var(--glow);
+  }
+
+  .collab-logo {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 0.8rem;
+    box-shadow: var(--glow);
+    border: 2px solid var(--primary);
+    transition: filter 0.3s ease;
+  }
+
+  .collab-box:hover .collab-logo {
+    filter: drop-shadow(0 0 15px var(--secondary));
+  }
+
+  .collab-name {
+    color: var(--secondary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: center;
+    user-select: none;
+  }
 </style>
 
 </head>
