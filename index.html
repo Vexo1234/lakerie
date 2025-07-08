@@ -251,57 +251,57 @@
 
   /* ... your existing CSS ... */
 
-  /* Add the Teams We've Collabed With styles here */
   .collabs-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 1.5rem;
-    justify-items: center;
-    align-items: center;
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.5rem;
+  justify-items: center;
+  align-items: center;
+  padding: 1rem 5%;
+}
 
-  .collab-box {
-    background: rgba(20, 20, 20, 0.7);
-    border-radius: 10px;
-    width: 140px;
-    height: 140px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    box-shadow: var(--glow);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: default;
-  }
+.collab-box {
+  background: rgba(20, 20, 20, 0.7); /* transparent dark */
+  border-radius: 15px;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); /* glowy */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: default;
+  user-select: none;
+}
 
-  .collab-box:hover {
-    transform: translateY(-8px) scale(1.05);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), var(--glow);
-  }
+.collab-box:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
+}
 
-  .collab-logo {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 0.8rem;
-    box-shadow: var(--glow);
-    border: 2px solid var(--primary);
-    transition: filter 0.3s ease;
-  }
+.collab-logo {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 0.8rem;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+  border: 2px solid rgba(0, 255, 255, 0.7);
+  transition: filter 0.3s ease;
+}
 
-  .collab-box:hover .collab-logo {
-    filter: drop-shadow(0 0 15px var(--secondary));
-  }
+.collab-box:hover .collab-logo {
+  filter: drop-shadow(0 0 15px rgba(0, 255, 255, 1));
+}
 
-  .collab-name {
-    color: var(--secondary);
-    font-weight: 600;
-    font-size: 0.95rem;
-    text-align: center;
-    user-select: none;
-  }
-       
+.collab-name {
+  color: #00ffff;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+}
+
 /* Modal Styling */
 .modal {
   display: none;
@@ -320,24 +320,24 @@
 .modal-content {
   background: #111;
   padding: 2rem;
-  border-radius: 10px;
+  border-radius: 15px;
   max-width: 400px;
   width: 90%;
-  color: var(--light);
+  color: #00ffff;
   position: relative;
-  box-shadow: var(--glow);
+  box-shadow: 0 0 20px #00ffff;
   animation: fadeInUp 0.4s ease;
 }
 
 .modal-content h2 {
-  color: var(--secondary);
+  color: #00ffff;
   text-align: center;
   margin-bottom: 0.5rem;
 }
 
 .modal-content hr {
   border: none;
-  border-bottom: 1px solid var(--primary);
+  border-bottom: 1px solid #00ffff;
   margin-bottom: 1rem;
 }
 
@@ -346,8 +346,9 @@
   top: 12px;
   right: 16px;
   font-size: 1.5rem;
-  color: var(--light);
+  color: #00ffff;
   cursor: pointer;
+  user-select: none;
 }
 
 #socialLinks {
@@ -360,7 +361,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  color: var(--secondary);
+  color: #00ffff;
   font-weight: 600;
   text-decoration: none;
   transition: color 0.3s;
@@ -371,210 +372,261 @@
 }
 
 .social-link:hover {
-  color: var(--primary);
+  color: #2b7ce2;
 }
 </style>
 
-</head>
 <body>
-    <div id="loading-screen"> <div class="loading-container"> <div class="progress-bar-container"> <div class="progress-bar"> <div class="progress-bar-fill"></div> </div> <span class="progress-counter">0%</span> </div> <div class="loading-text">Loading</div> </div> </div>
-    <div class="logo-loading-container"> <img src="https://raw.githubusercontent.com/Vexo1234/picassetsssss/main/channels4_profile_modified__1_683cdfdfd0d75_png.png" alt="Loading Logo" class="logo-loading"> <div class="logo-text-loading">LAKE ERIE SHADOW HUNTERS</div> </div>
-    <div class="orb"></div> <div class="orb"></div> <div class="orb"></div> <div class="ghost"></div> <div class="ghost"></div>
-
-    <header> <div class="logo-container"> <img src="https://raw.githubusercontent.com/Vexo1234/picassetsssss/main/channels4_profile_modified__1_683cdfdfd0d75_png.png" alt="Lake Erie Shadow Hunters" class="logo-img"> <div> <span class="logo-text">LAKE ERIE SHADOW HUNTERS</span> <span class="logo-subtext">FATHER & SON PARANORMAL TEAM</span> </div> </div> <nav> <ul> <li><a href="#home">Home</a></li> <li><a href="#about">About</a></li> <li><a href="#team">Our Team</a></li> <li><a href="#equipment">Equipment</a></li> <li><a href="#evidence">Evidence</a></li> <li><a href="#contact">Contact</a></li> </ul> </nav> </header>
-
-    <section class="hero" id="home">
-        <h1 class="hero-title" id="animated-title" data-text="Lake Erie Shadow Hunters">Lake Erie Shadow Hunters</h1> <p class="hero-subtitle">Father & Son paranormal investigators exploring paranormal mysteries</p>
-        <button class="hero-btn">Welcome</button>
-    </section>
-
-   <section id="about">
-  <h2 class="section-title">OUR STORY</h2>
-  <div class="section-content about-content">
-    <div class="about-text">
-      <p>Founded in late 2024, Lake Erie Shadow Hunters is a unique father-and-son paranormal investigation team based in Ashtabula, Ohio. Christian and his 13-year-old son Caden (who many say is the youngest investigator they know) explore haunted locations throughout Ohio and maybe even other states 👀.</p>
-      <p>What began as a shared interest in the paranormal has grown into a special bonding experience that strengthens our relationship while documenting the paranormal. We're passionate about sharing our experiences with the world.</p>
-      <p>Our approach combines traditional paranormal research methods with the fresh perspective of a new generation, creating a unique dynamic that helps us connect with both spirits and our growing audience.</p>
+  <div id="loading-screen">
+    <div class="loading-container">
+      <div class="progress-bar-container">
+        <div class="progress-bar">
+          <div class="progress-bar-fill"></div>
+        </div>
+        <span class="progress-counter">0%</span>
+      </div>
+      <div class="loading-text">Loading</div>
     </div>
   </div>
-</section>
 
-<section id="team">
-  <h2 class="section-title">MEET THE TEAM</h2>
-  <div class="section-content">
-    <div class="team-container">
-      <div class="team-member">
-        <h3 class="member-name">CHRISTIAN</h3>
-        <span class="member-role">Father</span>
-        <p class="member-bio">Starting in late 2024 my dad and me have been obsessed with the paranormal, he's always had his own personal experiences and loves being able to support me and do investigations with me.</p>
-        <p class="member-fact">"I love getting to spend time with my son and explore another side of life that many people are scared to dive into."</p>
-      </div>
-      <div class="team-member">
-        <h3 class="member-name">CADEN</h3>
-        <span class="member-role">Son</span>
-        <p class="member-bio">At just 13 years old, I'm become one of the youngest investigators known by some people. My fresh perspective and natural sensitivity to spiritual energy make me an invaluable team member.</p>
-        <p class="member-fact">"I love investigating with my dad - it's a special connection not many people have"</p>
-      </div>
-    </div>
+  <div class="logo-loading-container" style="opacity: 0;">
+    <img
+      src="https://raw.githubusercontent.com/Vexo1234/picassetsssss/main/channels4_profile_modified__1_683cdfdfd0d75_png.png"
+      alt="Loading Logo"
+      class="logo-loading"
+    />
+    <div class="logo-text-loading">LAKE ERIE SHADOW HUNTERS</div>
   </div>
-</section>
 
-<section id="equipment" class="equipment-section">
-  <h2 class="section-title">OUR GEAR</h2>
-  <div class="section-content">
-    <div class="equipment-grid">
-      <div class="equipment-item">
-        <div class="equipment-icon"><i class="fas fa-broadcast-tower"></i></div>
-        <h3 class="equipment-name">SB7 Spirit Box</h3>
-        <p>Radio sweep device for real-time communication</p>
-      </div>
-      <div class="equipment-item">
-        <div class="equipment-icon"><i class="fas fa-ghost"></i></div>
-        <h3 class="equipment-name">REM Pod</h3>
-        <p>Electromagnetic field disturbance detector</p>
-      </div>
-      <div class="equipment-item">
-        <div class="equipment-icon"><i class="fas fa-lightbulb"></i></div>
-        <h3 class="equipment-name">Catballs</h3>
-        <p>Motion-activated light devices</p>
-      </div>
-      <div class="equipment-item">
-        <div class="equipment-icon"><i class="fas fa-wave-square"></i></div>
-        <h3 class="equipment-name">EMF Detector</h3>
-        <p>Measures electromagnetic fluctuations</p>
-      </div>
-      <div class="equipment-item">
-        <div class="equipment-icon"><i class="fas fa-microphone"></i></div>
-        <h3 class="equipment-name">EVP Recorder</h3>
-        <p>Captures electronic voice phenomena</p>
-      </div>
-      <div class="equipment-item">
-        <div class="equipment-icon"><i class="fas fa-bell"></i></div>
-        <h3 class="equipment-name">Dead Bell</h3>
-        <p>Traditional device for spirit communication</p>
-      </div>
-      <div class="equipment-item">
-        <div class="equipment-icon"><i class="fas fa-project-diagram"></i></div>
-        <h3 class="equipment-name">DOTS Projector</h3>
-        <p>Laser grid for detecting movement</p>
-      </div>
-      <div class="equipment-item">
-        <div class="equipment-icon"><i class="fas fa-video"></i></div>
-        <h3 class="equipment-name">Night Vision Cameras</h3>
-        <p>Full-spectrum video documentation</p>
-      </div>
-    </div>
-  </div>
-</section>
+  <div class="orb"></div>
+  <div class="orb"></div>
+  <div class="orb"></div>
+  <div class="ghost"></div>
+  <div class="ghost"></div>
 
-<section id="evidence">
-  <h2 class="section-title">PLACES WE HAVE INVESTIGATED</h2>
-  <div class="section-content evidence-grid">
-    <div class="evidence-item">
-      <img src="https://ewscripps.brightspotcdn.com/dims4/default/276469f/2147483647/strip/true/crop/1786x1005+0+65/resize/1280x720!/quality/90/?url=http%3A%2F%2Fewscripps-brightspot.s3.amazonaws.com%2F9a%2Fdd%2Fdb3223e046e2ba8bc1d8a113258b%2Fscreen-shot-2019-03-05-at-8.07.33%20PM.png" alt="Madison State Seminary" class="evidence-img">
-      <div class="evidence-info">
-        <h3 class="evidence-title">Madison State Seminary</h3>
-        <span class="evidence-date">Madison, Ohio</span>
-        <p>Our investigation of this historic location captured several intelligent responses through our spirit box and multiple EMF spikes, heard a little girl voice, my father felt a hand on his back, and had insane activity with the rem-pod.</p>
+  <header style="opacity: 1;">
+    <div class="logo-container">
+      <img
+        src="https://raw.githubusercontent.com/Vexo1234/picassetsssss/main/channels4_profile_modified__1_683cdfdfd0d75_png.png"
+        alt="Lake Erie Shadow Hunters"
+        class="logo-img"
+      />
+      <div>
+        <span class="logo-text">LAKE ERIE SHADOW HUNTERS</span>
+        <span class="logo-subtext">FATHER & SON PARANORMAL TEAM</span>
       </div>
     </div>
-    <div class="evidence-item">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Fairfield_County_Infirmary.jpg" alt="Fairfield Infirmary" class="evidence-img">
-      <div class="evidence-info">
-        <h3 class="evidence-title">Fairfield Infirmary</h3>
-        <span class="evidence-date">Fairfield, Ohio</span>
-        <p>During our overnight investigation, we did not get much activity but getting to be there and soak in it's rich history was awesome.</p>
-      </div>
-    </div>
-    <div class="evidence-item">
-      <img src="https://phantomhistory.com/wp-content/uploads/2022/09/Poasttown-Elementary-School-Phantom-History-Podcast-where-the-past-and-paranormal-collide-.jpg" alt="Poasttown Elementary" class="evidence-img">
-      <div class="evidence-info">
-        <h3 class="evidence-title">Poasttown Elementary</h3>
-        <span class="evidence-date">Middletown, Ohio</span>
-        <p>It was a great location, awesome owner, not that much activity but in some areas yes. Had a great time hanging out with Trapped Souls and they were awesome for inviting me and my dad to go with them.</p>
-      </div>
-    </div>
-  </div>
-</section>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#team">Our Team</a></li>
+        <li><a href="#equipment">Equipment</a></li>
+        <li><a href="#evidence">Evidence</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
-<section id="collabs">
-  <h2 class="section-title">Teams We've Collabed With</h2>
-  <div class="section-content">
-    <div class="collabs-grid">
-      <div class="collab-box">
-        <img src="https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-1/480702182_122187517646362259_3196840339258172674_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=101&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=T70bJ3qu62kQ7kNvwGYKN2F&_nc_oc=AdngFzuf6RsJFQ-KwdS6cZu2yvRlgwWsc3H3aB6pA6mVmO3yjdFz5VST2ZIjtrWhsU4&_nc_zt=24&_nc_ht=scontent-ord5-1.xx&_nc_gid=RpnMMBcnCa4xr0mtzkHzMw&oh=00_AfQP9yaPPmPHY-9kwkyqlSMgBlUC14wRi1ap8X06kXRHnw&oe=68734931" alt="Trapped Souls Logo" class="collab-logo">
-        <p class="collab-name">Trapped Souls</p>
-      </div>
-      <div class="collab-box">
-        <img src="https://scontent-ord5-3.xx.fbcdn.net/v/t39.30808-6/494036001_2429125710794197_4569610147911373660_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=2ObJHKIdr28Q7kNvwHHkUaH&_nc_oc=AdnuHk7VF5HEduMRs5WqYnrCzuyDUqO8qsOYzu8B90Z09wCGfqfuj9FptzlifaDWVEA&_nc_zt=23&_nc_ht=scontent-ord5-3.xx&_nc_gid=U9fUZ2fKpY0OKs4yIFi2UA&oh=00_AfQvG6IL8NQ4DbkXGGxnXMxbtlFK-Tf922IC0omD378M5Q&oe=68732E9C" alt="Reed-efining Paranormal Logo" class="collab-logo">
-        <p class="collab-name">Reed-efining Paranormal</p>
-      </div>
-      <!-- You can keep or remove empty collab-box divs as needed -->
-    </div>
-  </div>
-</section>
+  <section class="hero" id="home">
+    <h1
+      class="hero-title"
+      id="animated-title"
+      data-text="Lake Erie Shadow Hunters"
+    >
+      Lake Erie Shadow Hunters
+    </h1>
+    <p class="hero-subtitle">
+      Father & Son paranormal investigators exploring paranormal mysteries
+    </p>
+    <button class="hero-btn">Welcome</button>
+  </section>
 
-<section id="contact">
-  <h2 class="section-title">CONTACT US</h2>
-  <div class="section-content contact-container">
-    <div class="contact-info">
-      <h3>REPORT A SIGHTING</h3>
-      <div class="contact-details">
-        <p><i class="fas fa-envelope"></i> lakeeriesoulseekers@gmail.com</p>
-        <p><i class="fas fa-map-marker-alt"></i> Ashtabula, Ohio</p>
-      </div>
-      <h3>FOLLOW OUR INVESTIGATIONS</h3>
-      <div class="social-links">
-        <a href="https://www.tiktok.com/@lake.erie.shadow.hunters" target="_blank" class="social-link"><i class="fab fa-tiktok"></i></a>
-        <a href="https://www.youtube.com/channel/UC-UIQJkH3wS0OibYvaEI44g" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a>
-        <a href="https://www.instagram.com/lake_erie_shadow_hunters/" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+  <section id="about">
+    <h2 class="section-title">OUR STORY</h2>
+    <div class="section-content about-content">
+      <div class="about-text">
+        <p>
+          Founded in late 2024, Lake Erie Shadow Hunters is a unique
+          father-and-son paranormal investigation team based in Ashtabula,
+          Ohio. Christian and his 13-year-old son Caden (who many say is the
+          youngest investigator they know) explore haunted locations throughout
+          Ohio and maybe even other states 👀.
+        </p>
+        <p>
+          What began as a shared interest in the paranormal has grown into a
+          special bonding experience that strengthens our relationship while
+          documenting the paranormal. We're passionate about sharing our
+          experiences with the world.
+        </p>
+        <p>
+          Our approach combines traditional paranormal research methods with
+          the fresh perspective of a new generation, creating a unique dynamic
+          that helps us connect with both spirits and our growing audience.
+        </p>
       </div>
     </div>
-    <form id="contactForm" class="contact-form">
-      <div class="form-group">
-        <label for="name">Your Name</label>
-        <input type="text" id="name" name="name" class="form-control" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Email Address</label>
-        <input type="email" id="email" name="email" class="form-control" required>
-      </div>
-      <div class="form-group">
-        <label for="location">Location of Sighting</label>
-        <input type="text" id="location" name="location" class="form-control" required>
-      </div>
-      <div class="form-group">
-        <label for="message">Details of Your Experience</label>
-        <textarea id="message" name="message" class="form-control" required></textarea>
-      </div>
-      <button type="submit" class="submit-btn">SEND REPORT</button>
-      <div class="security-message">
-        <i class="fas fa-lock"></i>
-        <span>Your information is sent securely directly to our team</span>
-      </div>
-      <div id="formMessage"></div>
-    </form>
-  </div>
-</section>
+  </section>
 
-<footer>
-  <div class="footer-content">
-    <div class="footer-logo">
-      <img src="https://raw.githubusercontent.com/Vexo1234/picassetsssss/main/channels4_profile_modified__1_683cdfdfd0d75_png.png" alt="Lake Erie Shadow Hunters Logo">
-      <span class="footer-logo-text">LAKE ERIE SHADOW HUNTERS</span>
+  <section id="team">
+    <h2 class="section-title">MEET THE TEAM</h2>
+    <div class="section-content">
+      <div class="team-container">
+        <div class="team-member">
+          <h3 class="member-name">CHRISTIAN</h3>
+          <span class="member-role">Father</span>
+          <p class="member-bio">
+            Starting in late 2024 my dad and me have been obsessed with the
+            paranormal, he's always had his own personal experiences and loves
+            being able to support me and do investigations with me.
+          </p>
+          <p class="member-fact">
+            "I love getting to spend time with my son and explore another side
+            of life that many people are scared to dive into."
+          </p>
+        </div>
+        <div class="team-member">
+          <h3 class="member-name">CADEN</h3>
+          <span class="member-role">Son</span>
+          <p class="member-bio">
+            At just 13 years old, I'm become one of the youngest investigators
+            known by some people. My fresh perspective and natural sensitivity
+            to spiritual energy make me an invaluable team member.
+          </p>
+          <p class="member-fact">
+            "I love investigating with my dad - it's a special connection not
+            many people have"
+          </p>
+        </div>
+      </div>
     </div>
-    <div class="footer-links">
-      <a href="#home">Home</a>
-      <a href="#about">About</a>
-      <a href="#team">Our Team</a>
-      <a href="#equipment">Equipment</a>
-      <a href="#evidence">Evidence</a>
-      <a href="#contact">Contact</a>
-    </div>
-    <p class="copyright">© 2025 Lake Erie Shadow Hunters. All rights reserved.</p>
-  </div>
-</footer>
+  </section>
 
+  <section id="equipment" class="equipment-section">
+    <h2 class="section-title">OUR GEAR</h2>
+    <div class="section-content">
+      <div class="equipment-grid">
+        <!-- Equipment items here (as you already wrote) -->
+      </div>
+    </div>
+  </section>
+
+  <section id="evidence">
+    <h2 class="section-title">PLACES WE HAVE INVESTIGATED</h2>
+    <div class="section-content evidence-grid">
+      <!-- Evidence items here -->
+    </div>
+  </section>
+
+  <section id="collabs">
+    <h2 class="section-title">Teams We've Collabed With</h2>
+    <div class="section-content">
+      <div class="collabs-grid">
+        <!-- Collaboration boxes -->
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2 class="section-title">CONTACT US</h2>
+    <div class="section-content contact-container">
+      <div class="contact-info">
+        <h3>REPORT A SIGHTING</h3>
+        <div class="contact-details">
+          <p><i class="fas fa-envelope"></i> lakeeriesoulseekers@gmail.com</p>
+          <p><i class="fas fa-map-marker-alt"></i> Ashtabula, Ohio</p>
+        </div>
+        <h3>FOLLOW OUR INVESTIGATIONS</h3>
+        <div class="social-links">
+          <a
+            href="https://www.tiktok.com/@lake.erie.shadow.hunters"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-link"
+            ><i class="fab fa-tiktok"></i
+          ></a>
+          <a
+            href="https://www.youtube.com/channel/UC-UIQJkH3wS0OibYvaEI44g"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-link"
+            ><i class="fab fa-youtube"></i
+          ></a>
+          <a
+            href="https://www.instagram.com/lake_erie_shadow_hunters/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-link"
+            ><i class="fab fa-instagram"></i
+          ></a>
+        </div>
+      </div>
+      <form id="contactForm" class="contact-form" novalidate>
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" name="name" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="location">Location of Sighting</label>
+          <input
+            type="text"
+            id="location"
+            name="location"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="message">Details of Your Experience</label>
+          <textarea
+            id="message"
+            name="message"
+            class="form-control"
+            required
+          ></textarea>
+        </div>
+        <button type="submit" class="submit-btn">SEND REPORT</button>
+        <div class="security-message">
+          <i class="fas fa-lock"></i>
+          <span>Your information is sent securely directly to our team</span>
+        </div>
+        <div id="formMessage"></div>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-logo">
+        <img
+          src="https://raw.githubusercontent.com/Vexo1234/picassetsssss/main/channels4_profile_modified__1_683cdfdfd0d75_png.png"
+          alt="Lake Erie Shadow Hunters Logo"
+        />
+        <span class="footer-logo-text">LAKE ERIE SHADOW HUNTERS</span>
+      </div>
+      <div class="footer-links">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#team">Our Team</a>
+        <a href="#equipment">Equipment</a>
+        <a href="#evidence">Evidence</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <p class="copyright">© 2025 Lake Erie Shadow Hunters. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+    
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const loadingScreen = document.getElementById('loading-screen');
@@ -651,11 +703,11 @@ document.addEventListener('DOMContentLoaded', function() {
                                     });
                                     if (header && header.style.opacity === '0') header.style.opacity = '1';
                                     
-                                    initIntersectionObserver(); // Initialize section animations
-                                    animateTitle(); // Initialize hero title animation
+                                    initIntersectionObserver();
+                                    animateTitle();
                                 }, 1000);
                             }, 1000);
-                        } else { // Fallback
+                        } else {
                              if (header) header.style.opacity = '1';
                              if (loadingScreen) loadingScreen.remove();
                              if (logoLoadingContainer) logoLoadingContainer.remove();
@@ -671,7 +723,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 500);
             }
         }, intervalTime);
-    } else { // Fallback if loading elements are missing
+    } else {
         console.warn('Loading elements (progressBarFill, progressCounter, or loadingText) not found, skipping loading animation.');
         if (loadingScreen) loadingScreen.remove();
         if (logoLoadingContainer) logoLoadingContainer.remove();
@@ -686,7 +738,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function initIntersectionObserver() {
-        const sections = document.querySelectorAll('section:not(.hero)'); // Exclude hero from this specific observer logic if it has its own
+        const sections = document.querySelectorAll('section:not(.hero)');
         if (sections.length === 0) return;
         
         const observerOptions = {
@@ -698,13 +750,12 @@ document.addEventListener('DOMContentLoaded', function() {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('section-visible');
-                    obs.unobserve(entry.target); 
+                    obs.unobserve(entry.target);
                 }
             });
         }, observerOptions);
         
         sections.forEach(section => {
-            // Initial state is now handled by CSS: section {} rules
             observer.observe(section);
         });
     }
@@ -713,38 +764,34 @@ document.addEventListener('DOMContentLoaded', function() {
         const title = document.getElementById('animated-title');
         if (!title) { console.warn('#animated-title element not found'); return; }
         
-        // Use a data-text attribute if present, otherwise use textContent.
-        // This helps if the initial HTML text is different or just a placeholder.
         const textToAnimate = title.dataset.text || title.textContent.trim();
         if (!textToAnimate) { console.warn('No text content found for #animated-title'); return; }
         
-        title.textContent = ''; // Clear current content to rebuild with spans
-        title.style.opacity = '1'; // Ensure the main H1 is visible (if not already)
+        title.textContent = '';
+        title.style.opacity = '1';
 
         for (let i = 0; i < textToAnimate.length; i++) {
             setTimeout(() => {
                 const span = document.createElement('span');
                 span.textContent = textToAnimate[i];
                 span.style.opacity = '0';
-                span.style.transform = 'translateY(20px)'; 
-                span.style.display = 'inline-block'; 
+                span.style.transform = 'translateY(20px)';
+                span.style.display = 'inline-block';
                 span.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-                // The H1 has gradient styles and color:transparent. Spans will inherit this.
                 title.appendChild(span);
                 
-                // Force reflow/repaint before applying transition end state (good practice)
-                void span.offsetWidth; 
+                void span.offsetWidth;
 
-                setTimeout(() => { 
+                setTimeout(() => {
                     span.style.opacity = '1';
                     span.style.transform = 'translateY(0)';
-                }, 20); // Minimal delay after reflow
-            }, i * 70); // Staggering delay for each letter
+                }, 20);
+            }, i * 70);
         }
     }
 });
 
-// Smooth Scroll for Welcome Button (remains the same)
+// Smooth scroll for Welcome button
 document.querySelector('.hero-btn')?.addEventListener('click', function(e) {
     e.preventDefault();
     const headerOffset = document.querySelector('header')?.offsetHeight || 70;
@@ -756,7 +803,7 @@ document.querySelector('.hero-btn')?.addEventListener('click', function(e) {
     setTimeout(() => { this.style.boxShadow = 'var(--glow)'; }, 500);
 });
 
-// Contact Form Submission (remains the same)
+// Contact form submission handler
 document.getElementById('contactForm')?.addEventListener('submit', async function(e) {
     e.preventDefault();
     const form = e.target;
@@ -767,9 +814,19 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
     formMessage.textContent = '';
     formMessage.style.color = '';
     try {
-        const formData = { name: form.name.value, email: form.email.value, location: form.location.value, message: form.message.value };
+        const formData = { 
+            name: form.name.value, 
+            email: form.email.value, 
+            location: form.location.value, 
+            message: form.message.value 
+        };
         const scriptUrl = 'https://script.google.com/macros/s/AKfycbzUlJQna9Edv5GDpZz79f1mH15_tDVQzLYkH83oGzm2G83FcO8DsAknXPDFC0rNYBe3LQ/exec';
-        await fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json', }, body: JSON.stringify(formData) });
+        await fetch(scriptUrl, { 
+            method: 'POST', 
+            mode: 'no-cors', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify(formData) 
+        });
         formMessage.textContent = 'Report submitted successfully! We\'ll be in touch soon.';
         formMessage.style.color = 'var(--secondary)';
         form.reset();
@@ -782,17 +839,18 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
         submitBtn.disabled = false;
     }
 });
-    // === Collab Box Custom Social Modals with Icons ===
+
+// === Collab Box Custom Social Modals with Icons ===
 const teamSocials = {
   "Trapped Souls": [
     { name: "YouTube", url: "https://www.youtube.com/@TrappedSouls-rk9rd", icon: "fab fa-youtube" },
     { name: "Facebook", url: "https://www.facebook.com/people/Trapped-Souls/61560867797619/", icon: "fab fa-facebook" },
-    { name: "Tiktok", url: "https://www.tiktok.com/@trappedsouls_nss", icon: "fab fa-tiktok" }
+    { name: "TikTok", url: "https://www.tiktok.com/@trappedsouls_nss", icon: "fab fa-tiktok" }
   ],
   "Reed-efining Paranormal": [
     { name: "Facebook", url: "https://www.facebook.com/profile.php?id=61577270626079&mibextid=wwXIfr", icon: "fab fa-facebook" },
     { name: "TikTok", url: "https://www.tiktok.com/@reedefining.paranormal?lang=en", icon: "fab fa-tiktok" },
-    { name: "Youtube", url: "https://www.youtube.com/@reedefiningparanormal", icon: "fab fa-youtube" }
+    { name: "YouTube", url: "https://www.youtube.com/@reedefiningparanormal", icon: "fab fa-youtube" }
   ]
 };
 
@@ -819,7 +877,7 @@ document.querySelectorAll('.collab-box').forEach(box => {
   if (name && teamSocials[name]) {
     box.style.cursor = 'pointer';
     box.addEventListener('click', () => {
-      linksContainer.innerHTML = ''; // Clear previous
+      linksContainer.innerHTML = '';
       teamSocials[name].forEach(social => {
         const link = document.createElement('a');
         link.href = social.url;
@@ -841,6 +899,6 @@ closeBtn.addEventListener("click", () => {
 window.addEventListener("click", e => {
   if (e.target === modal) modal.style.display = "none";
 });
-</script>
+</script>\
 </body>
 </html>
